@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Careers | KRYPTOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
+  --success:#0ECB81; --success-hover:#0BA86C; --danger:#F6465D;
+  --muted:#707A8A; --fill:#F5F5F5; --border:#EAECEF; --page:#FAFAFA;
+  --font-sans:"Inter","Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,select,textarea{font-family:inherit;outline:none}
+img,svg{display:block;max-width:100%}
+select{appearance:none;-webkit-appearance:none;background:transparent;border:none;cursor:pointer}
+.container{max-width:1280px;margin:0 auto;padding:0 16px}
+@media(min-width:768px){.container{padding:0 24px}}
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}.shrink-0{flex-shrink:0}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-5{gap:20px}
+.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}
+.text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}
+.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
+.tracking-tight{letter-spacing:-.02em}
+.text-muted{color:var(--muted)}
+.rounded-lg{border-radius:8px}.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
+.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}.shadow-md{box-shadow:0 4px 12px rgba(0,0,0,.08)}.shadow-lg{box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.uppercase{text-transform:uppercase}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.header-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+@media(max-width:640px){.header-inner{height:56px}}
+.brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.menu-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
+.menu-btn:hover{background:var(--fill)}
+.menu-btn svg{width:22px;height:22px;stroke-width:2.4}
+.logo-text{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:2px}
+.logo-text .accent{color:var(--brand-hover)}
+.logo-sub{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-left:2px}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:24px}
+.nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
+.nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
+.nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
+.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
+.header-actions{display:flex;align-items:center;gap:12px}
+.balance{display:flex;align-items:center;gap:4px}
+.balance-val{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.balance-eye{color:var(--muted);padding:2px}
+.balance-eye svg{width:14px;height:14px}
+.avatar{width:32px;height:32px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+.notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
+.notif-btn:hover{background:var(--fill)}
+.notif-btn svg{width:20px;height:20px;stroke-width:2.2}
+.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+
+/* main */
+main{padding-top:16px}
+.careers-wrap{max-width:1080px;margin:0 auto;padding:0 16px 100px}
+@media(min-width:768px){.careers-wrap{padding:0 24px 40px}}
+
+/* breadcrumb */
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:16px}
+.breadcrumb button{transition:color .15s}
+.breadcrumb button:hover{color:var(--brand-dark)}
+.breadcrumb .current{color:var(--brand-dark);font-weight:700}
+
+/* hero */
+.careers-hero{margin-bottom:40px}
+.hero-badge-row{margin-bottom:6px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:9999px;color:#78350f;font-size:12px;font-weight:700}
+.hero-badge svg{width:14px;height:14px;color:#d97706}
+.careers-title{font-size:24px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.careers-title{font-size:30px}}
+.careers-sub{font-size:12px;color:var(--muted);margin-top:4px}
+@media(min-width:640px){.careers-sub{font-size:14px}}
+.hero-header{display:flex;flex-direction:column;gap:12px;justify-content:space-between;margin-bottom:24px}
+@media(min-width:640px){.hero-header{flex-direction:row;align-items:center}}
+.remote-badge{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
+.remote-dot{width:10px;height:10px;border-radius:9999px;background:var(--success);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,203,129,.6)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(14,203,129,0)}}
+
+/* job cards */
+.jobs-list{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+.job-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.job-card:hover{border-color:#d1d5db}
+.job-card.active{border-color:var(--brand-primary);box-shadow:0 0 0 2px rgba(252,213,53,.25),0 1px 2px rgba(0,0,0,.04)}
+.job-header{padding:16px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;cursor:pointer;transition:background .15s;user-select:none}
+@media(min-width:640px){.job-header{flex-direction:row;align-items:center}}
+.job-header:hover{background:rgba(249,250,251,.8)}
+.job-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.job-badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.job-id{padding:2px 8px;background:#f3f4f6;color:#1f2937;font-family:monospace;font-size:11px;font-weight:700;border-radius:6px;letter-spacing:.04em}
+.job-cat{padding:2px 8px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:700;border-radius:6px}
+.job-vacancies{padding:2px 8px;background:#ecfdf5;color:#047857;font-size:11px;font-weight:700;border-radius:6px;display:flex;align-items:center;gap:4px}
+.job-vacancies svg{width:12px;height:12px}
+.job-title{font-size:16px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.job-title{font-size:18px}}
+.job-right{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;padding-top:8px;border-top:1px solid #f3f4f6}
+@media(min-width:640px){.job-right{padding-top:0;border-top:none;justify-content:flex-end}}
+.job-salary{text-align:left}
+@media(min-width:640px){.job-salary{text-align:right}}
+.job-salary-val{font-size:16px;font-weight:900;color:var(--success)}
+@media(min-width:640px){.job-salary-val{font-size:18px}}
+.job-salary-val small{font-size:12px;color:var(--muted);font-weight:400}
+.job-deadline{font-size:10px;color:#b45309;font-weight:600;display:flex;align-items:center;gap:4px;margin-top:2px}
+.job-deadline svg{width:12px;height:12px}
+.job-btn-row{display:flex;align-items:center;gap:8px}
+.apply-btn{padding:6px 14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:12px;border-radius:12px;transition:background .15s;display:flex;align-items:center;gap:4px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.apply-btn:hover{background:var(--brand-hover)}
+.apply-btn svg{width:14px;height:14px}
+.details-btn{padding:6px 10px;background:#f3f4f6;color:#4b5563;font-weight:700;font-size:12px;border-radius:12px;transition:background .15s;display:flex;align-items:center;gap:4px}
+.details-btn:hover{background:#e5e7eb}
+.details-btn svg{width:16px;height:16px;color:var(--muted);transition:transform .2s}
+.job-card.active .details-btn svg{transform:rotate(180deg)}
+.job-body{max-height:0;overflow:hidden;transition:max-height .3s ease;background:#fafafa;border-top:1px solid transparent}
+.job-card.active .job-body{max-height:600px;border-top-color:var(--border)}
+.job-body-inner{padding:20px}
+.job-body-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.job-body-text{font-size:13px;color:#4b5563;line-height:1.7;margin-bottom:16px}
+.job-body-text:last-child{margin-bottom:0}
+.job-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.skill-chip{padding:4px 10px;background:#fff;border:1px solid var(--border);color:var(--brand-dark);font-size:11px;font-weight:600;border-radius:6px}
+
+/* form card */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+@media(min-width:640px){.form-card{padding:40px}}
+.form-header{max-width:640px;margin-bottom:24px}
+.form-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:#fef3c7;color:#78350f;border-radius:9999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.form-badge svg{width:12px;height:12px;color:#b45309}
+.form-title{font-size:20px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.form-title{font-size:24px}}
+.form-sub{font-size:12px;color:var(--muted);margin-top:4px}
+@media(min-width:640px){.form-sub{font-size:14px}}
+
+/* form */
+form{display:flex;flex-direction:column;gap:20px}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--brand-dark);margin-bottom:6px}
+.form-label .req{color:#ef4444}
+.role-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:640px){.role-grid{grid-template-columns:1fr 1fr}}
+.role-btn{padding:12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;text-align:left;transition:all .15s;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.role-btn:hover{background:#f3f4f6}
+.role-btn.active{background:rgba(255,251,235,.7);border-color:var(--brand-primary);box-shadow:0 0 0 2px rgba(252,213,53,.3)}
+.role-btn-info{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.role-btn-top{display:flex;align-items:center;gap:6px}
+.role-code{font-size:10px;font-family:monospace;font-weight:700;color:#6b7280}
+.role-pay{font-size:10px;font-weight:900;color:#047857;background:#d1fae5;padding:1px 6px;border-radius:4px}
+.role-name{font-size:12px;font-weight:700;color:var(--brand-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.role-radio{width:16px;height:16px;border-radius:9999px;border:1px solid #d1d5db;flex-shrink:0;margin-left:8px;display:flex;align-items:center;justify-content:center}
+.role-btn.active .role-radio{background:var(--brand-primary);border-color:var(--brand-hover);color:var(--brand-dark)}
+.role-radio svg{width:12px;height:12px;stroke-width:3}
+
+.form-row{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.form-row{grid-template-columns:1fr 1fr}}
+.form-input{width:100%;padding:10px 14px;font-size:13px;background:var(--fill);border:1px solid var(--border);border-radius:12px;color:var(--brand-dark);transition:all .15s}
+.form-input:focus{background:#fff;border-color:var(--brand-primary)}
+.form-input::placeholder{color:#9ca3af}
+.form-textarea{width:100%;padding:12px;font-size:13px;background:var(--fill);border:1px solid var(--border);border-radius:12px;color:var(--brand-dark);resize:vertical;min-height:120px;transition:all .15s;font-family:inherit}
+.form-textarea:focus{background:#fff;border-color:var(--brand-primary)}
+.form-help{font-size:11px;color:var(--muted);margin-top:4px;display:block}
+.char-count{font-size:10px;color:#9ca3af}
+.file-drop{border:2px dashed #e5e7eb;border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:rgba(249,250,251,.5)}
+.file-drop:hover{border-color:var(--brand-primary);background:rgba(255,251,235,.3)}
+.file-drop.dragover{border-color:var(--brand-primary);background:rgba(255,251,235,.5)}
+.file-drop svg{width:32px;height:32px;color:#9ca3af;margin:0 auto 8px}
+.file-drop-title{font-size:12px;font-weight:700;color:var(--brand-dark)}
+.file-drop-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.file-drop.has-file{border-color:var(--success);background:#ecfdf5}
+.file-drop.has-file svg{color:var(--success)}
+.file-name{font-size:12px;font-weight:700;color:var(--brand-dark);margin-top:4px}
+.file-size{font-size:11px;color:var(--muted)}
+
+.submit-btn{width:100%;padding:14px 24px;background:var(--brand-primary);color:var(--brand-dark);font-weight:900;font-size:14px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,.08);transition:all .15s}
+.submit-btn:hover{background:var(--brand-hover)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.submit-btn svg{width:16px;height:16px;stroke-width:2.4}
+.privacy-note{text-align:center;margin-top:8px;font-size:11px;color:var(--muted)}
+
+/* success toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:16px 24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);display:none;align-items:center;gap:12px;z-index:100;max-width:400px}
+.toast.show{display:flex;animation:slideIn .3s ease}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.toast svg{width:24px;height:24px;flex-shrink:0}
+.toast-title{font-size:14px;font-weight:700}
+.toast-sub{font-size:12px;opacity:.9;margin-top:2px}
+
+/* mobile nav */
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+@media(min-width:768px){.mobile-nav{display:none}}
+.mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mnav-item.active{color:var(--brand-dark);font-weight:700}
+.mnav-item:hover{color:var(--brand-dark)}
+.mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
+.mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
+.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
+@media(max-width:767px){.md-only{display:none}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <button class="menu-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <a href="index.html" class="logo-text">KRYPTO<span class="accent">S</span><span class="logo-sub">.exchange</span></a>
+    </div>
+    <nav class="nav-links md-only">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="p2p.html" class="nav-link">P2P</a>
+      <a href="trade.html" class="nav-link">Trade</a>
+      <a href="swap.html" class="nav-link">Swap</a>
+      <a href="wallet.html" class="nav-link">Wallet</a>
+      <a href="careers.html" class="nav-link active">Careers <span class="nav-badge">HIRING</span></a>
+    </nav>
+    <div class="header-actions">
+      <div class="balance">
+        <span class="balance-val">$0.00</span>
+        <button class="balance-eye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <button class="avatar" aria-label="Profile">A</button>
+      <button class="notif-btn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <span class="notif-badge">2</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="careers-wrap">
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span class="current">Careers &amp; Operational Roles</span>
+    </div>
+
+    <!-- HERO -->
+    <div class="careers-hero">
+      <div class="hero-header">
+        <div>
+          <div class="hero-badge-row">
+            <div class="hero-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></svg>
+              <span>We Are Hiring — 4 Open Operational Roles</span>
+            </div>
+          </div>
+          <h1 class="careers-title">Current Job Openings</h1>
+          <p class="careers-sub">Explore our open positions. Click any job to open its dropdown for details and application.</p>
+        </div>
+        <div class="remote-badge">
+          <span class="remote-dot"></span>
+          <span>100% Remote • Rolling Review</span>
+        </div>
+      </div>
+
+      <!-- JOB LIST -->
+      <div class="jobs-list" id="jobsList"><!-- injected --></div>
+    </div>
+
+    <!-- APPLICATION FORM -->
+    <div class="form-card" id="applyForm">
+      <div class="form-header">
+        <div class="form-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+          Direct In-Platform Application Portal
+        </div>
+        <h3 class="form-title">Submit Your Application</h3>
+        <p class="form-sub">Fill in your candidate details, cover letter, and resume below. All applications route directly to our administrative review desk.</p>
+      </div>
+
+      <form id="applicationForm" novalidate>
+        <div>
+          <label class="form-label">Selected Operational Role <span class="req">*</span></label>
+          <div class="role-grid" id="roleGrid"><!-- injected --></div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="fullName" placeholder="e.g. Alex Vance Rivera" required />
+          </div>
+          <div>
+            <label class="form-label">Email Address <span class="req">*</span></label>
+            <input type="email" class="form-input" id="email" placeholder="e.g. alex@example.com" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Phone Number (with Country Code) <span class="req">*</span></label>
+          <input type="tel" class="form-input" id="phone" placeholder="e.g. +254 712 345678" required />
+          <span class="form-help">Include country dial code so our recruitment team can reach you via WhatsApp or phone.</span>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <label class="form-label" style="margin:0">Cover Letter &amp; Relevant Experience <span class="req">*</span></label>
+            <span class="char-count" id="charCount">0 characters</span>
+          </div>
+          <textarea class="form-textarea" id="coverLetter" placeholder="Describe your background, years of experience in dispute mediation, KYC/AML, customer support, or merchant onboarding, and why you are the ideal fit for this role..." required></textarea>
+        </div>
+
+        <div>
+          <label class="form-label">CV / Resume Upload <span style="color:#9ca3af;font-weight:400">(PDF or DOCX, max 10MB)</span></label>
+          <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>
+            <div class="file-drop-title" id="fileDropTitle">Click to select or drag &amp; drop your CV / Resume</div>
+            <div class="file-drop-sub" id="fileDropSub">Supports PDF or DOCX documents up to 10MB</div>
+            <input type="file" id="fileInput" accept=".pdf,.docx,.doc" style="display:none" />
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+            <span id="submitText">Submit Application</span>
+          </button>
+          <div class="privacy-note">🔒 Your data is kept strictly confidential and reviewed only by authorized KRYPTOS operations compliance officers.</div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+  <div>
+    <div class="toast-title">Application submitted!</div>
+    <div class="toast-sub">We'll review your submission and respond within 5 business days.</div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Main Navigation">
+  <div class="mobile-nav-inner">
+    <a href="index.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
+    <a href="p2p.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></a>
+    <a href="trade.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></a>
+    <a href="swap.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></a>
+    <a href="wallet.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></a>
+  </div>
+</nav>
+
+<script>
+/* ========== JOBS DATA ========== */
+const JOBS = [
+  {
+    id:"KRX-OPS-001",
+    title:"P2P Escrow Dispute & Risk Analyst",
+    category:"Escrow Operations & Risk Mitigation",
+    vacancies:"3 Vacancies",
+    salary:"$3,900",
+    deadline:"26th November 2026",
+    description:"You will handle disputes arising from peer-to-peer transactions, investigate fraud patterns, verify transaction evidence, and work with our escrow system to ensure fair outcomes. You'll collaborate with compliance and merchant operations teams to prevent systematic fraud.",
+    skills:["Dispute Resolution","P2P Trading","Fraud Detection","Customer Empathy","Escrow Systems"]
+  },
+  {
+    id:"KRX-OPS-002",
+    title:"Customer Support & Community Lead",
+    category:"Community & Customer Operations",
+    vacancies:"5 Vacancies",
+    salary:"$3,200",
+    deadline:"26th November 2026",
+    description:"Lead our 24/7 customer support operations and community engagement across Telegram, Discord, X, and WhatsApp. You'll manage a small team, respond to user inquiries, escalate critical issues, and maintain our reputation for fast, human support.",
+    skills:["Team Leadership","Live Chat Support","Community Management","Social Media","Customer Success"]
+  },
+  {
+    id:"KRX-OPS-003",
+    title:"P2P Merchant Acquisition Specialist",
+    category:"Liquidity & Market Operations",
+    vacancies:"4 Vacancies",
+    salary:"$5,200",
+    deadline:"26th November 2026",
+    description:"Onboard high-quality P2P merchants across Africa, Asia, and LATAM. Build partnerships with liquidity providers, negotiate competitive rates, and grow our marketplace of verified sellers. You'll own merchant pipelines and ensure smooth onboarding.",
+    skills:["B2B Sales","Crypto Trading","Negotiation","CRM Tools","Market Analysis"]
+  },
+  {
+    id:"KRX-OPS-004",
+    title:"KYC & Compliance Officer",
+    category:"Legal & Regulatory Compliance",
+    vacancies:"1 Vacancy",
+    salary:"$5,900",
+    deadline:"26th November 2026",
+    description:"Own our KYC verification pipeline, ensure AML compliance across jurisdictions, and maintain regulatory documentation. You'll work with external legal counsel, review suspicious activity, and help shape compliance policy as we expand into new markets.",
+    skills:["KYC/AML","Regulatory Compliance","Risk Assessment","Legal Documentation","Attention to Detail"]
+  },
+];
+
+/* ========== RENDER JOB LIST ========== */
+const jobsList = document.getElementById('jobsList');
+let activeJobId = JOBS[0].id;
+
+function renderJobs(){
+  jobsList.innerHTML = JOBS.map(j=>`
+    <div class="job-card ${j.id === activeJobId ? 'active' : ''}" data-id="${j.id}">
+      <div class="job-header" onclick="toggleJob('${j.id}')">
+        <div class="job-info">
+          <div class="job-badges">
+            <span class="job-id">${j.id}</span>
+            <span class="job-cat">${j.category}</span>
+            <span class="job-vacancies">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+              ${j.vacancies}
+            </span>
+          </div>
+          <h3 class="job-title">${j.title}</h3>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">
+            <div class="job-salary-val">${j.salary}<small> / mo</small></div>
+            <div class="job-deadline">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+              Deadline: ${j.deadline}
+            </div>
+          </div>
+          <div class="job-btn-row">
+            <button class="apply-btn" onclick="applyFor('${j.id}', event)">Apply
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <button class="details-btn" onclick="toggleJob('${j.id}', event)">
+              Details
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <div class="job-body-title">Role Description</div>
+          <p class="job-body-text">${j.description}</p>
+          <div class="job-body-title">Required Skills</div>
+          <div class="job-skills">
+            ${j.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleJob(id, e){
+  if(e) e.stopPropagation();
+  activeJobId = activeJobId === id ? null : id;
+  renderJobs();
+  // Sync role selection in form
+  if(activeJobId){
+    selectRole(activeJobId);
+  }
+}
+
+function applyFor(id, e){
+  if(e) e.stopPropagation();
+  activeJobId = id;
+  renderJobs();
+  selectRole(id);
+  document.getElementById('applyForm').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ========== ROLE SELECTOR IN FORM ========== */
+const roleGrid = document.getElementById('roleGrid');
+let selectedRole = JOBS[0].id;
+
+function renderRoles(){
+  roleGrid.innerHTML = JOBS.map(j=>`
+    <button type="button" class="role-btn ${j.id === selectedRole ? 'active' : ''}" onclick="selectRole('${j.id}')">
+      <div class="role-btn-info">
+        <div class="role-btn-top">
+          <span class="role-code">${j.id}</span>
+          <span class="role-pay">${j.salary}/mo</span>
+        </div>
+        <div class="role-name">${j.title}</div>
+      </div>
+      <div class="role-radio">
+        ${j.id === selectedRole ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}
+      </div>
+    </button>
+  `).join('');
+  updateSubmitText();
+}
+
+function selectRole(id){
+  selectedRole = id;
+  renderRoles();
+  activeJobId = id;
+  renderJobs();
+}
+
+function updateSubmitText(){
+  const job = JOBS.find(j=>j.id === selectedRole);
+  document.getElementById('submitText').textContent = `Submit Application for ${job.title} (${job.salary}/mo)`;
+}
+
+/* ========== FILE UPLOAD ========== */
+const fileInput = document.getElementById('fileInput');
+const fileDrop = document.getElementById('fileDrop');
+const fileDropTitle = document.getElementById('fileDropTitle');
+const fileDropSub = document.getElementById('fileDropSub');
+
+fileInput.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(file){
+    fileDrop.classList.add('has-file');
+    fileDropTitle.textContent = '✓ ' + file.name;
+    const sizeKB = (file.size / 1024).toFixed(1);
+    fileDropSub.innerHTML = `<span class="file-size">${sizeKB} KB — click to change</span>`;
+  }
+});
+
+['dragenter','dragover'].forEach(evt=>{
+  fileDrop.addEventListener(evt, e=>{ e.preventDefault(); fileDrop.classList.add('dragover'); });
+});
+['dragleave','drop'].forEach(evt=>{
+  fileDrop.addEventListener(evt, e=>{ e.preventDefault(); fileDrop.classList.remove('dragover'); });
+});
+fileDrop.addEventListener('drop', e=>{
+  const file = e.dataTransfer.files[0];
+  if(file){
+    fileInput.files = e.dataTransfer.files;
+    const evt = new Event('change', {bubbles:true});
+    fileInput.dispatchEvent(evt);
+  }
+});
+
+/* ========== CHAR COUNT ========== */
+const coverLetter = document.getElementById('coverLetter');
+const charCount = document.getElementById('charCount');
+coverLetter.addEventListener('input', ()=>{
+  charCount.textContent = coverLetter.value.length + ' characters';
+});
+
+/* ========== SUBMIT ========== */
+document.getElementById('applicationForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const name = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const letter = coverLetter.value.trim();
+
+  if(!name || !email || !phone || !letter){
+    alert('Please fill in all required fields (name, email, phone, cover letter).');
+    return;
+  }
+
+  // Simulate submit
+  const job = JOBS.find(j=>j.id === selectedRole);
+  showToast();
+  setTimeout(()=>{
+    console.log('Application submitted:', {name, email, phone, role: job.title, letter});
+  }, 100);
+});
+
+function showToast(){
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 5000);
+}
+
+/* ========== INIT ========== */
+renderJobs();
+renderRoles();
+</script>
+</body>
+</html>
