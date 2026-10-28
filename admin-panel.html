@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Panel | KRYPTOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--brand-primary:#FCD535;--brand-hover:#F0B90B;--brand-dark:#181A20;--danger:#F6465D;--success:#0ECB81;--muted:#707A8A;--border:#EAECEF;--bg:#F5F5F7}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0 solid}
+body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--brand-dark);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,select,textarea{font-family:inherit;outline:none}
+svg{display:block;max-width:100%}
+table{border-collapse:collapse;width:100%}
+
+/* layout */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--brand-primary);color:var(--brand-dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+.top-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
+.top-sub{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.admin-badge{padding:6px 12px;background:#fef3c7;color:#92400e;border-radius:9999px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.logout-btn{padding:8px 16px;background:#f3f4f6;color:#374151;font-weight:700;font-size:12px;border-radius:10px;transition:all .15s}
+.logout-btn:hover{background:#e5e7eb}
+
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px)}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+.sidebar{background:#fff;border-right:1px solid var(--border);padding:20px 12px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;transition:all .15s;cursor:pointer;margin-bottom:4px;width:100%;text-align:left}
+.nav-item:hover{background:#f9fafb;color:var(--brand-dark)}
+.nav-item.active{background:var(--brand-primary);color:var(--brand-dark);font-weight:800}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:9999px}
+.nav-item.active .nav-badge{background:rgba(0,0,0,.15);color:var(--brand-dark)}
+
+.content{padding:24px;max-width:100%;overflow-x:auto}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* page header */
+.page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.page-title{font-size:22px;font-weight:900;color:#030712}
+.page-sub{font-size:12px;color:#6b7280;margin-top:2px}
+.refresh-btn{padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:10px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:6px;color:#374151;transition:all .15s}
+.refresh-btn:hover{background:#f9fafb}
+.refresh-btn svg{width:14px;height:14px}
+
+/* stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px}
+.stat-label{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.stat-val{font-size:24px;font-weight:900;color:#030712}
+.stat-val.warn{color:#ea580c}
+.stat-val.ok{color:var(--success)}
+
+/* table */
+.tbl-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tbl-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.tbl-title{font-size:14px;font-weight:800;color:#030712}
+.filter-row{display:flex;gap:6px}
+.filter-btn{padding:5px 12px;font-size:11px;font-weight:700;border-radius:8px;background:#f3f4f6;color:#6b7280;transition:all .15s}
+.filter-btn:hover{background:#e5e7eb}
+.filter-btn.active{background:var(--brand-dark);color:#fff}
+
+table{width:100%;font-size:13px}
+thead tr{background:#f9fafb;border-bottom:1px solid var(--border)}
+th{padding:12px 14px;text-align:left;font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.04em}
+td{padding:14px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+tbody tr:hover{background:#fafafa}
+tbody tr:last-child td{border-bottom:none}
+
+.coin-cell{display:flex;align-items:center;gap:8px}
+.coin-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:9px;color:#fff;flex-shrink:0}
+.coin-sym{font-weight:800;color:#111827;font-size:12px}
+.user-email{font-size:12px;font-weight:600;color:#374151;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.amount-cell{font-family:ui-monospace,monospace;font-weight:800;color:#111827;font-size:13px}
+.time-cell{font-size:11px;color:#6b7280;white-space:nowrap}
+
+.status-pill{display:inline-block;padding:3px 9px;border-radius:9999px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.status-pending{background:#fef3c7;color:#92400e}
+.status-approved{background:#d1fae5;color:#065f46}
+.status-rejected{background:#fee2e2;color:#991b1b}
+
+.actions{display:flex;gap:6px}
+.act-btn{padding:5px 10px;font-size:11px;font-weight:700;border-radius:8px;transition:all .15s;white-space:nowrap}
+.act-approve{background:#d1fae5;color:#065f46}
+.act-approve:hover{background:#a7f3d0}
+.act-reject{background:#fee2e2;color:#991b1b}
+.act-reject:hover{background:#fecaca}
+.act-view{background:#f3f4f6;color:#374151}
+.act-view:hover{background:#e5e7eb}
+
+.empty{text-align:center;padding:48px 20px;color:#9ca3af}
+.empty svg{width:48px;height:48px;margin:0 auto 12px;opacity:.4}
+.empty-title{font-size:14px;font-weight:700;color:#6b7280;margin-bottom:4px}
+.empty-sub{font-size:12px;color:#9ca3af}
+
+/* users grid */
+.users-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.user-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px}
+.user-card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.user-avatar{width:40px;height:40px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px}
+.user-name{font-size:14px;font-weight:800;color:#030712}
+.user-email-sm{font-size:11px;color:#6b7280;font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.user-balances{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid #f3f4f6}
+.bal-row{display:flex;justify-content:space-between;font-size:12px}
+.bal-coin{color:#6b7280;font-weight:600}
+.bal-amt{color:#111827;font-weight:800;font-family:ui-monospace,monospace}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:24px;box-shadow:0 25px 60px rgba(0,0,0,.3);margin:auto}
+.modal-title{font-size:18px;font-weight:900;color:#030712;margin-bottom:4px}
+.modal-sub{font-size:12px;color:#6b7280;margin-bottom:18px}
+.modal-info{padding:14px;background:#f9fafb;border-radius:12px;margin-bottom:14px;font-size:12px}
+.modal-info-row{display:flex;justify-content:space-between;padding:4px 0}
+.modal-info-row span:first-child{color:#6b7280;font-weight:600}
+.modal-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace}
+.modal-label{font-size:12px;font-weight:700;color:#374151;margin-bottom:6px;display:block}
+.modal-input{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:13px;font-weight:600;background:#f9fafb;color:#111827;margin-bottom:14px}
+.modal-input:focus{outline:none;border-color:var(--brand-primary);background:#fff}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.modal-btn{padding:12px;font-size:13px;font-weight:800;border-radius:10px;transition:all .15s}
+.modal-btn.approve{background:var(--success);color:#fff}
+.modal-btn.approve:hover{background:#0ba86c}
+.modal-btn.reject{background:#fee2e2;color:#991b1b}
+.modal-btn.reject:hover{background:#fecaca}
+.modal-btn.cancel{background:#f3f4f6;color:#374151;grid-column:span 2}
+.modal-btn.cancel:hover{background:#e5e7eb}
+.modal-btn:disabled{opacity:.6;cursor:not-allowed}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:14px 22px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:200;max-width:360px;font-size:13px;font-weight:700}
+.toast.show{display:flex;animation:slideIn .3s}
+.toast.error{background:#991b1b}
+.toast svg{width:18px;height:18px;flex-shrink:0}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* loading */
+.loading{text-align:center;padding:40px;color:#9ca3af;font-size:13px;font-weight:600}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--brand-primary);border-radius:9999px;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">K</div>
+    <div>
+      <div class="top-title">KRYPTOS Admin</div>
+      <div class="top-sub">Control Center</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="admin-badge">● Admin</span>
+    <span id="adminEmail" style="font-size:12px;font-weight:600;color:#6b7280"></span>
+    <button class="logout-btn" id="logoutBtn">Log Out</button>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <button class="nav-item active" data-tab="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" data-tab="deposits">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+      Deposit Requests
+      <span class="nav-badge" id="depBadge" style="display:none">0</span>
+    </button>
+    <button class="nav-item" data-tab="withdraws">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+      Withdraw Requests
+      <span class="nav-badge" id="wdBadge" style="display:none">0</span>
+    </button>
+    <button class="nav-item" data-tab="users">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Users
+    </button>
+    <button class="nav-item" data-tab="transactions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+      Transactions
+    </button>
+  </aside>
+
+  <main class="content">
+
+    <!-- OVERVIEW -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Overview</div>
+          <div class="page-sub">Real-time platform activity</div>
+        </div>
+        <button class="refresh-btn" onclick="loadAll()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Pending Deposits</div><div class="stat-val warn" id="statDeposits">–</div></div>
+        <div class="stat-card"><div class="stat-label">Pending Withdraws</div><div class="stat-val warn" id="statWithdraws">–</div></div>
+        <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-val" id="statUsers">–</div></div>
+        <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-val ok" id="statCompleted">–</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-head"><div class="tbl-title">Recent Activity</div></div>
+        <div id="recentList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- DEPOSITS -->
+    <div class="tab-panel" id="tab-deposits">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Deposit Requests</div>
+          <div class="page-sub">Approve to credit user balance instantly</div>
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn active" data-status="pending" onclick="filterDeposits('pending',this)">Pending</button>
+          <button class="filter-btn" data-status="approved" onclick="filterDeposits('approved',this)">Approved</button>
+          <button class="filter-btn" data-status="rejected" onclick="filterDeposits('rejected',this)">Rejected</button>
+          <button class="filter-btn" data-status="all" onclick="filterDeposits('all',this)">All</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div id="depositsList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- WITHDRAWS -->
+    <div class="tab-panel" id="tab-withdraws">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Withdraw Requests</div>
+          <div class="page-sub">Approve to debit user balance and send crypto</div>
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn active" data-status="pending" onclick="filterWithdraws('pending',this)">Pending</button>
+          <button class="filter-btn" data-status="approved" onclick="filterWithdraws('approved',this)">Approved</button>
+          <button class="filter-btn" data-status="rejected" onclick="filterWithdraws('rejected',this)">Rejected</button>
+          <button class="filter-btn" data-status="all" onclick="filterWithdraws('all',this)">All</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div id="withdrawsList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="tab-panel" id="tab-users">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Users</div>
+          <div class="page-sub">All registered users and their balances</div>
+        </div>
+      </div>
+      <div id="usersGrid" class="users-grid"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="tab-panel" id="tab-transactions">
+      <div class="page-head">
+        <div>
+          <div class="page-title">All Transactions</div>
+          <div class="page-sub">Full ledger of every movement</div>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div id="txList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Review Request</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="modal-info" id="modalInfo"></div>
+    <label class="modal-label">Admin Note (optional)</label>
+    <input type="text" class="modal-input" id="adminNote" placeholder="e.g. Verified TxID, rejected due to fraud" />
+    <div class="modal-actions" id="modalActions">
+      <button class="modal-btn approve" onclick="doApprove()">✓ Approve</button>
+      <button class="modal-btn reject" onclick="doReject()">✗ Reject</button>
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">Done</span>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let depositFilter = 'pending';
+let withdrawFilter = 'pending';
+let activeRequest = null;
+let activeType = null;
+
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (isError ? ' error' : '');
+  document.getElementById('toastMsg').textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* Auth guard */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ location.href = 'admin-login.html'; return; }
+  const { data: prof } = await sb.from('profiles').select('is_admin').eq('id', session.user.id).single();
+  if(!prof?.is_admin){ await sb.auth.signOut(); location.href = 'admin-login.html'; return; }
+  currentUser = session.user;
+  document.getElementById('adminEmail').textContent = session.user.email;
+  loadAll();
+})();
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  location.href = 'admin-login.html';
+});
+
+/* tabs */
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* loading indicator */
+function loadH(txt){ return `<div class="loading"><span class="spinner"></span>${txt}</div>`; }
+function emptyH(txt, sub){ return `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><div class="empty-title">${txt}</div><div class="empty-sub">${sub}</div></div>`; }
+
+const COIN_COLORS = { BTC:'#F7931A', USDT:'#26A17B', ETH:'#627EEA', SOL:'#141414', BNB:'#F3BA2F' };
+const COIN_SHORT = { BTC:'B', USDT:'T', ETH:'E', SOL:'S', BNB:'B' };
+
+function coinIcon(coin){
+  return `<div class="coin-icon" style="background:${COIN_COLORS[coin]||'#666'}">${COIN_SHORT[coin]||coin[0]}</div>`;
+}
+
+function fmtTime(iso){
+  if(!iso) return '–';
+  const d = new Date(iso);
+  return d.toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+/* ============ LOAD ALL ============ */
+async function loadAll(){
+  await Promise.all([loadStats(), loadDeposits(), loadWithdraws(), loadUsers(), loadTx()]);
+}
+
+async function loadStats(){
+  try {
+    const [dep, wd, users, completed] = await Promise.all([
+      sb.from('deposit_requests').select('id',{count:'exact',head:true}).eq('status','pending'),
+      sb.from('withdraw_requests').select('id',{count:'exact',head:true}).eq('status','pending'),
+      sb.from('profiles').select('id',{count:'exact',head:true}),
+      sb.from('transactions').select('id',{count:'exact',head:true}).eq('status','completed'),
+    ]);
+    document.getElementById('statDeposits').textContent = dep.count ?? 0;
+    document.getElementById('statWithdraws').textContent = wd.count ?? 0;
+    document.getElementById('statUsers').textContent = users.count ?? 0;
+    document.getElementById('statCompleted').textContent = completed.count ?? 0;
+
+    const depBadge = document.getElementById('depBadge');
+    if(dep.count > 0){ depBadge.textContent = dep.count; depBadge.style.display = 'inline'; }
+    else depBadge.style.display = 'none';
+
+    const wdBadge = document.getElementById('wdBadge');
+    if(wd.count > 0){ wdBadge.textContent = wd.count; wdBadge.style.display = 'inline'; }
+    else wdBadge.style.display = 'none';
+
+    // recent
+    const { data: rec } = await sb.from('deposit_requests').select('*').order('created_at',{ascending:false}).limit(5);
+    const el = document.getElementById('recentList');
+    if(!rec || rec.length === 0){
+      el.innerHTML = emptyH('No activity yet','Deposit requests will show up here');
+      return;
+    }
+    el.innerHTML = `<table><thead><tr><th>Type</th><th>User</th><th>Coin</th><th>Amount</th><th>Status</th><th>When</th></tr></thead><tbody>${rec.map(r=>`
+      <tr><td><span class="status-pill status-pending">Deposit</span></td>
+      <td class="user-email">${r.user_email || '–'}</td>
+      <td>${coinIcon(r.coin)} ${r.coin}</td>
+      <td class="amount-cell">${r.amount}</td>
+      <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+      <td class="time-cell">${fmtTime(r.created_at)}</td></tr>`).join('')}</tbody></table>`;
+  } catch(e){ console.error(e); }
+}
+
+/* ============ DEPOSITS ============ */
+async function loadDeposits(){
+  const el = document.getElementById('depositsList');
+  el.innerHTML = loadH('Loading deposits...');
+  try {
+    let q = sb.from('deposit_requests').select('*').order('created_at',{ascending:false});
+    if(depositFilter !== 'all') q = q.eq('status', depositFilter);
+    const { data, error } = await q;
+    if(error) throw error;
+    if(!data || data.length === 0){
+      el.innerHTML = emptyH('No ' + depositFilter + ' deposits','Requests will appear here');
+      return;
+    }
+    el.innerHTML = `<table><thead><tr><th>User</th><th>Coin</th><th>Amount</th><th>Network</th><th>Tx Hash</th><th>Status</th><th>When</th><th>Actions</th></tr></thead><tbody>${data.map(r=>`
+      <tr>
+        <td class="user-email">${r.user_email || '–'}</td>
+        <td>${coinIcon(r.coin)} ${r.coin}</td>
+        <td class="amount-cell">${r.amount}</td>
+        <td style="font-size:11px;color:#6b7280">${r.network || '–'}</td>
+        <td style="font-size:10px;font-family:monospace;color:#6b7280;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.tx_hash || '–'}</td>
+        <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+        <td class="time-cell">${fmtTime(r.created_at)}</td>
+        <td><div class="actions">
+          ${r.status === 'pending' ? `<button class="act-btn act-view" onclick="reviewDeposit('${r.id}')">Review</button>` : `<span style="font-size:11px;color:#9ca3af">${r.admin_note || '–'}</span>`}
+        </div></td>
+      </tr>`).join('')}</tbody></table>`;
+  } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
+}
+
+function filterDeposits(status, btn){
+  depositFilter = status;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadDeposits();
+}
+
+/* ============ WITHDRAWS ============ */
+async function loadWithdraws(){
+  const el = document.getElementById('withdrawsList');
+  el.innerHTML = loadH('Loading withdraws...');
+  try {
+    let q = sb.from('withdraw_requests').select('*').order('created_at',{ascending:false});
+    if(withdrawFilter !== 'all') q = q.eq('status', withdrawFilter);
+    const { data, error } = await q;
+    if(error) throw error;
+    if(!data || data.length === 0){
+      el.innerHTML = emptyH('No ' + withdrawFilter + ' withdraws','Requests will appear here');
+      return;
+    }
+    el.innerHTML = `<table><thead><tr><th>User</th><th>Coin</th><th>Amount</th><th>Address</th><th>Status</th><th>When</th><th>Actions</th></tr></thead><tbody>${data.map(r=>`
+      <tr>
+        <td class="user-email">${r.user_email || '–'}</td>
+        <td>${coinIcon(r.coin)} ${r.coin}</td>
+        <td class="amount-cell">${r.amount}</td>
+        <td style="font-size:10px;font-family:monospace;color:#6b7280;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.address}</td>
+        <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+        <td class="time-cell">${fmtTime(r.created_at)}</td>
+        <td><div class="actions">
+          ${r.status === 'pending' ? `<button class="act-btn act-view" onclick="reviewWithdraw('${r.id}')">Review</button>` : `<span style="font-size:11px;color:#9ca3af">${r.admin_note || '–'}</span>`}
+        </div></td>
+      </tr>`).join('')}</tbody></table>`;
+  } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
+}
+
+function filterWithdraws(status, btn){
+  withdrawFilter = status;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadWithdraws();
+}
+
+/* ============ USERS ============ */
+async function loadUsers(){
+  const el = document.getElementById('usersGrid');
+  el.innerHTML = loadH('Loading users...');
+  try {
+    const { data: profiles, error } = await sb.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);
+    if(error) throw error;
+    if(!profiles || profiles.length === 0){
+      el.innerHTML = emptyH('No users yet','Signups will appear here'); return;
+    }
+    const { data: allBal } = await sb.from('balances').select('*');
+    const balByUser = {};
+    (allBal||[]).forEach(b => {
+      if(!balByUser[b.user_id]) balByUser[b.user_id] = [];
+      balByUser[b.user_id].push(b);
+    });
+    el.innerHTML = profiles.map(p=>{
+      const initials = ((p.first_name?.[0]||'') + (p.last_name?.[0]||'')).toUpperCase() || '?';
+      const balances = balByUser[p.id] || [];
+      return `<div class="user-card">
+        <div class="user-card-head">
+          <div class="user-avatar">${initials}</div>
+          <div style="min-width:0;flex:1">
+            <div class="user-name">${p.first_name||'?'} ${p.last_name||''} ${p.is_admin ? '<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;margin-left:4px">ADMIN</span>' : ''}</div>
+            <div class="user-email-sm">${p.phone || 'no phone'}</div>
+          </div>
+        </div>
+        <div class="user-balances">
+          ${balances.length ? balances.map(b=>`<div class="bal-row"><span class="bal-coin">${b.coin}</span><span class="bal-amt">${Number(b.amount).toFixed(8)}</span></div>`).join('') : '<div style="font-size:11px;color:#9ca3af;text-align:center;padding:8px">No balances</div>'}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
+}
+
+/* ============ TRANSACTIONS ============ */
+async function loadTx(){
+  const el = document.getElementById('txList');
+  el.innerHTML = loadH('Loading transactions...');
+  try {
+    const { data, error } = await sb.from('transactions').select('*').order('created_at',{ascending:false}).limit(100);
+    if(error) throw error;
+    if(!data || data.length === 0){ el.innerHTML = emptyH('No transactions','Completed actions show here'); return; }
+    el.innerHTML = `<table><thead><tr><th>Type</th><th>Coin</th><th>Amount</th><th>Status</th><th>When</th></tr></thead><tbody>${data.map(r=>`
+      <tr>
+        <td><span class="status-pill status-${r.type === 'deposit' ? 'approved' : 'pending'}">${r.type}</span></td>
+        <td>${coinIcon(r.coin)} ${r.coin}</td>
+        <td class="amount-cell">${r.amount}</td>
+        <td><span class="status-pill status-${r.status === 'completed' ? 'approved' : r.status === 'failed' ? 'rejected' : 'pending'}">${r.status}</span></td>
+        <td class="time-cell">${fmtTime(r.created_at)}</td>
+      </tr>`).join('')}</tbody></table>`;
+  } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
+}
+
+/* ============ REVIEW MODAL ============ */
+async function reviewDeposit(id){
+  const { data } = await sb.from('deposit_requests').select('*').eq('id', id).single();
+  if(!data) return;
+  activeRequest = data; activeType = 'deposit';
+  document.getElementById('modalTitle').textContent = 'Review Deposit';
+  document.getElementById('modalSub').textContent = 'Approve to credit the user balance instantly.';
+  document.getElementById('modalInfo').innerHTML = `
+    <div class="modal-info-row"><span>User</span><span>${data.user_email||'–'}</span></div>
+    <div class="modal-info-row"><span>Coin</span><span>${data.coin}</span></div>
+    <div class="modal-info-row"><span>Amount</span><span>${data.amount}</span></div>
+    <div class="modal-info-row"><span>Network</span><span>${data.network||'–'}</span></div>
+    <div class="modal-info-row"><span>Tx Hash</span><span style="font-size:10px">${data.tx_hash||'–'}</span></div>
+  `;
+  document.getElementById('adminNote').value = '';
+  document.getElementById('modal').classList.add('show');
+}
+
+async function reviewWithdraw(id){
+  const { data } = await sb.from('withdraw_requests').select('*').eq('id', id).single();
+  if(!data) return;
+  activeRequest = data; activeType = 'withdraw';
+  document.getElementById('modalTitle').textContent = 'Review Withdrawal';
+  document.getElementById('modalSub').textContent = 'Approve to debit user balance and send crypto.';
+  document.getElementById('modalInfo').innerHTML = `
+    <div class="modal-info-row"><span>User</span><span>${data.user_email||'–'}</span></div>
+    <div class="modal-info-row"><span>Coin</span><span>${data.coin}</span></div>
+    <div class="modal-info-row"><span>Amount</span><span>${data.amount}</span></div>
+    <div class="modal-info-row"><span>Address</span><span style="font-size:9px;max-width:160px;overflow:hidden;text-overflow:ellipsis">${data.address}</span></div>
+  `;
+  document.getElementById('adminNote').value = '';
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('show');
+  activeRequest = null; activeType = null;
+}
+
+async function doApprove(){
+  if(!activeRequest) return;
+  const note = document.getElementById('adminNote').value.trim();
+  const fnName = activeType === 'deposit' ? 'admin_approve_deposit' : 'admin_approve_withdraw';
+  const btns = document.querySelectorAll('.modal-btn');
+  btns.forEach(b => b.disabled = true);
+  try {
+    const { data, error } = await sb.rpc(fnName, { req_id: activeRequest.id, note: note || null });
+    if(error || data?.error){ toast(data?.error || error?.message || 'Failed', true); return; }
+    toast('✓ Approved — user balance updated');
+    closeModal();
+    loadAll();
+  } catch(e){ toast('Network error', true); }
+  finally { btns.forEach(b => b.disabled = false); }
+}
+
+async function doReject(){
+  if(!activeRequest) return;
+  const note = document.getElementById('adminNote').value.trim();
+  const fnName = activeType === 'deposit' ? 'admin_reject_deposit' : 'admin_reject_withdraw';
+  const btns = document.querySelectorAll('.modal-btn');
+  btns.forEach(b => b.disabled = true);
+  try {
+    const { data, error } = await sb.rpc(fnName, { req_id: activeRequest.id, note: note || null });
+    if(error || data?.error){ toast(data?.error || error?.message || 'Failed', true); return; }
+    toast('✗ Rejected');
+    closeModal();
+    loadAll();
+  } catch(e){ toast('Network error', true); }
+  finally { btns.forEach(b => b.disabled = false); }
+}
+</script>
+</body>
+</html>
