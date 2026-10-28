@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign Up | KRYPTOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
+  --success:#0ECB81; --danger:#F6465D; --muted:#707A8A; --border:#EAECEF; --fill:#F5F5F5; --page:#FAFAFA;
+  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;min-height:100vh}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,select{font-family:inherit;outline:none}
+svg{display:block;max-width:100%}
+select{appearance:none;-webkit-appearance:none;cursor:pointer}
+
+/* page */
+.signup-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.signup-card{background:#fff;border-radius:24px;max-width:480px;width:100%;padding:28px;box-shadow:0 25px 50px rgba(0,0,0,.08);border:1px solid #f3f4f6;margin:auto}
+.signup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #f3f4f6}
+.signup-title-wrap{display:flex;align-items:center;gap:12px}
+.signup-logo{width:40px;height:40px;border-radius:12px;background:var(--brand-primary);color:var(--brand-dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.signup-title{font-size:22px;font-weight:800;color:#030712;line-height:1.2;letter-spacing:-.02em}
+.signup-sub{font-size:12px;color:#6b7280;font-weight:500;margin-top:2px}
+.back-link{font-size:12px;font-weight:700;color:#6b7280;transition:color .15s;display:flex;align-items:center;gap:4px}
+.back-link:hover{color:#111827}
+.back-link svg{width:14px;height:14px}
+
+/* form */
+.signup-form{display:flex;flex-direction:column;gap:14px;font-size:12px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.row-2{grid-template-columns:1fr}}
+.label{display:block;font-weight:700;color:#374151;margin-bottom:5px;font-size:12px}
+.label .req{color:#ef4444}
+.input-wrap{position:relative}
+.input-icon{width:15px;height:15px;color:#9ca3af;position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none}
+.input{width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:11px 34px 11px 34px;font-size:13px;font-weight:600;color:#111827;transition:all .15s}
+.input:focus{background:#fff;border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(252,213,53,.25)}
+.input::placeholder{color:#9ca3af;font-weight:400}
+.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9ca3af;padding:2px}
+.eye-btn:hover{color:#4b5563}
+.eye-btn svg{width:15px;height:15px}
+
+/* phone row */
+.phone-row{display:flex;gap:8px}
+.select-wrap{position:relative;width:140px;flex-shrink:0}
+.select{width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:11px 26px 11px 10px;font-size:12px;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.select:focus{background:#fff;border-color:var(--brand-primary)}
+.select-chev{width:14px;height:14px;color:#9ca3af;position:absolute;right:9px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+/* checkbox */
+.checkbox-row{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:#374151;font-weight:500;cursor:pointer;user-select:none;line-height:1.6}
+.checkbox-row input{width:16px;height:16px;margin-top:1px;accent-color:var(--brand-primary);flex-shrink:0;cursor:pointer}
+.checkbox-row strong{font-weight:700;color:#111827}
+
+/* submit */
+.submit-btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:14px;border-radius:16px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06);margin-top:6px}
+.submit-btn:hover{background:var(--brand-hover)}
+.submit-btn:active{transform:scale(.99)}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed}
+
+/* footer */
+.form-footer{text-align:center;font-size:12px;color:#6b7280;font-weight:500;padding-top:8px}
+.form-link{font-weight:800;color:var(--brand-dark)}
+.form-link:hover{color:#b45309;text-decoration:underline}
+
+/* message */
+.msg{margin-top:6px;padding:11px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center;line-height:1.5}
+.msg.show{display:block}
+.msg.success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+/* spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="signup-page">
+  <div class="signup-card">
+    <div class="signup-header">
+      <div class="signup-title-wrap">
+        <div class="signup-logo">K</div>
+        <div>
+          <h1 class="signup-title">Join KRYPTOS</h1>
+          <p class="signup-sub">Create your account to start trading</p>
+        </div>
+      </div>
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Back
+      </a>
+    </div>
+
+    <form class="signup-form" id="signupForm" novalidate>
+      <div class="row-2">
+        <div>
+          <label class="label">First Name <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" class="input" id="firstName" placeholder="John" required autocomplete="given-name" />
+          </div>
+        </div>
+        <div>
+          <label class="label">Last Name <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" class="input" id="lastName" placeholder="Doe" required autocomplete="family-name" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Email Address <span class="req">*</span></label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          <input type="email" class="input" id="email" placeholder="name@example.com" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Phone Number <span class="req">*</span></label>
+        <div class="phone-row">
+          <div class="select-wrap">
+            <select class="select" id="country">
+              <option value="+254">🇰🇪 Kenya (+254)</option>
+              <option value="+1">🇺🇸 United States (+1)</option>
+              <option value="+44">🇬🇧 United Kingdom (+44)</option>
+              <option value="+234">🇳🇬 Nigeria (+234)</option>
+              <option value="+27">🇿🇦 South Africa (+27)</option>
+              <option value="+233">🇬🇭 Ghana (+233)</option>
+              <option value="+256">🇺🇬 Uganda (+256)</option>
+              <option value="+255">🇹🇿 Tanzania (+255)</option>
+              <option value="+91">🇮🇳 India (+91)</option>
+              <option value="+971">🇦🇪 UAE (+971)</option>
+            </select>
+            <svg class="select-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="input-wrap" style="flex:1">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+            <input type="tel" class="input" id="phone" placeholder="712345678" required autocomplete="tel" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div>
+          <label class="label">Password <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" class="input" id="password" placeholder="Min 8 chars" required autocomplete="new-password" />
+            <button type="button" class="eye-btn" data-target="password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="label">Confirm Password <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" class="input" id="confirmPassword" placeholder="••••••••" required autocomplete="new-password" />
+            <button type="button" class="eye-btn" data-target="confirmPassword">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" id="terms" checked required />
+        <span>I agree to the <strong>Terms and Privacy Policy</strong> and consent to identity verification.</span>
+      </label>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+
+      <div class="form-footer">
+        Already registered? <a href="login.html" class="form-link">Log In</a>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showMsg(type, text){
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+function hideMsg(){
+  document.getElementById('msg').className = 'msg';
+}
+
+/* password toggles */
+document.querySelectorAll('.eye-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const inp = document.getElementById(btn.dataset.target);
+    if(inp){
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.style.color = inp.type === 'text' ? '#111827' : '';
+    }
+  });
+});
+
+/* submit */
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  hideMsg();
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const country = document.getElementById('country').value;
+  const phone = document.getElementById('phone').value.trim();
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  const terms = document.getElementById('terms').checked;
+  const btn = document.getElementById('submitBtn');
+
+  if(!firstName || !lastName || !email || !phone || !password){
+    showMsg('error', 'Please fill in all required fields.'); return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showMsg('error', 'Please enter a valid email address.'); return;
+  }
+  if(phone.length < 6){
+    showMsg('error', 'Please enter a valid phone number.'); return;
+  }
+  if(password.length < 8){
+    showMsg('error', 'Password must be at least 8 characters.'); return;
+  }
+  if(password !== confirm){
+    showMsg('error', 'Passwords do not match.'); return;
+  }
+  if(!terms){
+    showMsg('error', 'Please agree to the Terms and Privacy Policy.'); return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Creating account...';
+
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          phone: country + phone,
+          country_code: country
+        }
+      }
+    });
+
+    if(error){
+      showMsg('error', error.message || 'Registration failed.');
+    } else {
+      showMsg('success', 'Account created! Check your email to verify, then log in.');
+      document.getElementById('signupForm').reset();
+      setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+    }
+  } catch(err){
+    showMsg('error', 'Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create Account';
+  }
+});
+</script>
+</body>
+</html>
