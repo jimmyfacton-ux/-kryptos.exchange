@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wallet | KRYPTOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
+  --success:#0ECB81; --success-hover:#0BA86C; --danger:#F6465D;
+  --muted:#707A8A; --fill:#F5F5F5; --border:#EAECEF; --page:#FAFAFA;
+  --wallet-bg:#F4F4F6;
+  --font-sans:"Inter","Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--wallet-bg);color:var(--brand-dark);-webkit-font-smoothing:antialiased}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,select{font-family:inherit;outline:none}
+img,svg{display:block;max-width:100%}
+select{appearance:none;-webkit-appearance:none;background:transparent;border:none;cursor:pointer}
+.container{max-width:1280px;margin:0 auto;padding:0 16px}
+@media(min-width:768px){.container{padding:0 24px}}
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.flex-col{flex-direction:column}.flex-1{flex:1}.shrink-0{flex-shrink:0}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
+.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}
+.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}
+.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
+.tracking-tight{letter-spacing:-.02em}
+.text-muted{color:var(--muted)}
+.rounded-lg{border-radius:8px}.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
+.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.uppercase{text-transform:uppercase}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.header-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+@media(max-width:640px){.header-inner{height:56px}}
+.brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.menu-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
+.menu-btn:hover{background:var(--fill)}
+.menu-btn svg{width:22px;height:22px;stroke-width:2.4}
+.logo-text{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:2px}
+.logo-text .accent{color:var(--brand-hover)}
+.logo-sub{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-left:2px}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:24px}
+.nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
+.nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
+.nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
+.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
+.header-actions{display:flex;align-items:center;gap:12px}
+.balance{display:flex;align-items:center;gap:4px}
+.balance-val{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.balance-eye{color:var(--muted);padding:2px}
+.balance-eye svg{width:14px;height:14px}
+.avatar{width:32px;height:32px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+.notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
+.notif-btn:hover{background:var(--fill)}
+.notif-btn svg{width:20px;height:20px;stroke-width:2.2}
+.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+
+/* main */
+main{padding-top:8px}
+.wallet-wrap{max-width:1280px;margin:0 auto;padding:8px 16px 100px}
+@media(min-width:768px){.wallet-wrap{padding:8px 24px 40px}}
+@media(max-width:767px){.wallet-wrap{max-width:640px}}
+.wallet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:8px}
+.wallet-title{font-size:24px;font-weight:900;color:#030712;letter-spacing:-.02em}
+@media(min-width:640px){.wallet-title{font-size:30px}}
+.refresh-btn{padding:8px;color:#6b7280;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:color .15s}
+.refresh-btn:hover{color:#111827}
+.refresh-btn svg{width:16px;height:16px}
+
+/* layout */
+.wallet-grid{display:block}
+@media(min-width:768px){.wallet-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:32px;align-items:start}}
+.wallet-left{grid-column:span 5}
+@media(min-width:768px){.wallet-left{position:sticky;top:80px}}
+.wallet-right{grid-column:span 7}
+
+/* tabs */
+.tab-row{display:flex;gap:8px;margin-bottom:16px}
+.tab-btn{padding:10px 20px;border-radius:16px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:8px;transition:all .15s}
+.tab-btn.active{background:var(--brand-dark);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.tab-btn:not(.active){background:#fff;color:var(--muted);border:1px solid var(--border)}
+.tab-btn:not(.active):hover{background:var(--fill)}
+.tab-btn svg{width:16px;height:16px}
+
+/* balance card */
+.balance-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.03);margin-bottom:20px}
+.balance-label-row{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.eye-icon{color:var(--muted);transition:color .15s}
+.eye-icon:hover{color:var(--brand-dark)}
+.eye-icon svg{width:16px;height:16px}
+.balance-big{font-size:32px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em;margin-bottom:8px}
+@media(min-width:640px){.balance-big{font-size:36px}}
+.balance-desc{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:20px}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deposit-btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.deposit-btn:hover{background:var(--brand-hover)}
+.deposit-btn:active{transform:scale(.99)}
+.withdraw-btn{width:100%;padding:14px;background:var(--fill);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.withdraw-btn:hover{background:#e5e7eb}
+.withdraw-btn:active{transform:scale(.99)}
+.deposit-btn svg,.withdraw-btn svg{width:16px;height:16px;stroke-width:2.5}
+
+/* asset tabs */
+.asset-tab-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.asset-tabs{display:flex;gap:16px}
+.asset-tab{font-size:12px;font-weight:700;padding-bottom:4px;color:var(--muted);transition:color .15s;border-bottom:2px solid transparent}
+.asset-tab:hover{color:var(--brand-dark)}
+.asset-tab.active{color:var(--brand-dark);border-bottom-color:var(--brand-primary)}
+.hide-zero-label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted)}
+.hide-zero-label input{width:14px;height:14px;accent-color:var(--brand-primary);cursor:pointer}
+
+/* asset cards */
+.asset-list{display:flex;flex-direction:column;gap:10px}
+.asset-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.asset-card:hover{border-color:#d1d5db}
+.asset-left{display:flex;align-items:center;gap:12px;min-width:0}
+.asset-logo{width:40px;height:40px;flex-shrink:0}
+.asset-name{font-size:14px;font-weight:700;color:var(--brand-dark);display:block}
+.asset-price{font-size:12px;font-weight:600;color:var(--muted);margin-top:2px}
+.asset-right{text-align:right;flex-shrink:0;margin-left:12px}
+.asset-balance{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.asset-usd{font-size:12px;font-weight:600;color:var(--muted);margin-top:2px}
+.asset-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
+.asset-deposit{padding:6px 12px;font-size:11px;font-weight:700;background:var(--brand-primary);color:var(--brand-dark);border-radius:8px;transition:background .15s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.asset-deposit:hover{background:var(--brand-hover)}
+.asset-withdraw{padding:6px 12px;font-size:11px;font-weight:700;background:var(--fill);color:var(--brand-dark);border:1px solid var(--border);border-radius:8px;transition:background .15s}
+.asset-withdraw:hover{background:#e5e7eb}
+
+/* empty state */
+.empty-state{background:#fff;border:1px dashed var(--border);border-radius:16px;padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
+.empty-state svg{width:40px;height:40px;margin:0 auto 12px;opacity:.4}
+
+/* mobile nav */
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+@media(min-width:768px){.mobile-nav{display:none}}
+.mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mnav-item.active{color:var(--brand-dark);font-weight:700}
+.mnav-item:hover{color:var(--brand-dark)}
+.mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
+.mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
+.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
+@media(max-width:767px){.md-only{display:none}}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;border-radius:24px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
+.modal-title{font-size:20px;font-weight:900;color:var(--brand-dark);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+.modal-close{position:absolute;top:16px;right:16px;padding:6px;color:var(--muted);border-radius:8px;transition:all .15s}
+.modal-close:hover{background:var(--fill);color:var(--brand-dark)}
+.modal-close svg{width:20px;height:20px}
+.modal-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block}
+.modal-input{width:100%;padding:12px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:14px;font-weight:700;color:var(--brand-dark);margin-bottom:16px}
+.modal-input:focus{background:#fff;border-color:var(--brand-primary)}
+.modal-confirm{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:background .15s}
+.modal-confirm:hover{background:var(--brand-hover)}
+.modal-coin{display:flex;align-items:center;gap:10px;padding:12px;background:var(--fill);border-radius:12px;margin-bottom:16px}
+.modal-coin svg{width:32px;height:32px}
+.modal-coin-name{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.modal-coin-price{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <button class="menu-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <a href="index.html" class="logo-text">KRYPTO<span class="accent">S</span><span class="logo-sub">.exchange</span></a>
+    </div>
+    <nav class="nav-links md-only">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="p2p.html" class="nav-link">P2P</a>
+      <a href="trade.html" class="nav-link">Trade</a>
+      <a href="swap.html" class="nav-link">Swap</a>
+      <a href="wallet.html" class="nav-link active">Wallet</a>
+      <a href="#" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
+    </nav>
+    <div class="header-actions">
+      <div class="balance">
+        <span class="balance-val">$0.00</span>
+        <button class="balance-eye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <button class="avatar" aria-label="Profile">A</button>
+      <button class="notif-btn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <span class="notif-badge">2</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wallet-wrap">
+
+    <!-- TITLE -->
+    <div class="wallet-title-row">
+      <h1 class="wallet-title">My assets</h1>
+      <button class="refresh-btn" title="Refresh Ledger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></button>
+    </div>
+
+    <div class="wallet-grid">
+
+      <!-- LEFT: wallet cards -->
+      <div class="wallet-left">
+        <div class="tab-row">
+          <button class="tab-btn active">Wallet</button>
+          <button class="tab-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-primary)"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>Visa card</button>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-label-row">
+            <span>Wallet balance</span>
+            <button class="eye-icon" id="toggleBalance" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="balance-big" id="balanceDisplay">$0.00</div>
+          <p class="balance-desc">Available portfolio ready for trading &amp; withdrawal</p>
+          <div class="action-grid">
+            <button class="deposit-btn" onclick="openModal('deposit')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              Deposit
+            </button>
+            <button class="withdraw-btn" onclick="openModal('withdraw')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+              Withdraw
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: asset list -->
+      <div class="wallet-right">
+        <div class="asset-tab-row">
+          <div class="asset-tabs">
+            <button class="asset-tab active">Wallet assets</button>
+            <button class="asset-tab">Recent activity</button>
+            <button class="asset-tab">All operations</button>
+          </div>
+          <label class="hide-zero-label"><input type="checkbox" id="hideZero">Hide 0 balance</label>
+        </div>
+
+        <div class="asset-list" id="assetList"><!-- injected --></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Main Navigation">
+  <div class="mobile-nav-inner">
+    <a href="index.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
+    <a href="p2p.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></a>
+    <a href="trade.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></a>
+    <a href="swap.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></a>
+    <a href="wallet.html" class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></a>
+  </div>
+</nav>
+
+<script>
+/* ========== ASSET DATA ========== */
+const ASSETS = [
+  {sym:"BTC",  name:"Bitcoin",  price:"81,223.18", balance:0, svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3zm-4.5 6.1c-0.6 2.6-4.9 1.2-6.3 0.9l1.1-4.5c1.4 0.3 5.8 1 5.2 3.6zm0.6-6.2c-0.6 2.4-4.2 1.2-5.4 0.9l1-4.1c1.2 0.3 5 0.8 4.4 3.2z" fill="#fff"/></svg>'},
+  {sym:"USDT", name:"Tether USD", price:"1.00", balance:0, svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#fff"/></svg>'},
+  {sym:"ETH",  name:"Ethereum", price:"2,358.02", balance:0, svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><g fill="#fff" fill-opacity=".95"><path d="M16 4v8.9l7.5 3.4L16 4z" fill-opacity=".6"/><path d="M16 4L8.5 16.3l7.5-3.4V4z"/><path d="M16 21.9v6.1l7.5-10.4L16 21.9z" fill-opacity=".6"/><path d="M16 28v-6.1L8.5 17.6 16 28z"/><path d="M16 20.6l7.5-4.3L16 12.9v7.7z" fill-opacity=".2"/><path d="M8.5 16.3l7.5 4.3v-7.7l-7.5 3.4z" fill-opacity=".6"/></g></svg>'},
+  {sym:"SOL",  name:"Solana",   price:"102.36", balance:0, svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#141414"/><defs><linearGradient id="solGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00FFA3"/><stop offset="50%" stop-color="#DC1FFF"/><stop offset="100%" stop-color="#00E0FF"/></linearGradient></defs><path d="M7.5 21.8c0.2-0.2 0.4-0.3 0.7-0.3h14.1c0.4 0 0.8 0.4 0.6 0.8l-1.9 2.4c-0.2 0.2-0.4 0.3-0.7 0.3H6.2c-0.4 0-0.8-0.4-0.6-0.8l1.9-2.4z" fill="url(#solGrad)"/><path d="M7.5 7c0.2-0.2 0.4-0.3 0.7-0.3h14.1c0.4 0 0.8 0.4 0.6 0.8l-1.9 2.4c-0.2 0.2-0.4 0.3-0.7 0.3H6.2c-0.4 0-0.8-0.4-0.6-0.8L7.5 7z" fill="url(#solGrad)"/><path d="M22.5 14.4c-0.2-0.2-0.4-0.3-0.7-0.3H7.7c-0.4 0-0.8 0.4-0.6 0.8l1.9 2.4c0.2 0.2 0.4 0.3 0.7 0.3h14.1c0.4 0 0.8-0.4 0.6-0.8l-1.9-2.4z" fill="url(#solGrad)"/></svg>'},
+  {sym:"BNB",  name:"BNB",      price:"612.45", balance:0, svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 7.5l3.2 3.2-3.2 3.2-3.2-3.2L16 7.5zm5.5 5.5l3.2 3.2-3.2 3.2-3.2-3.2 3.2-3.2zM7.3 16.2l3.2-3.2 3.2 3.2-3.2 3.2-3.2-3.2zm8.7 8.7l3.2-3.2-3.2-3.2-3.2 3.2 3.2 3.2zm0-5.8l2.9-2.9-2.9-2.9-2.9 2.9 2.9 2.9z" fill="#fff"/></svg>'},
+];
+
+/* ========== RENDER ========== */
+function renderAssets(){
+  const list = document.getElementById('assetList');
+  const hideZero = document.getElementById('hideZero').checked;
+
+  const visible = hideZero ? ASSETS.filter(a => a.balance > 0) : ASSETS;
+
+  if(visible.length === 0){
+    list.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+      No assets with balance. Deposit crypto to get started.
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = visible.map(a=>`
+    <div class="asset-card">
+      <div class="asset-left">
+        ${a.svg}
+        <div>
+          <span class="asset-name">${a.name}</span>
+          <div class="asset-price">$${a.price}</div>
+        </div>
+      </div>
+      <div class="asset-right">
+        <div class="asset-balance">${a.balance}</div>
+        <div class="asset-usd">$${(a.balance * parseFloat(a.price.replace(/,/g,''))).toFixed(2)}</div>
+        <div class="asset-actions">
+          <button class="asset-deposit" onclick="openModal('deposit','${a.sym}')">Deposit</button>
+          <button class="asset-withdraw" onclick="openModal('withdraw','${a.sym}')">Withdraw</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ========== MODAL ========== */
+function openModal(type, symbol){
+  const backdrop = document.getElementById('modalBackdrop');
+  const content = document.getElementById('modalContent');
+  const asset = ASSETS.find(a => a.sym === symbol) || ASSETS[0];
+
+  if(type === 'deposit'){
+    content.innerHTML = `
+      <div class="modal-title">Deposit ${asset.sym}</div>
+      <div class="modal-sub">Send crypto to your wallet address below</div>
+      <div class="modal-coin">${asset.svg}<div><div class="modal-coin-name">${asset.name}</div><div class="modal-coin-price">1 ${asset.sym} = $${asset.price}</div></div></div>
+      <label class="modal-label">Your ${asset.sym} deposit address</label>
+      <input class="modal-input" readonly value="kx1q${Math.random().toString(36).substring(2,20)}${asset.sym.toLowerCase()}" onclick="this.select()" style="font-family:monospace;font-size:12px" />
+      <button class="modal-confirm" onclick="closeModal()">Copy Address &amp; Close</button>
+    `;
+  } else {
+    content.innerHTML = `
+      <div class="modal-title">Withdraw ${asset.sym}</div>
+      <div class="modal-sub">Send crypto to an external address</div>
+      <div class="modal-coin">${asset.svg}<div><div class="modal-coin-name">${asset.name}</div><div class="modal-coin-price">Available: ${asset.balance} ${asset.sym}</div></div></div>
+      <label class="modal-label">Destination address</label>
+      <input class="modal-input" placeholder="Enter wallet address" id="wdAddr" />
+      <label class="modal-label">Amount (${asset.sym})</label>
+      <input class="modal-input" type="number" step="any" placeholder="0.00" id="wdAmount" />
+      <button class="modal-confirm" onclick="submitWithdraw('${asset.sym}')">Confirm Withdrawal</button>
+    `;
+  }
+  backdrop.classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('show');
+}
+
+function submitWithdraw(sym){
+  const addr = document.getElementById('wdAddr').value;
+  const amt = document.getElementById('wdAmount').value;
+  if(!addr || !amt || parseFloat(amt) <= 0){
+    alert('Please enter a valid address and amount.');
+    return;
+  }
+  alert(`Withdrawal request submitted\n\n${amt} ${sym}\nTo: ${addr}\n\nProcessing...`);
+  closeModal();
+}
+
+/* ========== BALANCE TOGGLE ========== */
+let balanceHidden = false;
+document.getElementById('toggleBalance').addEventListener('click', ()=>{
+  balanceHidden = !balanceHidden;
+  document.getElementById('balanceDisplay').textContent = balanceHidden ? '****' : '$0.00';
+  document.querySelector('.balance-val').textContent = balanceHidden ? '****' : '$0.00';
+});
+
+/* ========== ASSET TABS ========== */
+document.querySelectorAll('.asset-tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.asset-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+/* ========== HIDE ZERO ========== */
+document.getElementById('hideZero').addEventListener('change', renderAssets);
+
+/* ========== REFRESH ========== */
+document.querySelector('.refresh-btn').addEventListener('click', ()=>{
+  const btn = document.querySelector('.refresh-btn svg');
+  btn.style.transition = 'transform .6s';
+  btn.style.transform = 'rotate(360deg)';
+  setTimeout(()=>{ btn.style.transition='none'; btn.style.transform='rotate(0)'; }, 650);
+  renderAssets();
+});
+
+/* ========== CLOSE MODAL ON BACKDROP ========== */
+document.getElementById('modalBackdrop').addEventListener('click', e=>{
+  if(e.target.id === 'modalBackdrop') closeModal();
+});
+
+/* ========== INIT ========== */
+renderAssets();
+</script>
+</body>
+</html>
