@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log In | KRYPTOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
+  --success:#0ECB81; --danger:#F6465D; --muted:#707A8A; --border:#EAECEF; --fill:#F5F5F5; --page:#FAFAFA;
+  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;min-height:100vh}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input{font-family:inherit;outline:none}
+svg{display:block;max-width:100%}
+
+/* page */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.login-card{background:#fff;border-radius:24px;max-width:440px;width:100%;padding:28px;box-shadow:0 25px 50px rgba(0,0,0,.08);border:1px solid #f3f4f6;margin:auto}
+.login-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid #f3f4f6}
+.login-title-wrap{display:flex;align-items:center;gap:12px}
+.login-logo{width:40px;height:40px;border-radius:12px;background:var(--brand-primary);color:var(--brand-dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.login-title{font-size:22px;font-weight:800;color:#030712;line-height:1.2;letter-spacing:-.02em}
+.login-sub{font-size:12px;color:#6b7280;font-weight:500;margin-top:2px}
+.back-link{font-size:12px;font-weight:700;color:#6b7280;transition:color .15s;display:flex;align-items:center;gap:4px}
+.back-link:hover{color:#111827}
+.back-link svg{width:14px;height:14px}
+
+/* form */
+.login-form{display:flex;flex-direction:column;gap:16px;font-size:12px}
+.label{display:block;font-weight:700;color:#374151;margin-bottom:5px;font-size:12px}
+.label .req{color:#ef4444}
+.input-wrap{position:relative}
+.input-icon{width:15px;height:15px;color:#9ca3af;position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none}
+.input{width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:11px 34px 11px 34px;font-size:13px;font-weight:600;color:#111827;transition:all .15s}
+.input:focus{background:#fff;border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(252,213,53,.25)}
+.input::placeholder{color:#9ca3af;font-weight:400}
+.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9ca3af;padding:2px}
+.eye-btn:hover{color:#4b5563}
+.eye-btn svg{width:15px;height:15px}
+
+/* row */
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.checkbox-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#374151;font-weight:500;cursor:pointer;user-select:none}
+.checkbox-row input{width:16px;height:16px;accent-color:var(--brand-primary);cursor:pointer}
+.forgot-link{font-size:12px;font-weight:700;color:#6b7280;transition:color .15s}
+.forgot-link:hover{color:#111827;text-decoration:underline}
+
+/* submit */
+.submit-btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:14px;border-radius:16px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06);margin-top:4px}
+.submit-btn:hover{background:var(--brand-hover)}
+.submit-btn:active{transform:scale(.99)}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed}
+
+/* divider */
+.divider{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin:4px 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:#f3f4f6}
+
+/* alt */
+.alt-btn{width:100%;padding:12px;background:#f9fafb;border:1px solid #e5e7eb;color:#111827;font-weight:700;font-size:13px;border-radius:14px;transition:all .15s;text-align:center;display:block;text-decoration:none}
+.alt-btn:hover{background:#f3f4f6}
+
+/* footer */
+.form-footer{text-align:center;font-size:12px;color:#6b7280;font-weight:500;padding-top:4px}
+.form-link{font-weight:800;color:var(--brand-dark)}
+.form-link:hover{color:#b45309;text-decoration:underline}
+
+/* message */
+.msg{margin-top:6px;padding:11px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center;line-height:1.5}
+.msg.show{display:block}
+.msg.success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+/* spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-title-wrap">
+        <div class="login-logo">K</div>
+        <div>
+          <h1 class="login-title">Log in to KRYPTOS</h1>
+          <p class="login-sub">Welcome back — enter your credentials</p>
+        </div>
+      </div>
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Back
+      </a>
+    </div>
+
+    <form class="login-form" id="loginForm" novalidate>
+      <div>
+        <label class="label">Email Address <span class="req">*</span></label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          <input type="email" class="input" id="email" placeholder="name@example.com" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" class="input" id="password" placeholder="••••••••" required autocomplete="current-password" />
+          <button type="button" class="eye-btn" data-target="password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <label class="checkbox-row">
+          <input type="checkbox" id="remember" />
+          <span>Remember me</span>
+        </label>
+        <button type="button" class="forgot-link" id="forgotBtn">Forgot password?</button>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
+
+      <div class="divider"><span>OR</span></div>
+
+      <a href="signup.html" class="alt-btn">Create a new account</a>
+
+      <div class="form-footer">
+        New to KRYPTOS? <a href="signup.html" class="form-link">Sign up</a>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showMsg(type, text){
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+function hideMsg(){
+  document.getElementById('msg').className = 'msg';
+}
+
+/* password toggle */
+document.querySelectorAll('.eye-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const inp = document.getElementById(btn.dataset.target);
+    if(inp){
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.style.color = inp.type === 'text' ? '#111827' : '';
+    }
+  });
+});
+
+/* submit */
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  hideMsg();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('submitBtn');
+
+  if(!email || !password){
+    showMsg('error', 'Please enter email and password.'); return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showMsg('error', 'Please enter a valid email address.'); return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Logging in...';
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if(error){
+      showMsg('error', error.message || 'Invalid email or password.');
+    } else {
+      showMsg('success', 'Logged in! Redirecting...');
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    }
+  } catch(err){
+    showMsg('error', 'Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Log In';
+  }
+});
+
+/* forgot password */
+document.getElementById('forgotBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showMsg('error', 'Enter your email above first, then click Forgot password.');
+    return;
+  }
+  hideMsg();
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/reset-password.html'
+    });
+    if(error){
+      showMsg('error', error.message || 'Could not send reset email.');
+    } else {
+      showMsg('success', 'Password reset link sent to ' + email + '. Check your inbox.');
+    }
+  } catch(err){
+    showMsg('error', 'Network error. Please try again.');
+  }
+});
+
+/* auto-redirect if already logged in */
+(async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if(session){
+    window.location.href = 'index.html';
+  }
+})();
+</script>
+</body>
+</html>
