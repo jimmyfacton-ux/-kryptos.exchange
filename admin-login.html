@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Login | KRYPTOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--brand-primary:#FCD535;--brand-hover:#F0B90B;--brand-dark:#181A20;--danger:#F6465D;--success:#0ECB81}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0 solid}
+html,body{height:100%;font-family:"Inter",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(circle at top,#1f2937 0%,#0a0a0a 60%);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:rgba(20,20,20,.95);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,.5)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.logo-icon{width:44px;height:44px;border-radius:12px;background:var(--brand-primary);color:var(--brand-dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
+.logo-title{font-size:20px;font-weight:800;color:#fff}
+.logo-sub{font-size:11px;color:#9ca3af;margin-top:2px;letter-spacing:.03em;text-transform:uppercase;font-weight:700}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;color:#fff}
+.sub{font-size:13px;color:#9ca3af;margin-bottom:24px}
+form{display:flex;flex-direction:column;gap:14px}
+label{display:block;font-size:12px;font-weight:700;color:#d1d5db;margin-bottom:6px}
+.input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;font-size:13px;color:#fff;font-weight:600;transition:all .15s}
+.input::placeholder{color:#6b7280}
+.input:focus{outline:none;background:rgba(255,255,255,.08);border-color:var(--brand-primary);box-shadow:0 0 0 3px rgba(252,213,53,.2)}
+.btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:14px;border-radius:12px;cursor:pointer;transition:all .15s;margin-top:6px}
+.btn:hover{background:var(--brand-hover)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.msg{margin-top:12px;padding:11px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center}
+.msg.show{display:block}
+.msg.error{background:rgba(246,70,93,.15);color:#fca5a5;border:1px solid rgba(246,70,93,.3)}
+.msg.success{background:rgba(14,203,129,.15);color:#6ee7b7;border:1px solid rgba(14,203,129,.3)}
+.lock{position:fixed;bottom:20px;left:0;right:0;text-align:center;font-size:11px;color:#4b5563}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon">K</div>
+    <div>
+      <div class="logo-title">KRYPTOS Admin</div>
+      <div class="logo-sub">Restricted Access</div>
+    </div>
+  </div>
+  <h1>Administrator Login</h1>
+  <p class="sub">Authorized personnel only. All activity is logged.</p>
+
+  <form id="form">
+    <div>
+      <label>Admin Email</label>
+      <input type="email" class="input" id="email" placeholder="admin@kryptos.exchange" required />
+    </div>
+    <div>
+      <label>Password</label>
+      <input type="password" class="input" id="password" placeholder="••••••••" required />
+    </div>
+    <button type="submit" class="btn" id="btn">Sign In</button>
+    <div class="msg" id="msg"></div>
+  </form>
+</div>
+<div class="lock">🔒 Admin portal — unauthorized access prohibited</div>
+
+<script>
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showMsg(type, txt){
+  const el = document.getElementById('msg');
+  el.className = 'msg show ' + type;
+  el.textContent = txt;
+}
+
+document.getElementById('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('btn');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Authenticating...';
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    if(error){ showMsg('error', error.message); return; }
+
+    // check is_admin
+    const { data: prof, error: pErr } = await sb.from('profiles').select('is_admin').eq('id', data.user.id).single();
+    if(pErr || !prof || !prof.is_admin){
+      await sb.auth.signOut();
+      showMsg('error', 'Access denied. You are not an administrator.');
+      return;
+    }
+
+    showMsg('success', 'Access granted. Loading admin panel...');
+    setTimeout(() => { window.location.href = 'admin-panel.html'; }, 800);
+
+  } catch(err){
+    showMsg('error', 'Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+});
+
+// auto-redirect if already admin
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(session){
+    const { data: prof } = await sb.from('profiles').select('is_admin').eq('id', session.user.id).single();
+    if(prof?.is_admin) window.location.href = 'admin-panel.html';
+  }
+})();
+</script>
+</body>
+</html>
