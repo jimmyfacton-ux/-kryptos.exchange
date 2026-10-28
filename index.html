@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KRYPTOS | Crypto & P2P Exchange</title>
+<meta name="description" content="Trade Bitcoin, Tether (TRC20), Ethereum, and Solana with 500+ local payment methods. Zero hidden fees and instant settlement." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
+  --success:#0ECB81; --success-hover:#0BA86C; --danger:#F6465D;
+  --muted:#707A8A; --fill:#F5F5F5; --border:#EAECEF; --page:#FAFAFA;
+  --orange:#FF6838;
+  --font-sans:"Inter","Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --radius-xl:12px; --radius-2xl:16px; --radius-3xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
+::-webkit-scrollbar-track{background:transparent}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+a{color:inherit;text-decoration:none}
+input,select{font-family:inherit}
+img,svg{display:block;max-width:100%}
+select{appearance:none;-webkit-appearance:none;background:transparent;border:none;outline:none;cursor:pointer}
+
+/* layout helpers */
+.container{max-width:1280px;margin:0 auto;padding:0 16px}
+@media(min-width:768px){.container{padding:0 24px}}
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.flex-col{flex-direction:column}.flex-1{flex:1}.shrink-0{flex-shrink:0}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-2-5{gap:10px}.gap-3{gap:12px}.gap-3-5{gap:14px}.gap-4{gap:16px}.gap-6{gap:24px}
+.grid{display:grid}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:767px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+.w-full{width:100%}.text-center{text-align:center}.text-right{text-align:right}
+.hidden{display:none}
+@media(min-width:768px){.md\:flex{display:flex}.md\:block{display:block}.md\:hidden{display:none}}
+@media(max-width:767px){.md-only-flex{display:none}}
+.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}.text-4xl{font-size:36px}.text-5xl{font-size:48px}
+.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
+.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.02em}
+.text-muted{color:var(--muted)}
+.bg-white{background:#fff}.bg-page{background:var(--page)}.bg-fill{background:var(--fill)}
+.border{border:1px solid var(--border)}
+.rounded-xl{border-radius:var(--radius-xl)}.rounded-2xl{border-radius:var(--radius-2xl)}.rounded-3xl{border-radius:var(--radius-3xl)}.rounded-full{border-radius:9999px}
+.rounded-lg{border-radius:8px}
+.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}.shadow-sm{box-shadow:0 1px 3px rgba(0,0,0,.06)}.shadow-md{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.transition{transition:all .18s ease}
+.pointer{cursor:pointer}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.header-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+@media(max-width:640px){.header-inner{height:56px}}
+.brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.menu-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
+.menu-btn:hover{background:var(--fill)}
+.menu-btn svg{width:22px;height:22px;stroke-width:2.4}
+.logo-text{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:2px}
+.logo-text .accent{color:var(--brand-hover)}
+.logo-sub{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-left:2px}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:24px}
+.nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
+.nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
+.nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
+.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px;letter-spacing:.04em}
+.header-actions{display:flex;align-items:center;gap:8px}
+.btn-yellow{padding:8px 16px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:all .15s}
+.btn-yellow:hover{background:var(--brand-hover)}
+.btn-yellow:active{transform:scale(.99)}
+.btn-ghost{padding:8px 14px;color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:color .15s}
+.btn-ghost:hover{color:#000}
+
+/* hero */
+.hero-wrap{padding-top:16px;padding-bottom:16px}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:flex-start}
+@media(min-width:1280px){.hero-grid{grid-template-columns:7fr 5fr;gap:32px}}
+.hero-left{display:flex;flex-direction:column;gap:16px}
+.hero-title{font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-.02em;text-align:center}
+@media(min-width:640px){.hero-title{font-size:40px}}
+@media(min-width:1280px){.hero-title{font-size:48px;text-align:left}}
+.hero-sub{font-size:14px;color:var(--muted);font-weight:500;line-height:1.6;text-align:center;max-width:560px;margin:0 auto}
+@media(min-width:1280px){.hero-sub{text-align:left;margin:0}}
+
+/* ticker */
+.ticker{position:relative;width:100%;overflow:hidden;border-radius:16px;background:#fff;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:24px;z-index:10;pointer-events:none}
+.ticker::before{left:0;background:linear-gradient(to right,#fff,transparent)}
+.ticker::after{right:0;background:linear-gradient(to left,#fff,transparent)}
+.ticker-track{display:flex;align-items:center;gap:24px;padding:10px 0;width:max-content;animation:scroll 30s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{display:flex;align-items:center;gap:10px;padding:0 12px;flex-shrink:0}
+.ticker-icon{width:20px;height:20px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ticker-icon svg{width:16px;height:16px}
+.ticker-name{font-size:12px;font-weight:600;color:#6b7280;line-height:1.2}
+.ticker-price-row{display:flex;align-items:center;gap:6px;line-height:1.2;margin-top:2px}
+.ticker-price{font-size:12px;font-weight:800;color:#111827;letter-spacing:-.02em}
+.ticker-change{font-size:11px;font-weight:700;color:var(--success)}
+.ticker-change.down{color:var(--danger)}
+
+/* security cards */
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.feature-card{display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.feature-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feature-icon svg{width:18px;height:18px;stroke-width:2}
+.fi-green{background:rgba(14,203,129,.1);color:var(--success)}
+.fi-dark{background:rgba(24,26,32,.05);color:var(--brand-dark)}
+.fi-yellow{background:rgba(252,213,53,.2);color:var(--brand-dark)}
+.fi-purple{background:#faf5ff;color:#9333ea}
+.feature-title{font-size:13px;font-weight:700;color:var(--brand-dark);line-height:1.3}
+.feature-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5}
+
+/* P2P widget */
+.widget-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:6px;margin-bottom:16px}
+.tab{flex:1;padding:10px;text-align:center;font-weight:700;font-size:14px;border-radius:12px;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab.active{background:var(--brand-dark);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.tab:hover:not(.active){color:var(--brand-dark)}
+.tab .hot{background:var(--brand-primary);color:var(--brand-dark);font-size:9px;font-weight:700;padding:2px 6px;border-radius:9999px;text-transform:uppercase}
+.widget-desc{font-size:14px;color:var(--muted);font-weight:500;line-height:1.6;margin-bottom:20px}
+.field-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.selector{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--fill);border:1px solid var(--border);border-radius:16px;transition:background .15s;gap:12px}
+.selector:hover{background:rgba(234,236,239,.6)}
+.selector-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.selector svg.coin{width:28px;height:28px;flex-shrink:0}
+.selector select{background:transparent;font-weight:700;color:var(--brand-dark);font-size:16px;width:100%;cursor:pointer}
+.selector small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
+.swap-wrap{position:relative;margin:16px 0}
+.swap-btn{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);width:32px;height:32px;background:var(--brand-primary);border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.12);border:2px solid #fff;z-index:10;transition:all .15s}
+.swap-btn:hover{background:var(--brand-hover)}
+.swap-btn:active{transform:translateX(-50%) scale(.95)}
+.swap-btn svg{width:16px;height:16px;stroke-width:2.5}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:16px;border-top:1px solid var(--border);margin-top:8px}
+.quick-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:10px}
+.quick-btn{display:flex;align-items:center;justify-content:space-between;padding:12px;background:#fff;border:1px solid var(--border);border-radius:16px;transition:all .15s;gap:8px}
+.quick-btn:hover{transform:translateY(-1px)}
+.quick-btn.buy{border-color:rgba(14,203,129,.3)}
+.quick-btn.buy:hover{background:rgba(14,203,129,.05)}
+.quick-btn.sell{border-color:rgba(246,70,93,.3)}
+.quick-btn.sell:hover{background:rgba(246,70,93,.05)}
+.quick-btn .qa-left{display:flex;align-items:center;gap:10px;text-align:left}
+.quick-btn svg.coin{width:24px;height:24px}
+.quick-btn .qa-ticker{font-weight:700;font-size:12px}
+.qa-buy{color:var(--success)}.qa-sell{color:var(--danger)}
+.quick-btn small{display:block;font-size:10px;color:var(--muted)}
+.quick-btn .arrow{width:16px;height:16px}
+.btn-primary-lg{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:all .15s}
+.btn-primary-lg:hover{background:var(--brand-hover)}
+.btn-primary-lg svg{width:16px;height:16px}
+
+/* markets table */
+.section-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative}
+.section-title{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--brand-dark)}
+.section-sub{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.5}
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:16px 0}
+.filter-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pill{padding:8px 14px;border-radius:9999px;font-size:13px;font-weight:600;background:var(--fill);color:var(--muted);border:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:6px;cursor:pointer}
+.pill:hover{background:#e5e7eb;color:var(--brand-dark)}
+.pill.active{background:var(--brand-primary);color:var(--brand-dark);border-color:var(--brand-primary);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.pill.active:hover{background:var(--brand-hover)}
+.pill.green{background:#fff;color:var(--brand-dark);border-color:var(--border)}
+.pill.green:hover{background:rgba(14,203,129,.05);border-color:rgba(14,203,129,.4)}
+.pill .badge-green{background:rgba(14,203,129,.15);color:var(--success);font-size:10px;font-weight:700;padding:2px 6px;border-radius:9999px}
+.pill.yellow-border{border-color:var(--brand-primary);background:rgba(252,213,53,.15);color:var(--brand-dark);font-weight:700}
+.pill svg{width:14px;height:14px}
+.table-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.select-wrap,.search-wrap{position:relative;display:flex;align-items:center}
+.select-wrap select{padding:10px 36px 10px 14px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:600;color:var(--brand-dark);cursor:pointer;transition:all .15s}
+.select-wrap select:hover{background:rgba(234,236,239,.8)}
+.select-wrap svg{position:absolute;right:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
+.search-wrap input{width:220px;padding:10px 12px 10px 34px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:500;color:var(--brand-dark);outline:none;transition:all .15s}
+.search-wrap input::placeholder{color:var(--muted)}
+.search-wrap input:hover{background:rgba(234,236,239,.6)}
+.search-wrap input:focus{background:#fff;border-color:var(--brand-primary)}
+.search-wrap svg{position:absolute;left:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
+@media(max-width:640px){.search-wrap input{width:100%}.table-controls{width:100%}.search-wrap{flex:1}}
+.market-table{width:100%;border-collapse:collapse;text-align:left}
+.market-table th{padding:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.market-table th.text-right{text-align:right}.market-table th.text-center{text-align:center}
+.market-table td{padding:14px 12px;border-bottom:1px solid #F0F2F5}
+.market-table tbody tr{transition:background .15s;cursor:pointer}
+.market-table tbody tr:hover{background:#F9FAFB}
+.market-table td:last-child{border-bottom:none}
+.asset-cell{display:flex;align-items:center;gap:12px}
+.coin-logo{width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.coin-logo svg{width:26px;height:26px}
+.coin-symbol{font-size:15px;font-weight:700;color:var(--brand-dark);display:flex;align-items:center;gap:6px;transition:color .15s}
+tr:hover .coin-symbol{color:var(--brand-hover)}
+.mcap-badge{background:rgba(252,213,53,.2);border:1px solid rgba(252,213,53,.4);color:var(--brand-dark);font-size:9px;font-weight:900;padding:1px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.coin-name{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px}
+.vol-cell .val{font-weight:700;font-size:13px;color:var(--brand-dark);white-space:nowrap}
+.vol-cell .sub{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap}
+.spark{width:90px;height:26px}
+.price-cell .price{font-size:15px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em}
+.price-cell .usd{font-size:12px;color:var(--muted);margin-top:2px}
+.change-badge{display:inline-block;width:80px;padding:6px 8px;text-align:center;border-radius:8px;font-weight:700;font-size:13px;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.change-badge.up{background:var(--success)}
+.change-badge.down{background:var(--danger)}
+.trade-btn{display:inline-flex;align-items:center;gap:4px;padding:8px 14px;background:var(--brand-primary);color:var(--brand-dark);font-size:12px;font-weight:700;border-radius:8px;transition:background .15s;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.trade-btn:hover{background:var(--brand-hover)}
+.trade-btn svg{width:12px;height:12px}
+.table-footer{display:flex;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:8px}
+.table-footer button{padding:10px 20px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:700;color:var(--brand-dark);display:inline-flex;align-items:center;gap:6px;transition:background .15s}
+.table-footer button:hover{background:#e5e7eb}
+.table-footer svg{width:16px;height:16px;color:var(--muted)}
+.table-link{display:flex;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border);margin-top:14px;font-size:11px;color:var(--muted)}
+.table-link button{color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px;transition:color .15s}
+.table-link button:hover{color:var(--brand-hover)}
+.table-link svg{width:12px;height:12px}
+/* mobile asset list */
+.mobile-market{display:none}
+@media(max-width:767px){.market-table{display:none}.mobile-market{display:block}}
+.mobile-market-row{display:flex;align-items:center;justify-content:space-between;padding:14px 10px;border-bottom:1px solid #F0F2F5;cursor:pointer;transition:background .15s;gap:8px}
+.mobile-market-row:hover{background:#F9FAFB}
+.mobile-market-row:last-child{border-bottom:none}
+.mobile-asset{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.mobile-asset .coin-logo{width:36px;height:36px}
+.mobile-asset .coin-logo svg{width:23px;height:23px}
+.mobile-price{text-align:right;flex-shrink:0}
+.mobile-price .price{font-size:13px;font-weight:700;color:var(--brand-dark)}
+.mobile-price .usd{font-size:10px;color:var(--muted);margin-top:2px}
+.mobile-change{width:64px;padding:6px;text-align:center;border-radius:8px;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
+.mobile-change.up{background:var(--success)}
+.mobile-change.down{background:var(--danger)}
+
+/* metrics band */
+.metrics-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative;overflow:hidden}
+.metrics-card::before,.metrics-card::after{content:"";position:absolute;width:112px;height:112px;border-radius:9999px;filter:blur(24px);pointer-events:none}
+.metrics-card::before{top:-40px;left:-40px;background:rgba(14,203,129,.05)}
+.metrics-card::after{bottom:-40px;right:-40px;background:rgba(252,213,53,.1)}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;text-align:center;position:relative}
+@media(min-width:768px){.metrics-grid{grid-template-columns:repeat(4,1fr);gap:32px}}
+.metric{display:flex;flex-direction:column;align-items:center}
+.metric-label{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.metric-value{font-size:32px;font-weight:800;color:var(--brand-dark);letter-spacing:-.03em}
+.metric-value.orange{color:var(--orange)}
+
+/* partner banner */
+.partner-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center}
+.partner-card::before{content:"";position:absolute;top:25%;left:50%;transform:translateX(-50%);width:384px;height:384px;background:rgba(14,203,129,.1);border-radius:9999px;filter:blur(64px);pointer-events:none}
+.partner-big{font-size:64px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(to bottom,#25E096,#0ECB81,#0A8754);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;position:relative;filter:drop-shadow(0 8px 16px rgba(14,203,129,.35))}
+@media(min-width:640px){.partner-big{font-size:80px}}
+.partner-big span{color:#34D399;-webkit-text-fill-color:#34D399}
+.partner-amount{font-size:40px;font-weight:900;color:var(--success);letter-spacing:-.03em;margin-top:8px;position:relative}
+@media(min-width:640px){.partner-amount{font-size:48px}}
+.partner-label{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-dark);margin-top:6px}
+.partner-sub{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-top:6px;padding-bottom:16px;border-bottom:1px solid rgba(14,203,129,.2);max-width:280px;margin-left:auto;margin-right:auto}
+.partner-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:16px;max-width:440px;line-height:1.6}
+.partner-desc strong{color:var(--brand-dark)}
+.btn-green-lg{margin-top:24px;padding:14px 40px;background:var(--success);color:#fff;font-weight:800;font-size:14px;border-radius:9999px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(14,203,129,.2);transition:all .15s;position:relative}
+.btn-green-lg:hover{background:var(--success-hover);box-shadow:0 6px 16px rgba(14,203,129,.3)}
+.btn-green-lg:active{transform:scale(.95)}
+.btn-green-lg svg{width:16px;height:16px;stroke-width:2.5}
+
+/* products */
+.product-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.product-grid{grid-template-columns:repeat(4,1fr)}}
+.product-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+.product-card:hover{border-color:var(--success);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.product-card.wide{grid-column:span 1}
+@media(min-width:1024px){.product-card.wide{grid-column:span 2}}
+.product-top{display:flex;align-items:center;justify-content:space-between}
+.product-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid;transition:transform .15s}
+.product-card:hover .product-icon{transform:scale(1.05)}
+.product-icon svg{width:20px;height:20px}
+.pi-green{background:#ecfdf5;color:var(--success);border-color:#d1fae5}
+.pi-orange{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
+.pi-blue{background:#eff6ff;color:#2563eb;border-color:#dbeafe}
+.pi-amber{background:#fffbeb;color:#b45309;border-color:#fde68a}
+.pi-sky{background:#f0f9ff;color:#0284c7;border-color:#e0f2fe}
+.pi-emerald{background:#ecfdf5;color:#059669;border-color:#d1fae5}
+.product-badge{font-size:10px;font-weight:900;padding:2px 8px;border-radius:9999px;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+.bg-orange{background:var(--orange)}.bg-amber{background:#F59E0B}
+.product-title{font-size:16px;font-weight:800;color:var(--brand-dark);margin-top:16px;transition:color .15s}
+.product-card:hover .product-title{color:var(--success)}
+.product-desc{font-size:12px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.6}
+.product-hover{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--success);opacity:0;margin-top:16px;transition:opacity .2s}
+.product-card:hover .product-hover{opacity:1}
+.product-hover svg{width:14px;height:14px}
+
+/* why cards */
+.why-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:768px){.why-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
+.why-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:box-shadow .2s}
+.why-card:hover{box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.why-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid}
+.why-icon svg{width:28px;height:28px;stroke-width:2}
+.wi-purple{background:linear-gradient(to bottom right,rgba(99,102,241,.1),rgba(168,85,247,.1),rgba(236,72,153,.1));border-color:#e0e7ff;color:#4f46e5}
+.wi-cyan{background:linear-gradient(to bottom right,rgba(6,182,212,.1),rgba(59,130,246,.1));border-color:#cffafe;color:#0891b2}
+.wi-emerald{background:#ecfdf5;border-color:#d1fae5;color:var(--success)}
+.why-title{font-size:18px;font-weight:800;color:var(--brand-dark)}
+.why-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px;line-height:1.6}
+
+/* help */
+.help-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:24px}
+@media(min-width:640px){.help-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
+.help-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;justify-content:space-between}
+.help-title{font-size:18px;font-weight:800;color:var(--brand-dark)}
+.help-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px;line-height:1.6}
+.help-link{margin-top:20px;color:var(--success);font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:4px;align-self:flex-start;transition:color .15s}
+.help-link:hover{color:var(--success-hover)}
+.help-link svg{width:14px;height:14px}
+.dl-label{font-size:12px;font-weight:700;color:var(--brand-dark);margin-bottom:10px}
+.dl-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:56px}
+@media(min-width:640px){.dl-grid{grid-template-columns:repeat(2,1fr)}}
+.dl-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.dl-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid}
+.dl-icon svg{width:20px;height:20px;stroke-width:2}
+.dl-title{font-size:13px;font-weight:800;color:var(--brand-dark)}
+.dl-sub{font-size:11px;color:var(--muted);font-weight:500}
+
+/* FAQ */
+.faq-list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:all .15s}
+.faq-q{width:100%;padding:18px 20px;text-align:left;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s}
+.faq-q:hover{background:rgba(249,250,251,.5)}
+.faq-q span.fq{font-weight:700;font-size:14px;color:var(--brand-dark);padding-right:16px}
+.faq-icon{width:24px;height:24px;border-radius:9999px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;color:#6b7280;flex-shrink:0;transition:transform .2s}
+.faq-icon svg{width:14px;height:14px;stroke-width:2.5}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 20px}
+.faq-a-inner{padding-bottom:18px;font-size:13px;color:var(--muted);line-height:1.6}
+.faq-item.open .faq-a{max-height:300px}
+
+/* footer */
+.footer{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.escrow-banner{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;flex-direction:column;gap:16px;justify-content:space-between;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.escrow-banner{flex-direction:row;align-items:center}}
+.escrow-left{display:flex;align-items:center;gap:14px}
+.escrow-icon{width:44px;height:44px;border-radius:12px;background:#ecfdf5;color:var(--success);display:flex;align-items:center;justify-content:center;border:1px solid #d1fae5;flex-shrink:0}
+.escrow-icon svg{width:24px;height:24px}
+.escrow-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.escrow-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
+.escrow-badge{padding:2px 10px;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;border-radius:9999px}
+.escrow-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6;max-width:640px}
+.btn-dark{padding:10px 20px;background:var(--brand-dark);color:#fff;font-size:12px;font-weight:700;border-radius:12px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.btn-dark:hover{background:#000}
+.btn-dark svg{width:14px;height:14px}
+.quicklinks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
+@media(min-width:768px){.quicklinks{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.quicklinks{grid-template-columns:repeat(5,1fr)}}
+.ql{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:left;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.ql:hover{background:#f9fafb;border-color:var(--brand-primary)}
+.ql-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ql-title{font-size:12px;font-weight:700;color:var(--brand-dark);transition:color .15s}
+.ql:hover .ql-title{color:var(--brand-hover)}
+.ql-badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:700}
+.ql-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
+.ql-badge.gray{background:#f3f4f6;color:#6b7280}
+.ql-badge.green{background:#ecfdf5;color:var(--success);border:1px solid #a7f3d0}
+.ql-badge.blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.ql-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.footer-bottom{display:flex;flex-direction:column;gap:16px;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
+@media(min-width:768px){.footer-bottom{flex-direction:row;align-items:center}}
+.footer-brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.footer-logo{width:20px;height:20px;background:var(--brand-primary);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--brand-dark);font-weight:800;font-size:10px}
+.footer-brand .fb-name{font-weight:700;color:var(--brand-dark)}
+.footer-links{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.footer-links button{transition:color .15s;font-weight:500}
+.footer-links button:hover{color:var(--brand-dark)}
+.footer-links .hiring{color:#047857;font-weight:700;display:flex;align-items:center;gap:4px}
+.footer-links .hiring .badge{background:#d1fae5;color:#065f46;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px}
+
+/* floating back to top */
+.to-top{position:fixed;bottom:96px;right:20px;z-index:30;width:44px;height:44px;border-radius:9999px;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .15s;opacity:0;pointer-events:none;transform:translateY(8px)}
+.to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top:hover{background:var(--success-hover)}
+.to-top:active{transform:scale(.9)}
+.to-top svg{width:20px;height:20px;stroke-width:2.5}
+@media(min-width:768px){.to-top{bottom:24px}}
+
+/* mobile bottom nav */
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+@media(min-width:768px){.mobile-nav{display:none}}
+.mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mnav-item.active{color:var(--brand-dark);font-weight:700}
+.mnav-item:hover{color:var(--brand-dark)}
+.mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
+.mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
+.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
+.mnav-lock{position:absolute;top:-2px;right:calc(50% - 16px);width:10px;height:10px;color:var(--muted)}
+
+/* section spacing */
+.section-stack{display:flex;flex-direction:column;gap:64px;margin-top:48px;position:relative}
+.section-heading-center{text-align:center;margin-bottom:32px}
+.section-heading-center h2{font-size:28px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.section-heading-center h2{font-size:32px}}
+.section-heading-center p{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px;max-width:512px;margin-left:auto;margin-right:auto}
+.pb-safe{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+@media(min-width:768px){.pb-safe{padding-bottom:0}}
+
+/* main padding */
+main{padding-top:8px}
+@media(min-width:768px){main{padding-top:16px}}
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <button class="menu-btn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+        <span class="hidden-mob" style="font-size:12px;color:var(--muted)">More</span>
+      </button>
+      <a href="#" class="logo-text" title="KRYPTOS Home">
+        KRYPTO<span class="accent">S</span><span class="logo-sub">.exchange</span>
+      </a>
+    </div>
+
+    <nav class="nav-links md-only-flex">
+      <button class="nav-link active">Home</button>
+      <button class="nav-link">P2P</button>
+      <button class="nav-link">Trade</button>
+      <button class="nav-link">Swap</button>
+      <button class="nav-link">Wallet</button>
+      <button class="nav-link">Careers <span class="nav-badge">HIRING</span></button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-yellow">Join us</button>
+      <button class="btn-ghost">Log in</button>
+    </div>
+  </div>
+</header>
+
+<main class="pb-safe">
+  <div class="container hero-wrap">
+    <div class="hero-grid">
+
+      <!-- LEFT: hero + ticker + security -->
+      <div class="hero-left">
+        <h1 class="hero-title">Buy, Sell, Swap &amp; Cash Out Crypto</h1>
+        <p class="hero-sub">Trade Bitcoin, Tether (TRC20), Ethereum, and Solana with 500+ local payment methods, bank transfers, and verified escrow. Zero hidden fees and instant settlement.</p>
+
+        <!-- TICKER -->
+        <div class="ticker">
+          <div class="ticker-track" id="tickerTrack">
+            <!-- items injected by JS -->
+          </div>
+        </div>
+
+        <!-- SECURITY FEATURES (desktop XL) -->
+        <div style="display:none" class="md-only-flex" id="securityDesktop">
+          <div style="width:100%">
+            <div class="text-xs font-bold" style="text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px">Platform Security &amp; Market Advantage</div>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <div class="feature-icon fi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+                <div><div class="feature-title">Protected Escrow Settlement</div><div class="feature-desc">Seller's crypto is locked in escrow before trade starts. Release only after verified payment.</div></div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon fi-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                <div><div class="feature-title">Audited Multi-Network Architecture</div><div class="feature-desc">Zero fabricated balances. Immutable append-only ledger protects every satoshi and dollar.</div></div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon fi-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+                <div><div class="feature-title">500+ Payment Gateways</div><div class="feature-desc">M-PESA Safaricom, Bank Transfer, Revolut, SEPA Instant, and UPI with instant payouts.</div></div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon fi-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></svg></div>
+                <div><div class="feature-title">0% Maker Trading Fees</div><div class="feature-desc">Post your own ads for free or trade with top-rated merchants at 99.8%+ completion.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: P2P widget -->
+      <div class="hero-right">
+        <div class="tabs">
+          <button class="tab active" data-tab="p2p">P2P Trading <span class="hot">HOT</span></button>
+          <button class="tab" data-tab="swap">Swap</button>
+          <button class="tab" data-tab="trade">Trade</button>
+        </div>
+
+        <div class="widget-card">
+          <p class="widget-desc">Trade crypto peer-to-peer with 500+ local payment methods, bank transfers, and verified escrow.</p>
+
+          <div class="field-label">I want to buy</div>
+          <div class="selector">
+            <div class="selector-left">
+              <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
+              <div style="flex:1;min-width:0">
+                <select aria-label="Select crypto">
+                  <option>All crypto (USDT &amp; BTC)</option>
+                  <option>Tether USD (TRC20 USDT)</option>
+                  <option>Bitcoin (BTC)</option>
+                </select>
+                <small>Verified BTC &amp; TRC20 USDT available</small>
+              </div>
+            </div>
+            <svg style="width:16px;height:16px;color:var(--muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+          </div>
+
+          <div class="swap-wrap">
+            <div class="selector">
+              <div class="selector-left">
+                <div style="width:28px;height:28px;border-radius:9999px;background:rgba(24,26,32,.05);display:flex;align-items:center;justify-content:center;color:var(--brand-dark);flex-shrink:0">
+                  <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <select aria-label="Payment method">
+                    <option>M-PESA Safaricom</option>
+                    <option>Bank Transfer</option>
+                    <option>Revolut</option>
+                    <option>SEPA Instant</option>
+                    <option>UPI Transfer</option>
+                    <option>PayPal</option>
+                    <option>Wise</option>
+                    <option>Zelle</option>
+                  </select>
+                  <small>Local banking &amp; mobile money enabled</small>
+                </div>
+              </div>
+              <svg style="width:16px;height:16px;color:var(--muted);margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+            </div>
+            <button class="swap-btn" title="Switch Buy / Sell">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+            </button>
+          </div>
+
+          <div style="margin-top:28px">
+            <div class="quick-label">Quick P2P Action Triggers</div>
+            <div class="quick-actions">
+              <button class="quick-btn buy">
+                <div class="qa-left">
+                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
+                  <div><div class="qa-ticker qa-buy">BUY USDT</div><small>TRON TRC20</small></div>
+                </div>
+                <svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <button class="quick-btn sell">
+                <div class="qa-left">
+                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
+                  <div><div class="qa-ticker qa-sell">SELL USDT</div><small>TRON TRC20</small></div>
+                </div>
+                <svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <button class="quick-btn buy">
+                <div class="qa-left">
+                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3zm-4.5 6.1c-0.6 2.6-4.9 1.2-6.3 0.9l1.1-4.5c1.4 0.3 5.8 1 5.2 3.6zm0.6-6.2c-0.6 2.4-4.2 1.2-5.4 0.9l1-4.1c1.2 0.3 5 0.8 4.4 3.2z" fill="#FFF"/></svg>
+                  <div><div class="qa-ticker qa-buy">BUY BTC</div><small>Bitcoin</small></div>
+                </div>
+                <svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <button class="quick-btn sell">
+                <div class="qa-left">
+                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3zm-4.5 6.1c-0.6 2.6-4.9 1.2-6.3 0.9l1.1-4.5c1.4 0.3 5.8 1 5.2 3.6zm0.6-6.2c-0.6 2.4-4.2 1.2-5.4 0.9l1-4.1c1.2 0.3 5 0.8 4.4 3.2z" fill="#FFF"/></svg>
+                  <div><div class="qa-ticker qa-sell">SELL BTC</div><small>Instant Cashout</small></div>
+                </div>
+                <svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-primary-lg">
+            <span>Explore P2P Marketplace</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== MAIN CONTENT STACK ========== -->
+  <div class="container">
+    <div class="section-stack">
+
+      <!-- MARKETS TABLE -->
+      <section class="section-card">
+        <h2 class="section-title">Top Assets by Market Cap</h2>
+        <p class="section-sub">Real-time prices, 1-hour, 24-hour, and 7-day trend changes. Ranked from largest market capitalization starting with Bitcoin (BTC).</p>
+
+        <div class="filter-bar">
+          <div class="filter-pills">
+            <button class="pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/></svg>Crypto Spot (150)</button>
+            <button class="pill green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--success)"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>P2P <span class="badge-green">0% Fee</span></button>
+            <button class="pill">All Assets</button>
+            <button class="pill yellow-border"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Deposit assets</button>
+          </div>
+
+          <div class="table-controls">
+            <div class="select-wrap">
+              <select aria-label="Sort">
+                <option>Sort: Market Cap</option>
+                <option>Sort: Top Gainers (24h)</option>
+                <option>Sort: Top Losers (24h)</option>
+                <option>Sort: 7d Trend (%)</option>
+                <option>Sort: Highest Price</option>
+                <option>Sort: Lowest Price</option>
+                <option>Sort: 24h Volume</option>
+              </select>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+              <input type="text" placeholder="Search coin..." id="coinSearch"/>
+            </div>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="market-table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th class="text-right">24h Volume / Cap</th>
+                <th class="text-center">7d Chart</th>
+                <th class="text-right">Price (USD)</th>
+                <th class="text-center">24h Change</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="marketBody"><!-- injected --></tbody>
+          </table>
+        </div>
+
+        <div class="mobile-market">
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">
+            <span>Asset</span><div style="display:flex;gap:24px;padding-right:4px"><span>Price</span><span style="width:64px;text-align:center">24h</span></div>
+          </div>
+          <div id="mobileMarketBody"><!-- injected --></div>
+        </div>
+
+        <div class="table-footer">
+          <button>Show More (25 of 150 displayed) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+        <div class="table-link">
+          <button>Trade via P2P Escrow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+      </section>
+
+      <!-- METRICS -->
+      <section>
+        <div class="metrics-card">
+          <div class="metrics-grid">
+            <div class="metric"><span class="metric-label">Users trust us</span><span class="metric-value orange">1,677,890</span></div>
+            <div class="metric"><span class="metric-label">Average trade time</span><span class="metric-value">5min</span></div>
+            <div class="metric"><span class="metric-label">Countries supported</span><span class="metric-value">153</span></div>
+            <div class="metric"><span class="metric-label">Payment methods</span><span class="metric-value">345</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARTNER -->
+      <section>
+        <div class="partner-card">
+          <div class="partner-big">50K<span>+</span></div>
+          <div class="partner-amount">$50,000+</div>
+          <div class="partner-label">Top Traders' Commissions &amp; Bonuses This Year</div>
+          <div class="partner-sub">From Our Partner Program</div>
+          <p class="partner-desc">Other crypto companies have affiliates. <strong>KRYPTOS</strong> has partners.</p>
+          <button class="btn-green-lg">Join program <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section>
+        <div class="section-heading-center">
+          <h2>Our products</h2>
+          <p>Discover our full range of tools designed to make crypto easy and accessible</p>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <span class="product-badge bg-orange">HOT</span>
+              </div>
+              <div class="product-title">P2P</div>
+              <p class="product-desc">Trade crypto directly with verified peers worldwide with zero fees and escrow protection</p>
+            </div>
+            <div class="product-hover"><span>Trade P2P</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+
+          <div class="product-card">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg></div>
+              </div>
+              <div class="product-title">Gift card store</div>
+              <p class="product-desc">Use crypto to buy instant gift cards for global brands</p>
+            </div>
+            <div class="product-hover"><span>Browse store</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+
+          <div class="product-card">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg></div>
+                <span class="product-badge bg-amber">BEST RATE</span>
+              </div>
+              <div class="product-title">Swap</div>
+              <p class="product-desc">Exchange your crypto instantly with fast, low-fee swaps</p>
+            </div>
+            <div class="product-hover"><span>Swap now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+
+          <div class="product-card">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div>
+              </div>
+              <div class="product-title">Wallet</div>
+              <p class="product-desc">Send and receive crypto safely in your secure KRYPTOS wallet</p>
+            </div>
+            <div class="product-hover"><span>View balance</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+
+          <div class="product-card wide">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+              </div>
+              <div class="product-title">Visa card</div>
+              <p class="product-desc">Spend your crypto anywhere with a virtual card</p>
+            </div>
+            <div class="product-hover"><span>Get virtual card</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+
+          <div class="product-card wide">
+            <div>
+              <div class="product-top">
+                <div class="product-icon pi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></div>
+              </div>
+              <div class="product-title">Cash out</div>
+              <p class="product-desc">Cash out crypto to your bank or mobile wallet instantly</p>
+            </div>
+            <div class="product-hover"><span>Sell crypto</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY -->
+      <section>
+        <div class="section-heading-center">
+          <h2>Why KRYPTOS?</h2>
+          <p>Safe, easy, and reliable trading for everyone</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon wi-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <h3 class="why-title">Peer-to-peer freedom</h3>
+            <p class="why-desc">Trade quickly and easily with thousands of global offers, without intermediaries or complicated restrictions</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon wi-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+            <h3 class="why-title">Multiple payment methods</h3>
+            <p class="why-desc">Choose from a wide range of local and international payment options - bank transfers, e-wallets, gift cards, and more</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <h3 class="why-title">Smart dispute protection</h3>
+            <p class="why-desc">A fast and neutral dispute system that protects your rights and ensures every trade is completed safely and transparently</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+            <h3 class="why-title">Global access &amp; instant support</h3>
+            <p class="why-desc">A worldwide platform with real-time customer support to guarantee a smooth and reliable trading experience</p>
+          </div>
+        </div>
+        <div class="text-center" style="margin-top:32px">
+          <button class="btn-green-lg">Discover now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+      </section>
+
+      <!-- HELP -->
+      <section>
+        <div class="section-heading-center">
+          <h2>Help center</h2>
+          <p>Find guides, answers, and support in one place</p>
+        </div>
+        <div class="help-grid">
+          <div class="help-card">
+            <div>
+              <div class="help-title">KRYPTOS academy</div>
+              <p class="help-desc">Join millions of traders and learn by trading P2P</p>
+            </div>
+            <button class="help-link">Go to academy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          </div>
+          <div class="help-card">
+            <div>
+              <div class="help-title">24/7 support</div>
+              <p class="help-desc">Reach out to us for answers to your specific questions</p>
+            </div>
+            <button class="help-link">Contact us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          </div>
+        </div>
+
+        <div class="dl-label">Download KRYPTOS application</div>
+        <div class="dl-grid">
+          <div class="dl-card">
+            <div class="dl-icon" style="background:#ecfdf5;color:var(--success);border-color:#d1fae5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
+            <div><div class="dl-title">Android</div><div class="dl-sub">Download Android app</div></div>
+          </div>
+          <div class="dl-card">
+            <div class="dl-icon" style="background:#f9fafb;color:var(--brand-dark);border-color:#e5e7eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
+            <div><div class="dl-title">iOS</div><div class="dl-sub">Download iOS app</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section>
+        <div class="section-heading-center">
+          <h2>Frequently asked questions</h2>
+          <p>Find answers to the most popular questions asked by our users</p>
+        </div>
+        <div class="faq-list" id="faqList">
+          <!-- populated by JS -->
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="escrow-banner">
+          <div class="escrow-left">
+            <div class="escrow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div>
+              <div class="escrow-title-row"><span class="escrow-title">100% Escrow Protection Active</span><span class="escrow-badge">Kryptos Secure Custody</span></div>
+              <p class="escrow-desc">All P2P transactions are safeguarded by Kryptos escrow. Sellers must never release cryptocurrency until confirmed payment has cleared in their bank account or mobile wallet.</p>
+            </div>
+          </div>
+          <button class="btn-dark">Explore P2P <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+
+        <div class="quicklinks">
+          <button class="ql"><div class="ql-title-row"><span class="ql-title">P2P Trading</span><span class="ql-badge yellow">0% Fee</span></div><p class="ql-desc">Trade USDT &amp; BTC with 500+ local payment methods</p></button>
+          <button class="ql"><div class="ql-title-row"><span class="ql-title">P2P Orders</span><span class="ql-badge gray">Live Escrow</span></div><p class="ql-desc">Track active trades, escrow release &amp; receipts</p></button>
+          <button class="ql"><div class="ql-title-row"><span class="ql-title">My Offers / Ads</span><span class="ql-badge green">Merchant</span></div><p class="ql-desc">Create buy/sell ads &amp; set custom margins</p></button>
+          <button class="ql"><div class="ql-title-row"><span class="ql-title">Messages</span><span class="ql-badge gray">Chat</span></div><p class="ql-desc">Direct chat with verified trade counterparties</p></button>
+          <button class="ql"><div class="ql-title-row"><span class="ql-title">Profile &amp; KYC</span><span class="ql-badge blue">Security</span></div><p class="ql-desc">Verification status, limits &amp; merchant trust rating</p></button>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-brand">
+            <div class="footer-logo">K</div>
+            <span class="fb-name">KRYPTOS Crypto &amp; P2P</span>
+            <span>© 2026 All rights reserved.</span>
+          </div>
+          <div class="footer-links">
+            <button class="hiring">We are Hiring <span class="badge">4 Roles</span></button>
+            <button>Escrow Rules &amp; Safety</button>
+            <button>Help Center</button>
+            <button>Partner Program</button>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</main>
+
+<!-- BACK TO TOP -->
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+</button>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" aria-label="Mobile Navigation">
+  <div class="mobile-nav-inner">
+    <button class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></button>
+    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></button>
+    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></button>
+    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></button>
+    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></button>
+  </div>
+</nav>
+
+<script>
+/* ========== DATA ========== */
+const COINS = [
+  {sym:"BTC", name:"Bitcoin",  bg:"#F7931A", price:"81,109.81", chg:"+0.77%", up:true,  mcap:"$1.65 Trillion", vol:"$62.88B", rank:"#1", spark:"#0ECB81"},
+  {sym:"ETH", name:"Ethereum", bg:"#627EEA", price:"2,354.54",  chg:"+0.43%", up:true,  mcap:"$299.7 Billion", vol:"$11.39B", rank:"#2", spark:"#F6465D"},
+  {sym:"USDT",name:"Tether USD",bg:"#26A17B",price:"1.00",      chg:"+0.01%", up:true,  mcap:"$183.7 Billion", vol:"$14.0M",  rank:"#3", spark:"#0ECB81"},
+  {sym:"BNB", name:"BNB",      bg:"#F3BA2F", price:"612.45",    chg:"+0.45%", up:true,  mcap:"$97.3 Billion",  vol:"$3.70B",  rank:"",   spark:"#F6465D"},
+  {sym:"XRP", name:"XRP",      bg:"#23292F", price:"1.341",     chg:"+0.46%", up:true,  mcap:"$84.7 Billion",  vol:"$3.22B",  rank:"",   spark:"#F6465D"},
+  {sym:"USDC",name:"USDC",     bg:"#2775CA", price:"1.0013",    chg:"+0.03%", up:true,  mcap:"$72.8 Billion",  vol:"$2.77B",  rank:"",   spark:"#0ECB81"},
+  {sym:"SOL", name:"Solana",   bg:"#141414", price:"102.29",    chg:"+1.14%", up:true,  mcap:"$62.8 Billion",  vol:"$2.39B",  rank:"",   spark:"#F6465D"},
+  {sym:"TRX", name:"TRON",     bg:"#23292F", price:"0.3431",    chg:"+0.73%", up:true,  mcap:"$32.6 Billion",  vol:"$1.24B",  rank:"",   spark:"#F6465D"},
+  {sym:"ZEC", name:"Zcash",    bg:"#F4B728", price:"1,279.68",  chg:"+18.86%",up:true,  mcap:"$21.7 Billion",  vol:"$822.7M", rank:"",   spark:"#0ECB81"},
+  {sym:"DOGE",name:"Dogecoin", bg:"#C2A633", price:"0.0828",    chg:"+0.17%", up:true,  mcap:"$14.2 Billion",  vol:"$541.2M", rank:"",   spark:"#F6465D"},
+  {sym:"LINK",name:"Chainlink",bg:"#375BD2", price:"12.76",     chg:"-2.07%", up:false, mcap:"$9.5 Billion",   vol:"$362.7M", rank:"",   spark:"#F6465D"},
+  {sym:"ADA", name:"Cardano",  bg:"#0033AD", price:"0.2359",    chg:"-4.14%", up:false, mcap:"$8.7 Billion",   vol:"$329.9M", rank:"",   spark:"#F6465D"},
+  {sym:"LTC", name:"Litecoin", bg:"#A6A9AA", price:"61.12",     chg:"+0.41%", up:true,  mcap:"$4.8 Billion",   vol:"$180.5M", rank:"",   spark:"#F6465D"},
+];
+
+/* ticker coins */
+const TICKER = [
+  {sym:"BTC", name:"Bitcoin",  price:"81,109.81", chg:"+1,462.50 (+1.78%)", up:true,  color:"#F7931A"},
+  {sym:"ETH", name:"Ethereum", price:"2,354.54",  chg:"+48.20 (+1.83%)",    up:true,  color:"#627EEA"},
+  {sym:"USDT",name:"Tether",   price:"1.00000",   chg:"+0.00002 (+0.00%)",  up:true,  color:"#26A17B"},
+  {sym:"SOL", name:"Solana",   price:"102.28",    chg:"+0.62 (+0.59%)",     up:true,  color:"#14F195"},
+  {sym:"BNB", name:"BNB",      price:"612.45",    chg:"+6.85 (+1.15%)",     up:true,  color:"#F3BA2F"},
+];
+
+const FAQS = [
+  {q:"What is KRYPTOS?", a:"KRYPTOS is a modern peer-to-peer cryptocurrency trading and multi-network wallet platform supporting BTC, USDT (TRC20), ETH, and SOL with 500+ local payment methods."},
+  {q:"Which cryptocurrencies can I buy and sell on KRYPTOS?", a:"You can trade Bitcoin (BTC), Tether (USDT TRC20), Ethereum (ETH), Solana (SOL), and 150+ other crypto assets."},
+  {q:"How can I buy Bitcoin or USDT on KRYPTOS?", a:"Browse the P2P marketplace, pick a verified merchant, choose your payment method, and complete the trade through escrow protection."},
+  {q:"Which payment methods are supported?", a:"We support 500+ payment methods including M-PESA, bank transfers, Revolut, SEPA Instant, UPI, PayPal, Wise, Zelle, and mobile money across 153 countries."},
+  {q:"Which countries does KRYPTOS support?", a:"KRYPTOS operates in 153 countries with full local payment integration. Some regions may have KYC requirements."},
+  {q:"Is P2P trading on KRYPTOS safe?", a:"Yes. All trades are protected by escrow — seller crypto is locked until payment is verified. Our dispute system ensures fair outcomes."},
+  {q:"What is KRYPTOS Swap?", a:"Swap lets you instantly exchange one crypto for another at competitive rates with low fees, no order book needed."},
+  {q:"What is KRYPTOS P2P?", a:"P2P (peer-to-peer) trading connects you directly with verified merchants to buy or sell crypto using your preferred local payment method."},
+  {q:"How does Crypto Cash out work?", a:"Sell your crypto to a verified merchant and receive local currency directly to your bank account or mobile wallet — usually within minutes."},
+  {q:"Does KRYPTOS provide a crypto wallet?", a:"Yes. Every account comes with a secure multi-network wallet for sending, receiving, and storing BTC, USDT, ETH, SOL, and 150+ assets."},
+  {q:"Why choose KRYPTOS?", a:"Zero maker fees, escrow protection, 500+ payment methods, instant settlement, and 24/7 support — built for both beginners and pro traders."},
+];
+
+/* ========== RENDER TICKER ========== */
+function renderTicker(){
+  const track = document.getElementById('tickerTrack');
+  const svgs = {
+    BTC:'<circle cx="12" cy="12" r="10" fill="#F7931A"/><path d="M14.7 11.2c.4-.3.6-.8.6-1.4 0-1.2-1-1.8-2.5-1.8H9.5v8h3.6c1.6 0 2.7-.7 2.7-2.1 0-.7-.4-1.3-1.1-1.6v-.1c.7-.2 1.1-.7 1.1-1.3-.1.2-.5.3-1.1.3zm-3.6-1.9h1.7c.8 0 1.3.3 1.3.9 0 .6-.5.9-1.3.9h-1.7V9.3zm1.9 5.4h-1.9v-2.1h1.9c.9 0 1.5.3 1.5 1 0 .7-.6 1.1-1.5 1.1z" fill="#fff"/>',
+    ETH:'<circle cx="12" cy="12" r="10" fill="#627EEA"/><path d="M12 4l-4 6.7 4 2.4 4-2.4L12 4zm0 10.1l-4-2.4 4 5.7 4-5.7-4 2.4z" fill="#fff"/>',
+    USDT:'<circle cx="12" cy="12" r="10" fill="#26A17B"/><path d="M12.7 6.5h3.6V8h-3.6v1.3c2.7.2 4.7.8 4.7 1.5 0 .8-2 1.3-4.7 1.5V17h-1.4v-4.7c-2.7-.2-4.7-.7-4.7-1.5 0-.7 2-1.3 4.7-1.5V8H7.7V6.5h3.6V5h1.4v1.5z" fill="#fff"/>',
+    SOL:'<circle cx="12" cy="12" r="10" fill="#141414"/><path d="M8 15.5h9l-2 2h-9zM8 11h9l-2 2h-9zM8 6.5h9l-2 2h-9z" fill="#14F195"/>',
+    BNB:'<circle cx="12" cy="12" r="10" fill="#F3BA2F"/><path d="M12 6.5l2.2 2.2-2.2 2.2-2.2-2.2L12 6.5zm3.8 3.8l2.2 2.2-2.2 2.2-2.2-2.2 2.2-2.2zM6 12.5l2.2-2.2 2.2 2.2-2.2 2.2L6 12.5zm6 6l2.2-2.2-2.2-2.2-2.2 2.2 2.2 2.2zm0-4.1l2-2-2-2-2 2 2 2z" fill="#fff"/>'
+  };
+  let html = '';
+  for(let i=0;i<2;i++){
+    TICKER.forEach(c=>{
+      html += `<div class="ticker-item">
+        <div class="ticker-icon">${svgs[c.sym]||''}</div>
+        <div>
+          <div class="ticker-name">${c.name}</div>
+          <div class="ticker-price-row">
+            <span class="ticker-price">${c.price}</span>
+            <span class="ticker-change ${c.up?'':'down'}">${c.chg}</span>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  track.innerHTML = html;
+}
+
+/* ========== RENDER MARKET TABLE ========== */
+function sparkline(color){
+  return `<svg class="spark" viewBox="0 0 100 32"><path d="M0 16 C8 16 8 12 16 12 C24 12 24 13 33 13 C41 13 41 9 50 9 C58 9 58 10 66 10 C74 10 74 5 83 5 C91 5 91 7 100 7" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/></svg>`;
+}
+
+function renderMarket(){
+  const tbody = document.getElementById('marketBody');
+  const mb = document.getElementById('mobileMarketBody');
+  let html = '', mobileHtml = '';
+  COINS.forEach(c=>{
+    const rankBadge = c.rank ? `<span class="mcap-badge">${c.rank} MCAP</span>` : '';
+    html += `<tr>
+      <td>
+        <div class="asset-cell">
+          <div class="coin-logo" style="background:${c.bg}">
+            <svg viewBox="0 0 32 32" fill="none"><text x="16" y="21" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${c.sym[0]}</text></svg>
+          </div>
+          <div>
+            <div class="coin-symbol">${c.sym} ${rankBadge}</div>
+            <div class="coin-name">${c.name}</div>
+          </div>
+        </div>
+      </td>
+      <td class="text-right vol-cell"><div class="val">${c.mcap}</div><div class="sub">24h Vol: ${c.vol}</div></td>
+      <td class="text-center">${sparkline(c.spark)}</td>
+      <td class="text-right price-cell"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></td>
+      <td class="text-center"><span class="change-badge ${c.up?'up':'down'}">${c.chg}</span></td>
+      <td class="text-right"><button class="trade-btn">Trade <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></td>
+    </tr>`;
+
+    mobileHtml += `<div class="mobile-market-row">
+      <div class="mobile-asset">
+        <div class="coin-logo" style="background:${c.bg}">
+          <svg viewBox="0 0 32 32" fill="none"><text x="16" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${c.sym[0]}</text></svg>
+        </div>
+        <div>
+          <div class="coin-symbol" style="font-size:14px">${c.sym}</div>
+          <div class="coin-name" style="font-size:12px">${c.name}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="mobile-price"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></div>
+        <div class="mobile-change ${c.up?'up':'down'}">${c.chg}</div>
+      </div>
+    </div>`;
+  });
+  tbody.innerHTML = html;
+  mb.innerHTML = mobileHtml;
+}
+
+/* ========== RENDER FAQ ========== */
+function renderFaq(){
+  const list = document.getElementById('faqList');
+  list.innerHTML = FAQS.map(f=>`
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="fq">${f.q}</span>
+        <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+    </div>`).join('');
+
+  list.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item = btn.parentElement;
+      const open = item.classList.contains('open');
+      list.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!open) item.classList.add('open');
+    });
+  });
+}
+
+/* ========== SEARCH FILTER ========== */
+function initSearch(){
+  const inp = document.getElementById('coinSearch');
+  inp.addEventListener('input',()=>{
+    const q = inp.value.toLowerCase();
+    document.querySelectorAll('#marketBody tr').forEach(tr=>{
+      tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+    document.querySelectorAll('#mobileMarketBody .mobile-market-row').forEach(r=>{
+      r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+}
+
+/* ========== TABS ========== */
+function initTabs(){
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+}
+
+/* ========== BACK TO TOP ========== */
+function initToTop(){
+  const btn = document.getElementById('toTop');
+  window.addEventListener('scroll',()=>{
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+
+/* ========== SWAP BUTTON ========== */
+function initSwap(){
+  document.querySelectorAll('.swap-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      b.style.transform = 'translateX(-50%) rotate(180deg)';
+      setTimeout(()=>b.style.transform='translateX(-50%)',300);
+    });
+  });
+}
+
+/* ========== INIT ========== */
+renderTicker();
+renderMarket();
+renderFaq();
+initSearch();
+initTabs();
+initToTop();
+initSwap();
+</script>
+</body>
+</html>
