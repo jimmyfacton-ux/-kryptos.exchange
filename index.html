@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
@@ -15,7 +16,6 @@
   --muted:#707A8A; --fill:#F5F5F5; --border:#EAECEF; --page:#FAFAFA;
   --orange:#FF6838;
   --font-sans:"Inter","Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  --radius-xl:12px; --radius-2xl:16px; --radius-3xl:24px;
 }
 *,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
 html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
@@ -23,37 +23,22 @@ body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark)
 ::selection{background:var(--brand-primary);color:var(--brand-dark)}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
-::-webkit-scrollbar-track{background:transparent}
 button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
 a{color:inherit;text-decoration:none}
 input,select{font-family:inherit}
 img,svg{display:block;max-width:100%}
 select{appearance:none;-webkit-appearance:none;background:transparent;border:none;outline:none;cursor:pointer}
-
-/* layout helpers */
 .container{max-width:1280px;margin:0 auto;padding:0 16px}
 @media(min-width:768px){.container{padding:0 24px}}
 .flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
 .flex-col{flex-direction:column}.flex-1{flex:1}.shrink-0{flex-shrink:0}
-.gap-1{gap:4px}.gap-2{gap:8px}.gap-2-5{gap:10px}.gap-3{gap:12px}.gap-3-5{gap:14px}.gap-4{gap:16px}.gap-6{gap:24px}
-.grid{display:grid}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
-@media(max-width:767px){.grid-4{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
-.w-full{width:100%}.text-center{text-align:center}.text-right{text-align:right}
-.hidden{display:none}
-@media(min-width:768px){.md\:flex{display:flex}.md\:block{display:block}.md\:hidden{display:none}}
-@media(max-width:767px){.md-only-flex{display:none}}
-.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}.text-4xl{font-size:36px}.text-5xl{font-size:48px}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
+.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}
 .font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
-.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.02em}
+.tracking-tight{letter-spacing:-.02em}
 .text-muted{color:var(--muted)}
-.bg-white{background:#fff}.bg-page{background:var(--page)}.bg-fill{background:var(--fill)}
-.border{border:1px solid var(--border)}
-.rounded-xl{border-radius:var(--radius-xl)}.rounded-2xl{border-radius:var(--radius-2xl)}.rounded-3xl{border-radius:var(--radius-3xl)}.rounded-full{border-radius:9999px}
-.rounded-lg{border-radius:8px}
-.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}.shadow-sm{box-shadow:0 1px 3px rgba(0,0,0,.06)}.shadow-md{box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.transition{transition:all .18s ease}
-.pointer{cursor:pointer}
+.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
+.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}
 
 /* header */
 .site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -70,13 +55,22 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
 .nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
 .nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
-.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px;letter-spacing:.04em}
-.header-actions{display:flex;align-items:center;gap:8px}
+.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
+.header-actions{display:flex;align-items:center;gap:10px}
 .btn-yellow{padding:8px 16px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:all .15s}
 .btn-yellow:hover{background:var(--brand-hover)}
 .btn-yellow:active{transform:scale(.99)}
 .btn-ghost{padding:8px 14px;color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:color .15s}
 .btn-ghost:hover{color:#000}
+.balance{display:flex;align-items:center;gap:4px}
+.balance-val{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.balance-eye{color:var(--muted);padding:2px}
+.balance-eye svg{width:14px;height:14px}
+.avatar{width:32px;height:32px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+.notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
+.notif-btn:hover{background:var(--fill)}
+.notif-btn svg{width:20px;height:20px;stroke-width:2.2}
+.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
 
 /* hero */
 .hero-wrap{padding-top:16px;padding-bottom:16px}
@@ -102,7 +96,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .ticker-icon svg{width:16px;height:16px}
 .ticker-name{font-size:12px;font-weight:600;color:#6b7280;line-height:1.2}
 .ticker-price-row{display:flex;align-items:center;gap:6px;line-height:1.2;margin-top:2px}
-.ticker-price{font-size:12px;font-weight:800;color:#111827;letter-spacing:-.02em}
+.ticker-price{font-size:12px;font-weight:800;color:#111827}
 .ticker-change{font-size:11px;font-weight:700;color:var(--success)}
 .ticker-change.down{color:var(--danger)}
 
@@ -136,7 +130,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .swap-wrap{position:relative;margin:16px 0}
 .swap-btn{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);width:32px;height:32px;background:var(--brand-primary);border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.12);border:2px solid #fff;z-index:10;transition:all .15s}
 .swap-btn:hover{background:var(--brand-hover)}
-.swap-btn:active{transform:translateX(-50%) scale(.95)}
 .swap-btn svg{width:16px;height:16px;stroke-width:2.5}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:16px;border-top:1px solid var(--border);margin-top:8px}
 .quick-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:10px}
@@ -164,21 +157,17 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .filter-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pill{padding:8px 14px;border-radius:9999px;font-size:13px;font-weight:600;background:var(--fill);color:var(--muted);border:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:6px;cursor:pointer}
 .pill:hover{background:#e5e7eb;color:var(--brand-dark)}
-.pill.active{background:var(--brand-primary);color:var(--brand-dark);border-color:var(--brand-primary);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.pill.active:hover{background:var(--brand-hover)}
+.pill.active{background:var(--brand-primary);color:var(--brand-dark);border-color:var(--brand-primary);font-weight:700}
 .pill.green{background:#fff;color:var(--brand-dark);border-color:var(--border)}
-.pill.green:hover{background:rgba(14,203,129,.05);border-color:rgba(14,203,129,.4)}
 .pill .badge-green{background:rgba(14,203,129,.15);color:var(--success);font-size:10px;font-weight:700;padding:2px 6px;border-radius:9999px}
 .pill.yellow-border{border-color:var(--brand-primary);background:rgba(252,213,53,.15);color:var(--brand-dark);font-weight:700}
 .pill svg{width:14px;height:14px}
 .table-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .select-wrap,.search-wrap{position:relative;display:flex;align-items:center}
 .select-wrap select{padding:10px 36px 10px 14px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:600;color:var(--brand-dark);cursor:pointer;transition:all .15s}
-.select-wrap select:hover{background:rgba(234,236,239,.8)}
 .select-wrap svg{position:absolute;right:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
 .search-wrap input{width:220px;padding:10px 12px 10px 34px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:500;color:var(--brand-dark);outline:none;transition:all .15s}
 .search-wrap input::placeholder{color:var(--muted)}
-.search-wrap input:hover{background:rgba(234,236,239,.6)}
 .search-wrap input:focus{background:#fff;border-color:var(--brand-primary)}
 .search-wrap svg{position:absolute;left:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
 @media(max-width:640px){.search-wrap input{width:100%}.table-controls{width:100%}.search-wrap{flex:1}}
@@ -201,10 +190,10 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .spark{width:90px;height:26px}
 .price-cell .price{font-size:15px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em}
 .price-cell .usd{font-size:12px;color:var(--muted);margin-top:2px}
-.change-badge{display:inline-block;width:80px;padding:6px 8px;text-align:center;border-radius:8px;font-weight:700;font-size:13px;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.change-badge{display:inline-block;width:80px;padding:6px 8px;text-align:center;border-radius:8px;font-weight:700;font-size:13px;color:#fff}
 .change-badge.up{background:var(--success)}
 .change-badge.down{background:var(--danger)}
-.trade-btn{display:inline-flex;align-items:center;gap:4px;padding:8px 14px;background:var(--brand-primary);color:var(--brand-dark);font-size:12px;font-weight:700;border-radius:8px;transition:background .15s;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.trade-btn{display:inline-flex;align-items:center;gap:4px;padding:8px 14px;background:var(--brand-primary);color:var(--brand-dark);font-size:12px;font-weight:700;border-radius:8px;transition:background .15s}
 .trade-btn:hover{background:var(--brand-hover)}
 .trade-btn svg{width:12px;height:12px}
 .table-footer{display:flex;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:8px}
@@ -212,10 +201,9 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .table-footer button:hover{background:#e5e7eb}
 .table-footer svg{width:16px;height:16px;color:var(--muted)}
 .table-link{display:flex;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border);margin-top:14px;font-size:11px;color:var(--muted)}
-.table-link button{color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px;transition:color .15s}
+.table-link button{color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px}
 .table-link button:hover{color:var(--brand-hover)}
 .table-link svg{width:12px;height:12px}
-/* mobile asset list */
 .mobile-market{display:none}
 @media(max-width:767px){.market-table{display:none}.mobile-market{display:block}}
 .mobile-market-row{display:flex;align-items:center;justify-content:space-between;padding:14px 10px;border-bottom:1px solid #F0F2F5;cursor:pointer;transition:background .15s;gap:8px}
@@ -231,33 +219,28 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .mobile-change.up{background:var(--success)}
 .mobile-change.down{background:var(--danger)}
 
-/* metrics band */
-.metrics-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative;overflow:hidden}
-.metrics-card::before,.metrics-card::after{content:"";position:absolute;width:112px;height:112px;border-radius:9999px;filter:blur(24px);pointer-events:none}
-.metrics-card::before{top:-40px;left:-40px;background:rgba(14,203,129,.05)}
-.metrics-card::after{bottom:-40px;right:-40px;background:rgba(252,213,53,.1)}
-.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;text-align:center;position:relative}
+/* metrics */
+.metrics-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;text-align:center}
 @media(min-width:768px){.metrics-grid{grid-template-columns:repeat(4,1fr);gap:32px}}
 .metric{display:flex;flex-direction:column;align-items:center}
 .metric-label{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:6px}
 .metric-value{font-size:32px;font-weight:800;color:var(--brand-dark);letter-spacing:-.03em}
 .metric-value.orange{color:var(--orange)}
 
-/* partner banner */
-.partner-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center}
-.partner-card::before{content:"";position:absolute;top:25%;left:50%;transform:translateX(-50%);width:384px;height:384px;background:rgba(14,203,129,.1);border-radius:9999px;filter:blur(64px);pointer-events:none}
-.partner-big{font-size:64px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(to bottom,#25E096,#0ECB81,#0A8754);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;position:relative;filter:drop-shadow(0 8px 16px rgba(14,203,129,.35))}
+/* partner */
+.partner-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;align-items:center}
+.partner-big{font-size:64px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(to bottom,#25E096,#0ECB81,#0A8754);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 8px 16px rgba(14,203,129,.35))}
 @media(min-width:640px){.partner-big{font-size:80px}}
 .partner-big span{color:#34D399;-webkit-text-fill-color:#34D399}
-.partner-amount{font-size:40px;font-weight:900;color:var(--success);letter-spacing:-.03em;margin-top:8px;position:relative}
+.partner-amount{font-size:40px;font-weight:900;color:var(--success);letter-spacing:-.03em;margin-top:8px}
 @media(min-width:640px){.partner-amount{font-size:48px}}
 .partner-label{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-dark);margin-top:6px}
 .partner-sub{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-top:6px;padding-bottom:16px;border-bottom:1px solid rgba(14,203,129,.2);max-width:280px;margin-left:auto;margin-right:auto}
 .partner-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:16px;max-width:440px;line-height:1.6}
 .partner-desc strong{color:var(--brand-dark)}
-.btn-green-lg{margin-top:24px;padding:14px 40px;background:var(--success);color:#fff;font-weight:800;font-size:14px;border-radius:9999px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(14,203,129,.2);transition:all .15s;position:relative}
-.btn-green-lg:hover{background:var(--success-hover);box-shadow:0 6px 16px rgba(14,203,129,.3)}
-.btn-green-lg:active{transform:scale(.95)}
+.btn-green-lg{margin-top:24px;padding:14px 40px;background:var(--success);color:#fff;font-weight:800;font-size:14px;border-radius:9999px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(14,203,129,.2);transition:all .15s}
+.btn-green-lg:hover{background:var(--success-hover)}
 .btn-green-lg svg{width:16px;height:16px;stroke-width:2.5}
 
 /* products */
@@ -269,8 +252,7 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .product-card.wide{grid-column:span 1}
 @media(min-width:1024px){.product-card.wide{grid-column:span 2}}
 .product-top{display:flex;align-items:center;justify-content:space-between}
-.product-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid;transition:transform .15s}
-.product-card:hover .product-icon{transform:scale(1.05)}
+.product-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid}
 .product-icon svg{width:20px;height:20px}
 .pi-green{background:#ecfdf5;color:var(--success);border-color:#d1fae5}
 .pi-orange{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
@@ -287,11 +269,10 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .product-card:hover .product-hover{opacity:1}
 .product-hover svg{width:14px;height:14px}
 
-/* why cards */
+/* why */
 .why-grid{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:768px){.why-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
-.why-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:box-shadow .2s}
-.why-card:hover{box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.why-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .why-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid}
 .why-icon svg{width:28px;height:28px;stroke-width:2}
 .wi-purple{background:linear-gradient(to bottom right,rgba(99,102,241,.1),rgba(168,85,247,.1),rgba(236,72,153,.1));border-color:#e0e7ff;color:#4f46e5}
@@ -342,7 +323,7 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .escrow-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
 .escrow-badge{padding:2px 10px;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;border-radius:9999px}
 .escrow-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6;max-width:640px}
-.btn-dark{padding:10px 20px;background:var(--brand-dark);color:#fff;font-size:12px;font-weight:700;border-radius:12px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.btn-dark{padding:10px 20px;background:var(--brand-dark);color:#fff;font-size:12px;font-weight:700;border-radius:12px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .btn-dark:hover{background:#000}
 .btn-dark svg{width:14px;height:14px}
 .quicklinks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
@@ -351,7 +332,7 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .ql{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:left;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .ql:hover{background:#f9fafb;border-color:var(--brand-primary)}
 .ql-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.ql-title{font-size:12px;font-weight:700;color:var(--brand-dark);transition:color .15s}
+.ql-title{font-size:12px;font-weight:700;color:var(--brand-dark)}
 .ql:hover .ql-title{color:var(--brand-hover)}
 .ql-badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:700}
 .ql-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
@@ -370,25 +351,23 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .footer-links .hiring{color:#047857;font-weight:700;display:flex;align-items:center;gap:4px}
 .footer-links .hiring .badge{background:#d1fae5;color:#065f46;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px}
 
-/* floating back to top */
+/* to-top */
 .to-top{position:fixed;bottom:96px;right:20px;z-index:30;width:44px;height:44px;border-radius:9999px;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .15s;opacity:0;pointer-events:none;transform:translateY(8px)}
 .to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
 .to-top:hover{background:var(--success-hover)}
-.to-top:active{transform:scale(.9)}
 .to-top svg{width:20px;height:20px;stroke-width:2.5}
 @media(min-width:768px){.to-top{bottom:24px}}
 
-/* mobile bottom nav */
-.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+/* mobile nav */
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 @media(min-width:768px){.mobile-nav{display:none}}
 .mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
-.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500}
 .mnav-item.active{color:var(--brand-dark);font-weight:700}
 .mnav-item:hover{color:var(--brand-dark)}
 .mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
 .mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
 .mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
-.mnav-lock{position:absolute;top:-2px;right:calc(50% - 16px);width:10px;height:10px;color:var(--muted)}
 
 /* section spacing */
 .section-stack{display:flex;flex-direction:column;gap:64px;margin-top:48px;position:relative}
@@ -398,39 +377,91 @@ tr:hover .coin-symbol{color:var(--brand-hover)}
 .section-heading-center p{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px;max-width:512px;margin-left:auto;margin-right:auto}
 .pb-safe{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 @media(min-width:768px){.pb-safe{padding-bottom:0}}
-
-/* main padding */
 main{padding-top:8px}
 @media(min-width:768px){main{padding-top:16px}}
+@media(max-width:767px){.md-only-flex{display:none}}
+
+/* ============ NAV DRAWER ============ */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:200;display:none}
+.drawer-backdrop.show{display:block}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:340px;max-width:88vw;background:#fff;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .25s ease}
+.drawer-backdrop.show .drawer{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.drawer-logo{font-size:20px;font-weight:900;color:var(--brand-dark);letter-spacing:-.03em}
+.drawer-logo span{color:var(--brand-hover)}
+.drawer-close{padding:8px;border-radius:10px;color:#6b7280}
+.drawer-close:hover{background:var(--fill);color:var(--brand-dark)}
+.drawer-close svg{width:20px;height:20px}
+.drawer-body{flex:1;overflow-y:auto;padding:12px 12px 24px;overscroll-behavior:contain}
+.drawer-row{display:flex;align-items:flex-start;gap:14px;padding:12px;border-radius:12px;text-decoration:none;color:var(--brand-dark);transition:background .15s;cursor:pointer}
+.drawer-row:hover{background:var(--fill)}
+.drawer-row > svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;color:#6b7280;stroke-width:2}
+.drawer-row-content{flex:1;min-width:0}
+.drawer-row-title{font-size:15px;font-weight:800;color:#111827;display:block}
+.drawer-row-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.drawer-row-desc{font-size:12px;color:#6b7280;margin-top:2px}
+.drawer-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.drawer-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
+.drawer-badge.gray{background:#f3f4f6;color:#111827}
+.drawer-badge.green{background:rgba(14,203,129,.15);color:var(--success)}
+.drawer-badge.green-light{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:700}
+.drawer-group{border-top:1px solid #f3f4f6;padding-top:4px;margin-top:4px}
+.drawer-section{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px;border-radius:12px;font-size:15px;font-weight:800;color:var(--brand-dark);transition:background .15s}
+.drawer-section:hover{background:var(--fill)}
+.drawer-section-left{display:flex;align-items:center;gap:14px}
+.drawer-section-left svg{width:20px;height:20px;color:#6b7280;flex-shrink:0}
+.drawer-section .chev{width:16px;height:16px;color:#9ca3af;transition:transform .2s}
+.drawer-section.open .chev{transform:rotate(180deg)}
+.drawer-sub{padding-left:44px;padding-right:8px;padding-top:4px;padding-bottom:4px;display:none}
+.drawer-sub.open{display:block}
+.drawer-sub-item{display:block;padding:8px;border-radius:8px;transition:background .15s;text-decoration:none;cursor:pointer}
+.drawer-sub-item:hover{background:var(--fill)}
+.drawer-sub-title{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.drawer-sub-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.drawer-sub-note{font-size:11px;color:#9ca3af;margin-left:auto}
+.drawer-sub-desc{font-size:12px;color:#6b7280;margin-top:2px;line-height:1.4}
+.drawer-auth{margin-top:16px;padding:0 4px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:16px}
+.drawer-auth-btn{padding:12px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;transition:all .15s;text-decoration:none;display:block}
+.drawer-auth-btn.login{background:var(--fill);color:var(--brand-dark);border:1px solid var(--border)}
+.drawer-auth-btn.login:hover{background:#e5e7eb}
+.drawer-auth-btn.signup{background:var(--brand-primary);color:var(--brand-dark)}
+.drawer-auth-btn.signup:hover{background:var(--brand-hover)}
+.drawer-auth-btn.logout{background:#fee2e2;color:#991b1b}
+.drawer-auth-btn.logout:hover{background:#fecaca}
+.drawer-user{padding:12px;background:var(--fill);border-radius:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.drawer-user-avatar{width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+.drawer-user-email{font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawer-user-bal{font-size:11px;color:#6b7280;margin-top:1px}
 </style>
 </head>
 <body>
 
-<!-- ========== HEADER ========== -->
+<!-- HEADER -->
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand">
       <button class="menu-btn" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
-        <span class="hidden-mob" style="font-size:12px;color:var(--muted)">More</span>
       </button>
-      <a href="#" class="logo-text" title="KRYPTOS Home">
+      <a href="index.html" class="logo-text" title="KRYPTOS Home">
         KRYPTO<span class="accent">S</span><span class="logo-sub">.exchange</span>
       </a>
     </div>
 
     <nav class="nav-links md-only-flex">
-      <button class="nav-link active">Home</button>
-      <button class="nav-link">P2P</button>
-      <button class="nav-link">Trade</button>
-      <button class="nav-link">Swap</button>
-      <button class="nav-link">Wallet</button>
-      <button class="nav-link">Careers <span class="nav-badge">HIRING</span></button>
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="p2p.html" class="nav-link">P2P</a>
+      <a href="trade.html" class="nav-link">Trade</a>
+      <a href="swap.html" class="nav-link">Swap</a>
+      <a href="wallet.html" class="nav-link">Wallet</a>
+      <a href="careers.html" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
     </nav>
 
-    <div class="header-actions">
-      <button class="btn-yellow">Join us</button>
-      <button class="btn-ghost">Log in</button>
+    <!-- AUTH AREA — filled by JS -->
+    <div class="header-actions" id="headerAuth">
+      <!-- default (logged out) -->
+      <a href="signup.html" class="btn-yellow">Join us</a>
+      <a href="login.html" class="btn-ghost">Log in</a>
     </div>
   </div>
 </header>
@@ -439,19 +470,14 @@ main{padding-top:8px}
   <div class="container hero-wrap">
     <div class="hero-grid">
 
-      <!-- LEFT: hero + ticker + security -->
       <div class="hero-left">
         <h1 class="hero-title">Buy, Sell, Swap &amp; Cash Out Crypto</h1>
         <p class="hero-sub">Trade Bitcoin, Tether (TRC20), Ethereum, and Solana with 500+ local payment methods, bank transfers, and verified escrow. Zero hidden fees and instant settlement.</p>
 
-        <!-- TICKER -->
         <div class="ticker">
-          <div class="ticker-track" id="tickerTrack">
-            <!-- items injected by JS -->
-          </div>
+          <div class="ticker-track" id="tickerTrack"></div>
         </div>
 
-        <!-- SECURITY FEATURES (desktop XL) -->
         <div style="display:none" class="md-only-flex" id="securityDesktop">
           <div style="width:100%">
             <div class="text-xs font-bold" style="text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px">Platform Security &amp; Market Advantage</div>
@@ -477,12 +503,11 @@ main{padding-top:8px}
         </div>
       </div>
 
-      <!-- RIGHT: P2P widget -->
       <div class="hero-right">
         <div class="tabs">
-          <button class="tab active" data-tab="p2p">P2P Trading <span class="hot">HOT</span></button>
-          <button class="tab" data-tab="swap">Swap</button>
-          <button class="tab" data-tab="trade">Trade</button>
+          <button class="tab active"><span>P2P Trading</span> <span class="hot">HOT</span></button>
+          <a href="swap.html" class="tab">Swap</a>
+          <a href="trade.html" class="tab">Trade</a>
         </div>
 
         <div class="widget-card">
@@ -534,48 +559,23 @@ main{padding-top:8px}
           <div style="margin-top:28px">
             <div class="quick-label">Quick P2P Action Triggers</div>
             <div class="quick-actions">
-              <button class="quick-btn buy">
-                <div class="qa-left">
-                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
-                  <div><div class="qa-ticker qa-buy">BUY USDT</div><small>TRON TRC20</small></div>
-                </div>
-                <svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-              <button class="quick-btn sell">
-                <div class="qa-left">
-                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
-                  <div><div class="qa-ticker qa-sell">SELL USDT</div><small>TRON TRC20</small></div>
-                </div>
-                <svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-              <button class="quick-btn buy">
-                <div class="qa-left">
-                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3zm-4.5 6.1c-0.6 2.6-4.9 1.2-6.3 0.9l1.1-4.5c1.4 0.3 5.8 1 5.2 3.6zm0.6-6.2c-0.6 2.4-4.2 1.2-5.4 0.9l1-4.1c1.2 0.3 5 0.8 4.4 3.2z" fill="#FFF"/></svg>
-                  <div><div class="qa-ticker qa-buy">BUY BTC</div><small>Bitcoin</small></div>
-                </div>
-                <svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-              <button class="quick-btn sell">
-                <div class="qa-left">
-                  <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3zm-4.5 6.1c-0.6 2.6-4.9 1.2-6.3 0.9l1.1-4.5c1.4 0.3 5.8 1 5.2 3.6zm0.6-6.2c-0.6 2.4-4.2 1.2-5.4 0.9l1-4.1c1.2 0.3 5 0.8 4.4 3.2z" fill="#FFF"/></svg>
-                  <div><div class="qa-ticker qa-sell">SELL BTC</div><small>Instant Cashout</small></div>
-                </div>
-                <svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
+              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY BTC</div><small>Bitcoin</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL BTC</div><small>Instant Cashout</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
             </div>
           </div>
 
-          <button class="btn-primary-lg">
+          <a href="p2p.html" class="btn-primary-lg">
             <span>Explore P2P Marketplace</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </button>
+          </a>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ========== MAIN CONTENT STACK ========== -->
   <div class="container">
     <div class="section-stack">
 
@@ -587,9 +587,9 @@ main{padding-top:8px}
         <div class="filter-bar">
           <div class="filter-pills">
             <button class="pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/></svg>Crypto Spot (150)</button>
-            <button class="pill green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--success)"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>P2P <span class="badge-green">0% Fee</span></button>
+            <a href="p2p.html" class="pill green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--success)"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>P2P <span class="badge-green">0% Fee</span></a>
             <button class="pill">All Assets</button>
-            <button class="pill yellow-border"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Deposit assets</button>
+            <a href="wallet.html" class="pill yellow-border"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Deposit assets</a>
           </div>
 
           <div class="table-controls">
@@ -599,9 +599,6 @@ main{padding-top:8px}
                 <option>Sort: Top Gainers (24h)</option>
                 <option>Sort: Top Losers (24h)</option>
                 <option>Sort: 7d Trend (%)</option>
-                <option>Sort: Highest Price</option>
-                <option>Sort: Lowest Price</option>
-                <option>Sort: 24h Volume</option>
               </select>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </div>
@@ -624,7 +621,7 @@ main{padding-top:8px}
                 <th class="text-right">Action</th>
               </tr>
             </thead>
-            <tbody id="marketBody"><!-- injected --></tbody>
+            <tbody id="marketBody"></tbody>
           </table>
         </div>
 
@@ -632,14 +629,14 @@ main{padding-top:8px}
           <div style="display:flex;justify-content:space-between;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">
             <span>Asset</span><div style="display:flex;gap:24px;padding-right:4px"><span>Price</span><span style="width:64px;text-align:center">24h</span></div>
           </div>
-          <div id="mobileMarketBody"><!-- injected --></div>
+          <div id="mobileMarketBody"></div>
         </div>
 
         <div class="table-footer">
           <button>Show More (25 of 150 displayed) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
         </div>
         <div class="table-link">
-          <button>Trade via P2P Escrow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <a href="p2p.html" style="color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px">Trade via P2P Escrow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         </div>
       </section>
 
@@ -674,7 +671,7 @@ main{padding-top:8px}
           <p>Discover our full range of tools designed to make crypto easy and accessible</p>
         </div>
         <div class="product-grid">
-          <div class="product-card">
+          <a href="p2p.html" class="product-card">
             <div>
               <div class="product-top">
                 <div class="product-icon pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -684,8 +681,7 @@ main{padding-top:8px}
               <p class="product-desc">Trade crypto directly with verified peers worldwide with zero fees and escrow protection</p>
             </div>
             <div class="product-hover"><span>Trade P2P</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-
+          </a>
           <div class="product-card">
             <div>
               <div class="product-top">
@@ -696,8 +692,7 @@ main{padding-top:8px}
             </div>
             <div class="product-hover"><span>Browse store</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
-
-          <div class="product-card">
+          <a href="swap.html" class="product-card">
             <div>
               <div class="product-top">
                 <div class="product-icon pi-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg></div>
@@ -707,9 +702,8 @@ main{padding-top:8px}
               <p class="product-desc">Exchange your crypto instantly with fast, low-fee swaps</p>
             </div>
             <div class="product-hover"><span>Swap now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-
-          <div class="product-card">
+          </a>
+          <a href="wallet.html" class="product-card">
             <div>
               <div class="product-top">
                 <div class="product-icon pi-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div>
@@ -718,8 +712,7 @@ main{padding-top:8px}
               <p class="product-desc">Send and receive crypto safely in your secure KRYPTOS wallet</p>
             </div>
             <div class="product-hover"><span>View balance</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-
+          </a>
           <div class="product-card wide">
             <div>
               <div class="product-top">
@@ -730,8 +723,7 @@ main{padding-top:8px}
             </div>
             <div class="product-hover"><span>Get virtual card</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
-
-          <div class="product-card wide">
+          <a href="wallet.html" class="product-card wide">
             <div>
               <div class="product-top">
                 <div class="product-icon pi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></div>
@@ -740,7 +732,7 @@ main{padding-top:8px}
               <p class="product-desc">Cash out crypto to your bank or mobile wallet instantly</p>
             </div>
             <div class="product-hover"><span>Sell crypto</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
+          </a>
         </div>
       </section>
 
@@ -819,9 +811,7 @@ main{padding-top:8px}
           <h2>Frequently asked questions</h2>
           <p>Find answers to the most popular questions asked by our users</p>
         </div>
-        <div class="faq-list" id="faqList">
-          <!-- populated by JS -->
-        </div>
+        <div class="faq-list" id="faqList"></div>
       </section>
 
       <!-- FOOTER -->
@@ -834,15 +824,15 @@ main{padding-top:8px}
               <p class="escrow-desc">All P2P transactions are safeguarded by Kryptos escrow. Sellers must never release cryptocurrency until confirmed payment has cleared in their bank account or mobile wallet.</p>
             </div>
           </div>
-          <button class="btn-dark">Explore P2P <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <a href="p2p.html" class="btn-dark">Explore P2P <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         </div>
 
         <div class="quicklinks">
-          <button class="ql"><div class="ql-title-row"><span class="ql-title">P2P Trading</span><span class="ql-badge yellow">0% Fee</span></div><p class="ql-desc">Trade USDT &amp; BTC with 500+ local payment methods</p></button>
-          <button class="ql"><div class="ql-title-row"><span class="ql-title">P2P Orders</span><span class="ql-badge gray">Live Escrow</span></div><p class="ql-desc">Track active trades, escrow release &amp; receipts</p></button>
-          <button class="ql"><div class="ql-title-row"><span class="ql-title">My Offers / Ads</span><span class="ql-badge green">Merchant</span></div><p class="ql-desc">Create buy/sell ads &amp; set custom margins</p></button>
-          <button class="ql"><div class="ql-title-row"><span class="ql-title">Messages</span><span class="ql-badge gray">Chat</span></div><p class="ql-desc">Direct chat with verified trade counterparties</p></button>
-          <button class="ql"><div class="ql-title-row"><span class="ql-title">Profile &amp; KYC</span><span class="ql-badge blue">Security</span></div><p class="ql-desc">Verification status, limits &amp; merchant trust rating</p></button>
+          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Trading</span><span class="ql-badge yellow">0% Fee</span></div><p class="ql-desc">Trade USDT &amp; BTC with 500+ local payment methods</p></a>
+          <a href="p2p-orders.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Orders</span><span class="ql-badge gray">Live Escrow</span></div><p class="ql-desc">Track active trades, escrow release &amp; receipts</p></a>
+          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">My Offers / Ads</span><span class="ql-badge green">Merchant</span></div><p class="ql-desc">Create buy/sell ads &amp; set custom margins</p></a>
+          <a href="#" class="ql"><div class="ql-title-row"><span class="ql-title">Messages</span><span class="ql-badge gray">Chat</span></div><p class="ql-desc">Direct chat with verified trade counterparties</p></a>
+          <a href="wallet.html" class="ql"><div class="ql-title-row"><span class="ql-title">Profile &amp; KYC</span><span class="ql-badge blue">Security</span></div><p class="ql-desc">Verification status, limits &amp; merchant trust rating</p></a>
         </div>
 
         <div class="footer-bottom">
@@ -852,7 +842,7 @@ main{padding-top:8px}
             <span>© 2026 All rights reserved.</span>
           </div>
           <div class="footer-links">
-            <button class="hiring">We are Hiring <span class="badge">4 Roles</span></button>
+            <a href="careers.html" class="hiring">We are Hiring <span class="badge">4 Roles</span></a>
             <button>Escrow Rules &amp; Safety</button>
             <button>Help Center</button>
             <button>Partner Program</button>
@@ -864,24 +854,93 @@ main{padding-top:8px}
   </div>
 </main>
 
-<!-- BACK TO TOP -->
 <button class="to-top" id="toTop" aria-label="Back to top">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
 </button>
 
-<!-- MOBILE BOTTOM NAV -->
 <nav class="mobile-nav" aria-label="Mobile Navigation">
   <div class="mobile-nav-inner">
-    <button class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></button>
-    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></button>
-    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></button>
-    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></button>
-    <button class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></button>
+    <a href="index.html" class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
+    <a href="p2p.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></a>
+    <a href="trade.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></a>
+    <a href="swap.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></a>
+    <a href="wallet.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></a>
   </div>
 </nav>
 
+<!-- NAV DRAWER -->
+<div class="drawer-backdrop" id="drawerBackdrop">
+  <div class="drawer">
+    <div class="drawer-head">
+      <a href="index.html" class="drawer-logo">KRYPTO<span>S</span></a>
+      <button class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <a href="index.html" class="drawer-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <div class="drawer-row-content"><div class="drawer-row-title">Main</div></div>
+      </a>
+
+      <div class="drawer-group">
+        <button class="drawer-section open" onclick="toggleGroup('trade')">
+          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span>Trade</span></div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <div class="drawer-sub open" id="group-trade">
+          <a href="p2p.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Trading</span><span class="drawer-badge yellow">LOW FEES</span></div><p class="drawer-sub-desc">Trade OTC bank and Mobile money</p></a>
+          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">My offers</div><p class="drawer-sub-desc">View and manage your created offers</p></a>
+          <a href="p2p-orders.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Orders</span><span class="drawer-badge gray">ESCROW</span></div><p class="drawer-sub-desc">Track active &amp; completed trades</p></a>
+          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Notifications</div><p class="drawer-sub-desc">Order updates and trade notifications</p></a>
+          <a href="trade.html" class="drawer-sub-item"><div class="drawer-sub-title">Spot Trade</div><p class="drawer-sub-desc">Order book trading &amp; spot charts</p></a>
+          <a href="index.html#markets" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">Crypto Spot (Top 150)</span><span class="drawer-badge green">LIVE</span></div><p class="drawer-sub-desc">Top 150 crypto assets by live market cap</p></a>
+          <a href="swap.html" class="drawer-sub-item"><div class="drawer-sub-title">Instant Swap</div><p class="drawer-sub-desc">One-click crypto conversion</p></a>
+        </div>
+      </div>
+
+      <div class="drawer-group">
+        <button class="drawer-section" onclick="toggleGroup('wallet')">
+          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span>Wallet</span></div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <div class="drawer-sub" id="group-wallet">
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">My assets</span><span class="drawer-sub-note">Overview</span></div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Deposit</div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Withdraw</div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Virtual Visa Card</div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Transaction history</div></a>
+        </div>
+      </div>
+
+      <a href="#" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Referral Program</span><span class="drawer-badge yellow">5 USDT BONUS</span></div><div class="drawer-row-desc">Earn 5 USDT for every verified friend</div></div></a>
+
+      <a href="careers.html" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Careers</span><span class="drawer-badge green-light">We're hiring</span></div><div class="drawer-row-desc">Explore 4 open roles &amp; apply directly</div></div></a>
+
+      <div class="drawer-group">
+        <button class="drawer-section" onclick="toggleGroup('support')">
+          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg><span>Support</span></div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <div class="drawer-sub" id="group-support">
+          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Help Center &amp; FAQs</div></a>
+          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Contact Support</div></a>
+          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">P2P Safety Rules &amp; Escrow</div></a>
+        </div>
+      </div>
+
+      <div class="drawer-auth" id="drawerAuth"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ========== DATA ========== */
+/* ============ SUPABASE ============ */
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const USD_PRICES = { BTC: 81223.18, USDT: 1, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
+
+/* ============ DATA ============ */
 const COINS = [
   {sym:"BTC", name:"Bitcoin",  bg:"#F7931A", price:"81,109.81", chg:"+0.77%", up:true,  mcap:"$1.65 Trillion", vol:"$62.88B", rank:"#1", spark:"#0ECB81"},
   {sym:"ETH", name:"Ethereum", bg:"#627EEA", price:"2,354.54",  chg:"+0.43%", up:true,  mcap:"$299.7 Billion", vol:"$11.39B", rank:"#2", spark:"#F6465D"},
@@ -890,15 +949,11 @@ const COINS = [
   {sym:"XRP", name:"XRP",      bg:"#23292F", price:"1.341",     chg:"+0.46%", up:true,  mcap:"$84.7 Billion",  vol:"$3.22B",  rank:"",   spark:"#F6465D"},
   {sym:"USDC",name:"USDC",     bg:"#2775CA", price:"1.0013",    chg:"+0.03%", up:true,  mcap:"$72.8 Billion",  vol:"$2.77B",  rank:"",   spark:"#0ECB81"},
   {sym:"SOL", name:"Solana",   bg:"#141414", price:"102.29",    chg:"+1.14%", up:true,  mcap:"$62.8 Billion",  vol:"$2.39B",  rank:"",   spark:"#F6465D"},
-  {sym:"TRX", name:"TRON",     bg:"#23292F", price:"0.3431",    chg:"+0.73%", up:true,  mcap:"$32.6 Billion",  vol:"$1.24B",  rank:"",   spark:"#F6465D"},
-  {sym:"ZEC", name:"Zcash",    bg:"#F4B728", price:"1,279.68",  chg:"+18.86%",up:true,  mcap:"$21.7 Billion",  vol:"$822.7M", rank:"",   spark:"#0ECB81"},
-  {sym:"DOGE",name:"Dogecoin", bg:"#C2A633", price:"0.0828",    chg:"+0.17%", up:true,  mcap:"$14.2 Billion",  vol:"$541.2M", rank:"",   spark:"#F6465D"},
   {sym:"LINK",name:"Chainlink",bg:"#375BD2", price:"12.76",     chg:"-2.07%", up:false, mcap:"$9.5 Billion",   vol:"$362.7M", rank:"",   spark:"#F6465D"},
   {sym:"ADA", name:"Cardano",  bg:"#0033AD", price:"0.2359",    chg:"-4.14%", up:false, mcap:"$8.7 Billion",   vol:"$329.9M", rank:"",   spark:"#F6465D"},
   {sym:"LTC", name:"Litecoin", bg:"#A6A9AA", price:"61.12",     chg:"+0.41%", up:true,  mcap:"$4.8 Billion",   vol:"$180.5M", rank:"",   spark:"#F6465D"},
 ];
 
-/* ticker coins */
 const TICKER = [
   {sym:"BTC", name:"Bitcoin",  price:"81,109.81", chg:"+1,462.50 (+1.78%)", up:true,  color:"#F7931A"},
   {sym:"ETH", name:"Ethereum", price:"2,354.54",  chg:"+48.20 (+1.83%)",    up:true,  color:"#627EEA"},
@@ -916,12 +971,132 @@ const FAQS = [
   {q:"Is P2P trading on KRYPTOS safe?", a:"Yes. All trades are protected by escrow — seller crypto is locked until payment is verified. Our dispute system ensures fair outcomes."},
   {q:"What is KRYPTOS Swap?", a:"Swap lets you instantly exchange one crypto for another at competitive rates with low fees, no order book needed."},
   {q:"What is KRYPTOS P2P?", a:"P2P (peer-to-peer) trading connects you directly with verified merchants to buy or sell crypto using your preferred local payment method."},
-  {q:"How does Crypto Cash out work?", a:"Sell your crypto to a verified merchant and receive local currency directly to your bank account or mobile wallet — usually within minutes."},
-  {q:"Does KRYPTOS provide a crypto wallet?", a:"Yes. Every account comes with a secure multi-network wallet for sending, receiving, and storing BTC, USDT, ETH, SOL, and 150+ assets."},
   {q:"Why choose KRYPTOS?", a:"Zero maker fees, escrow protection, 500+ payment methods, instant settlement, and 24/7 support — built for both beginners and pro traders."},
 ];
 
-/* ========== RENDER TICKER ========== */
+/* ============ AUTH — conditional header ============ */
+let currentUser = null;
+let currentBalance = 0;
+let balanceHidden = false;
+
+async function initAuth(){
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user || null;
+  await renderHeaderAuth();
+}
+
+async function renderHeaderAuth(){
+  const wrap = document.getElementById('headerAuth');
+  if(!wrap) return;
+
+  if(!currentUser){
+    wrap.innerHTML = `
+      <a href="signup.html" class="btn-yellow">Join us</a>
+      <a href="login.html" class="btn-ghost">Log in</a>
+    `;
+    return;
+  }
+
+  // logged in — fetch balances
+  const { data: bals } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
+  currentBalance = 0;
+  if(bals) bals.forEach(b => currentBalance += Number(b.amount) * (USD_PRICES[b.coin] || 0));
+
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name && meta.first_name.trim()) initial = meta.first_name.trim()[0];
+  else if(meta.last_name && meta.last_name.trim()) initial = meta.last_name.trim()[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+
+  const balanceText = '$' + currentBalance.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  wrap.innerHTML = `
+    <div class="balance">
+      <span class="balance-val" id="hdrBal">${balanceHidden ? '****' : balanceText}</span>
+      <button class="balance-eye" id="hdrEye" title="Hide Balance">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <a href="wallet.html" class="avatar" aria-label="Profile">${initial}</a>
+    <button class="notif-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+      <span class="notif-badge" id="hdrNotif">0</span>
+    </button>
+  `;
+
+  document.getElementById('hdrEye').addEventListener('click', () => {
+    balanceHidden = !balanceHidden;
+    document.getElementById('hdrBal').textContent = balanceHidden ? '****' : balanceText;
+  });
+}
+
+/* ============ DRAWER ============ */
+function openDrawer(){
+  document.getElementById('drawerBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderDrawerAuth();
+}
+function closeDrawer(){
+  document.getElementById('drawerBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function toggleGroup(name){
+  const group = document.getElementById('group-' + name);
+  if(!group) return;
+  const isOpen = group.classList.contains('open');
+  group.classList.toggle('open', !isOpen);
+  const section = group.previousElementSibling;
+  if(section) section.classList.toggle('open', !isOpen);
+}
+
+document.querySelectorAll('.menu-btn').forEach(b => b.addEventListener('click', openDrawer));
+document.getElementById('drawerBackdrop').addEventListener('click', e => {
+  if(e.target.id === 'drawerBackdrop') closeDrawer();
+});
+
+async function renderDrawerAuth(){
+  const wrap = document.getElementById('drawerAuth');
+  if(!wrap) return;
+
+  if(!currentUser){
+    wrap.innerHTML = `
+      <a href="login.html" class="drawer-auth-btn login">Log in</a>
+      <a href="signup.html" class="drawer-auth-btn signup">Create a new account</a>
+    `;
+    return;
+  }
+
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name && meta.first_name.trim()) initial = meta.first_name.trim()[0];
+  else if(meta.last_name && meta.last_name.trim()) initial = meta.last_name.trim()[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+
+  const bal = '$' + currentBalance.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  wrap.innerHTML = `
+    <div class="drawer-user">
+      <div class="drawer-user-avatar">${initial}</div>
+      <div style="min-width:0;flex:1">
+        <div class="drawer-user-email">${currentUser.email || ''}</div>
+        <div class="drawer-user-bal">${bal}</div>
+      </div>
+    </div>
+    <a href="wallet.html" class="drawer-auth-btn login">My wallet</a>
+    <button onclick="doLogout()" class="drawer-auth-btn logout">Log out</button>
+  `;
+}
+
+async function doLogout(){
+  if(confirm('Log out of KRYPTOS?')){
+    await sb.auth.signOut();
+    location.href = 'login.html';
+  }
+}
+
+/* ============ TICKER ============ */
 function renderTicker(){
   const track = document.getElementById('tickerTrack');
   const svgs = {
@@ -934,22 +1109,13 @@ function renderTicker(){
   let html = '';
   for(let i=0;i<2;i++){
     TICKER.forEach(c=>{
-      html += `<div class="ticker-item">
-        <div class="ticker-icon">${svgs[c.sym]||''}</div>
-        <div>
-          <div class="ticker-name">${c.name}</div>
-          <div class="ticker-price-row">
-            <span class="ticker-price">${c.price}</span>
-            <span class="ticker-change ${c.up?'':'down'}">${c.chg}</span>
-          </div>
-        </div>
-      </div>`;
+      html += `<div class="ticker-item"><div class="ticker-icon">${svgs[c.sym]||''}</div><div><div class="ticker-name">${c.name}</div><div class="ticker-price-row"><span class="ticker-price">${c.price}</span><span class="ticker-change ${c.up?'':'down'}">${c.chg}</span></div></div></div>`;
     });
   }
   track.innerHTML = html;
 }
 
-/* ========== RENDER MARKET TABLE ========== */
+/* ============ MARKET TABLE ============ */
 function sparkline(color){
   return `<svg class="spark" viewBox="0 0 100 32"><path d="M0 16 C8 16 8 12 16 12 C24 12 24 13 33 13 C41 13 41 9 50 9 C58 9 58 10 66 10 C74 10 74 5 83 5 C91 5 91 7 100 7" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/></svg>`;
 }
@@ -961,56 +1127,26 @@ function renderMarket(){
   COINS.forEach(c=>{
     const rankBadge = c.rank ? `<span class="mcap-badge">${c.rank} MCAP</span>` : '';
     html += `<tr>
-      <td>
-        <div class="asset-cell">
-          <div class="coin-logo" style="background:${c.bg}">
-            <svg viewBox="0 0 32 32" fill="none"><text x="16" y="21" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${c.sym[0]}</text></svg>
-          </div>
-          <div>
-            <div class="coin-symbol">${c.sym} ${rankBadge}</div>
-            <div class="coin-name">${c.name}</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="asset-cell"><div class="coin-logo" style="background:${c.bg}"><svg viewBox="0 0 32 32" fill="none"><text x="16" y="21" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${c.sym[0]}</text></svg></div><div><div class="coin-symbol">${c.sym} ${rankBadge}</div><div class="coin-name">${c.name}</div></div></div></td>
       <td class="text-right vol-cell"><div class="val">${c.mcap}</div><div class="sub">24h Vol: ${c.vol}</div></td>
       <td class="text-center">${sparkline(c.spark)}</td>
       <td class="text-right price-cell"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></td>
       <td class="text-center"><span class="change-badge ${c.up?'up':'down'}">${c.chg}</span></td>
-      <td class="text-right"><button class="trade-btn">Trade <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></td>
+      <td class="text-right"><a href="trade.html" class="trade-btn">Trade <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></td>
     </tr>`;
-
-    mobileHtml += `<div class="mobile-market-row">
-      <div class="mobile-asset">
-        <div class="coin-logo" style="background:${c.bg}">
-          <svg viewBox="0 0 32 32" fill="none"><text x="16" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${c.sym[0]}</text></svg>
-        </div>
-        <div>
-          <div class="coin-symbol" style="font-size:14px">${c.sym}</div>
-          <div class="coin-name" style="font-size:12px">${c.name}</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="mobile-price"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></div>
-        <div class="mobile-change ${c.up?'up':'down'}">${c.chg}</div>
-      </div>
-    </div>`;
+    mobileHtml += `<a href="trade.html" class="mobile-market-row" style="color:inherit;text-decoration:none">
+      <div class="mobile-asset"><div class="coin-logo" style="background:${c.bg}"><svg viewBox="0 0 32 32" fill="none"><text x="16" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${c.sym[0]}</text></svg></div><div><div class="coin-symbol" style="font-size:14px">${c.sym}</div><div class="coin-name" style="font-size:12px">${c.name}</div></div></div>
+      <div style="display:flex;align-items:center;gap:12px"><div class="mobile-price"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></div><div class="mobile-change ${c.up?'up':'down'}">${c.chg}</div></div>
+    </a>`;
   });
   tbody.innerHTML = html;
   mb.innerHTML = mobileHtml;
 }
 
-/* ========== RENDER FAQ ========== */
+/* ============ FAQ ============ */
 function renderFaq(){
   const list = document.getElementById('faqList');
-  list.innerHTML = FAQS.map(f=>`
-    <div class="faq-item">
-      <button class="faq-q">
-        <span class="fq">${f.q}</span>
-        <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
-    </div>`).join('');
-
+  list.innerHTML = FAQS.map(f=>`<div class="faq-item"><button class="faq-q"><span class="fq">${f.q}</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span></button><div class="faq-a"><div class="faq-a-inner">${f.a}</div></div></div>`).join('');
   list.querySelectorAll('.faq-q').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const item = btn.parentElement;
@@ -1021,7 +1157,7 @@ function renderFaq(){
   });
 }
 
-/* ========== SEARCH FILTER ========== */
+/* ============ SEARCH ============ */
 function initSearch(){
   const inp = document.getElementById('coinSearch');
   inp.addEventListener('input',()=>{
@@ -1035,43 +1171,20 @@ function initSearch(){
   });
 }
 
-/* ========== TABS ========== */
-function initTabs(){
-  document.querySelectorAll('.tab').forEach(t=>{
-    t.addEventListener('click',()=>{
-      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-    });
-  });
-}
-
-/* ========== BACK TO TOP ========== */
+/* ============ BACK TO TOP ============ */
 function initToTop(){
   const btn = document.getElementById('toTop');
-  window.addEventListener('scroll',()=>{
-    btn.classList.toggle('visible', window.scrollY > 400);
-  });
+  window.addEventListener('scroll',()=>{ btn.classList.toggle('visible', window.scrollY > 400); });
   btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 }
 
-/* ========== SWAP BUTTON ========== */
-function initSwap(){
-  document.querySelectorAll('.swap-btn').forEach(b=>{
-    b.addEventListener('click',()=>{
-      b.style.transform = 'translateX(-50%) rotate(180deg)';
-      setTimeout(()=>b.style.transform='translateX(-50%)',300);
-    });
-  });
-}
-
-/* ========== INIT ========== */
+/* ============ INIT ============ */
 renderTicker();
 renderMarket();
 renderFaq();
 initSearch();
-initTabs();
 initToTop();
-initSwap();
+initAuth();
 </script>
 </body>
 </html>
