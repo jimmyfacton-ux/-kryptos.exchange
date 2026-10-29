@@ -18,7 +18,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
 html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
-body{font-family:var(--font-sans);background:var(--wallet-bg);color:var(--brand-dark);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);background:var(--wallet-bg);color:var(--brand-dark);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--brand-primary);color:var(--brand-dark)}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
@@ -30,53 +30,55 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 @media(min-width:768px){.container{padding:0 24px}}
 .flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
 .flex-col{flex-direction:column}.flex-1{flex:1}.shrink-0{flex-shrink:0}
-.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
-.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}
+.text-xs{font-size:12px}.text-sm{font-size:14px}
 .font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
 .tracking-tight{letter-spacing:-.02em}
 .text-muted{color:var(--muted)}
 .rounded-lg{border-radius:8px}.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
-.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .uppercase{text-transform:uppercase}
 
 /* header */
 .site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.header-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
-@media(max-width:640px){.header-inner{height:56px}}
-.brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.menu-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
+.header-inner{height:56px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+@media(min-width:640px){.header-inner{height:64px}}
+.brand{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.menu-btn{display:flex;align-items:center;gap:6px;padding:6px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
 .menu-btn:hover{background:var(--fill)}
 .menu-btn svg{width:22px;height:22px;stroke-width:2.4}
-.logo-text{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:2px}
+.logo-text{font-weight:800;font-size:17px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:1px}
+@media(min-width:640px){.logo-text{font-size:20px}}
 .logo-text .accent{color:var(--brand-hover)}
-.logo-sub{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-left:2px}
-.nav-links{display:flex;align-items:center;gap:4px;margin-left:24px}
-.nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
+.logo-sub{font-size:9px;font-weight:700;color:var(--muted);margin-left:1px}
+@media(min-width:640px){.logo-sub{font-size:10px}}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:16px}
+.nav-link{padding:7px 10px;font-size:13px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
 .nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
 .nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
-.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
-.header-actions{display:flex;align-items:center;gap:12px}
+.nav-badge{margin-left:4px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
+.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .balance{display:flex;align-items:center;gap:4px}
-.balance-val{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.balance-val{font-size:13px;font-weight:700;color:var(--brand-dark);font-family:ui-monospace,monospace}
+@media(min-width:640px){.balance-val{font-size:14px}}
 .balance-eye{color:var(--muted);padding:2px}
 .balance-eye svg{width:14px;height:14px}
-.avatar{width:32px;height:32px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
-.notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
+.avatar{width:30px;height:30px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+@media(min-width:640px){.avatar{width:32px;height:32px}}
+.notif-btn{position:relative;padding:6px;color:var(--brand-dark);border-radius:8px;flex-shrink:0}
 .notif-btn:hover{background:var(--fill)}
-.notif-btn svg{width:20px;height:20px;stroke-width:2.2}
-.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
+.notif-btn svg{width:18px;height:18px;stroke-width:2.2}
+.notif-badge{position:absolute;top:0;right:0;min-width:16px;height:16px;padding:0 4px;background:#dc2626;color:#fff;font-size:9px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
 
 /* main */
-main{padding-top:8px}
-.wallet-wrap{max-width:1280px;margin:0 auto;padding:8px 16px 100px}
-@media(min-width:768px){.wallet-wrap{padding:8px 24px 40px}}
-@media(max-width:767px){.wallet-wrap{max-width:640px}}
-.wallet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:8px}
-.wallet-title{font-size:24px;font-weight:900;color:#030712;letter-spacing:-.02em}
+main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+@media(min-width:768px){main{padding-bottom:40px}}
+.wallet-wrap{max-width:1280px;margin:0 auto;padding:8px 16px 0}
+@media(min-width:768px){.wallet-wrap{padding:8px 24px 0}}
+.wallet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-top:6px}
+.wallet-title{font-size:22px;font-weight:900;color:#030712;letter-spacing:-.02em}
 @media(min-width:640px){.wallet-title{font-size:30px}}
-.refresh-btn{padding:8px;color:#6b7280;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:color .15s}
+.refresh-btn{padding:7px;color:#6b7280;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:color .15s}
 .refresh-btn:hover{color:#111827}
-.refresh-btn svg{width:16px;height:16px}
+.refresh-btn svg{width:15px;height:15px}
 .refresh-btn.spinning svg{animation:spin .7s linear}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -85,131 +87,153 @@ main{padding-top:8px}
 @media(min-width:768px){.wallet-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:32px;align-items:start}}
 .wallet-left{grid-column:span 5}
 @media(min-width:768px){.wallet-left{position:sticky;top:80px}}
-.wallet-right{grid-column:span 7}
+.wallet-right{grid-column:span 7;margin-top:16px}
+@media(min-width:768px){.wallet-right{margin-top:0}}
 
 /* tabs */
-.tab-row{display:flex;gap:8px;margin-bottom:16px}
-.tab-btn{padding:10px 20px;border-radius:16px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:8px;transition:all .15s}
+.tab-row{display:flex;gap:6px;margin-bottom:14px}
+.tab-btn{padding:9px 16px;border-radius:14px;font-weight:700;font-size:11px;display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+@media(min-width:640px){.tab-btn{padding:10px 20px;border-radius:16px;font-size:12px;gap:8px}}
 .tab-btn.active{background:var(--brand-dark);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)}
 .tab-btn:not(.active){background:#fff;color:var(--muted);border:1px solid var(--border)}
 .tab-btn:not(.active):hover{background:var(--fill)}
-.tab-btn svg{width:16px;height:16px}
+.tab-btn svg{width:14px;height:14px}
 
 /* balance card */
-.balance-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.03);margin-bottom:20px}
-.balance-label-row{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.balance-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.03);margin-bottom:16px}
+@media(min-width:640px){.balance-card{border-radius:24px;padding:24px;margin-bottom:20px}}
+.balance-label-row{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px}
+@media(min-width:640px){.balance-label-row{font-size:12px}}
 .eye-icon{color:var(--muted);transition:color .15s}
 .eye-icon:hover{color:var(--brand-dark)}
-.eye-icon svg{width:16px;height:16px}
-.balance-big{font-size:32px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em;margin-bottom:8px}
+.eye-icon svg{width:14px;height:14px}
+.balance-big{font-size:28px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em;margin-bottom:8px}
 @media(min-width:640px){.balance-big{font-size:36px}}
-.balance-desc{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:20px}
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.deposit-btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.balance-desc{font-size:11px;font-weight:500;color:var(--muted);margin-bottom:16px;line-height:1.4}
+@media(min-width:640px){.balance-desc{font-size:12px;margin-bottom:20px}}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:640px){.action-grid{gap:12px}}
+.deposit-btn{width:100%;padding:12px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:13px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+@media(min-width:640px){.deposit-btn{padding:14px;font-size:14px;border-radius:12px;gap:8px}}
 .deposit-btn:hover{background:var(--brand-hover)}
 .deposit-btn:active{transform:scale(.99)}
-.withdraw-btn{width:100%;padding:14px;background:var(--fill);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.withdraw-btn{width:100%;padding:12px;background:var(--fill);color:var(--brand-dark);font-weight:700;font-size:13px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+@media(min-width:640px){.withdraw-btn{padding:14px;font-size:14px;border-radius:12px;gap:8px}}
 .withdraw-btn:hover{background:#e5e7eb}
 .withdraw-btn:active{transform:scale(.99)}
-.deposit-btn svg,.withdraw-btn svg{width:16px;height:16px;stroke-width:2.5}
+.deposit-btn svg,.withdraw-btn svg{width:14px;height:14px;stroke-width:2.5}
 
 /* asset tabs */
 .asset-tab-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
-.asset-tabs{display:flex;gap:16px}
-.asset-tab{font-size:12px;font-weight:700;padding-bottom:4px;color:var(--muted);transition:color .15s;border-bottom:2px solid transparent}
-.asset-tab:hover{color:var(--brand-dark)}
+.asset-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.asset-tabs::-webkit-scrollbar{display:none}
+@media(min-width:640px){.asset-tabs{gap:16px}}
+.asset-tab{font-size:11px;font-weight:700;padding:4px 2px;color:var(--muted);transition:color .15s;border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+@media(min-width:640px){.asset-tab{font-size:12px}}
 .asset-tab.active{color:var(--brand-dark);border-bottom-color:var(--brand-primary)}
-.hide-zero-label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted)}
+.hide-zero-label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0}
 .hide-zero-label input{width:14px;height:14px;accent-color:var(--brand-primary);cursor:pointer}
 
 /* asset cards */
 .asset-list{display:flex;flex-direction:column;gap:10px}
-.asset-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.asset-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;box-shadow:0 1px 2px rgba(0,0,0,.03);gap:12px}
+@media(min-width:640px){.asset-card{border-radius:16px;padding:16px}}
 .asset-card:hover{border-color:#d1d5db}
-.asset-left{display:flex;align-items:center;gap:12px;min-width:0}
-.asset-name{font-size:14px;font-weight:700;color:var(--brand-dark);display:block}
-.asset-price{font-size:12px;font-weight:600;color:var(--muted);margin-top:2px}
-.asset-right{text-align:right;flex-shrink:0;margin-left:12px}
-.asset-balance{font-size:14px;font-weight:700;color:var(--brand-dark);font-family:ui-monospace,monospace}
-.asset-usd{font-size:12px;font-weight:600;color:var(--muted);margin-top:2px}
-.asset-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
-.asset-deposit{padding:6px 12px;font-size:11px;font-weight:700;background:var(--brand-primary);color:var(--brand-dark);border-radius:8px;transition:background .15s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.asset-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.asset-left > svg{width:34px;height:34px;flex-shrink:0}
+@media(min-width:640px){.asset-left > svg{width:40px;height:40px}}
+.asset-left > div{min-width:0}
+.asset-name{font-size:13px;font-weight:700;color:var(--brand-dark);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:640px){.asset-name{font-size:14px}}
+.asset-price{font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}
+.asset-right{text-align:right;flex-shrink:0;min-width:0}
+.asset-balance{font-size:12px;font-weight:700;color:var(--brand-dark);font-family:ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px}
+@media(min-width:640px){.asset-balance{font-size:14px;max-width:none}}
+.asset-usd{font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}
+.asset-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:8px}
+.asset-deposit{padding:5px 10px;font-size:10px;font-weight:700;background:var(--brand-primary);color:var(--brand-dark);border-radius:6px;transition:background .15s;box-shadow:0 1px 2px rgba(0,0,0,.04);white-space:nowrap}
+@media(min-width:640px){.asset-deposit{padding:6px 12px;font-size:11px;border-radius:8px}}
 .asset-deposit:hover{background:var(--brand-hover)}
-.asset-withdraw{padding:6px 12px;font-size:11px;font-weight:700;background:var(--fill);color:var(--brand-dark);border:1px solid var(--border);border-radius:8px;transition:background .15s}
+.asset-withdraw{padding:5px 10px;font-size:10px;font-weight:700;background:var(--fill);color:var(--brand-dark);border:1px solid var(--border);border-radius:6px;transition:background .15s;white-space:nowrap}
+@media(min-width:640px){.asset-withdraw{padding:6px 12px;font-size:11px;border-radius:8px}}
 .asset-withdraw:hover{background:#e5e7eb}
 
 /* empty */
-.empty-state{background:#fff;border:1px dashed var(--border);border-radius:16px;padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
-.empty-state svg{width:40px;height:40px;margin:0 auto 12px;opacity:.4}
+.empty-state{background:#fff;border:1px dashed var(--border);border-radius:14px;padding:32px 16px;text-align:center;color:var(--muted);font-size:12px;font-weight:500;line-height:1.5}
+@media(min-width:640px){.empty-state{padding:40px 20px;border-radius:16px;font-size:13px}}
+.empty-state svg{width:36px;height:36px;margin:0 auto 10px;opacity:.4}
 
 /* activity */
 .activity-list{display:flex;flex-direction:column;gap:8px}
-.activity-item{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.activity-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.activity-icon{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.activity-item{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+@media(min-width:640px){.activity-item{border-radius:14px;padding:14px}}
+.activity-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.activity-icon{width:28px;height:28px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .activity-icon.in{background:#d1fae5;color:#065f46}
 .activity-icon.out{background:#fee2e2;color:#991b1b}
-.activity-icon svg{width:16px;height:16px}
-.activity-title{font-size:13px;font-weight:700;color:#111827}
-.activity-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.activity-icon svg{width:14px;height:14px}
+.activity-title{font-size:12px;font-weight:700;color:#111827;line-height:1.3}
+.activity-meta{font-size:10px;color:var(--muted);margin-top:2px}
 .activity-amount{text-align:right;flex-shrink:0}
-.activity-amount .amt{font-size:13px;font-weight:800;font-family:ui-monospace,monospace}
+.activity-amount .amt{font-size:12px;font-weight:800;font-family:ui-monospace,monospace}
 .activity-amount .amt.in{color:var(--success)}
 .activity-amount .amt.out{color:var(--danger)}
-.activity-amount .time{font-size:10px;color:var(--muted);margin-top:2px}
-.pill{display:inline-block;padding:2px 8px;border-radius:9999px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-left:6px}
+.activity-amount .time{font-size:9px;color:var(--muted);margin-top:2px}
+.pill{display:inline-block;padding:1px 6px;border-radius:9999px;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-left:4px}
 .pill.pending{background:#fef3c7;color:#92400e}
 .pill.approved,.pill.completed{background:#d1fae5;color:#065f46}
 .pill.rejected,.pill.failed{background:#fee2e2;color:#991b1b}
 
 /* modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:24px;padding:24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:auto}
-.modal-title{font-size:20px;font-weight:900;color:var(--brand-dark);margin-bottom:4px;padding-right:32px}
-.modal-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
-.modal-close{position:absolute;top:16px;right:16px;padding:6px;color:var(--muted);border-radius:8px;transition:all .15s}
+.modal{background:#fff;border-radius:18px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:auto;max-height:90vh;overflow-y:auto}
+@media(min-width:640px){.modal{border-radius:24px;padding:24px}}
+.modal-title{font-size:17px;font-weight:900;color:var(--brand-dark);margin-bottom:4px;padding-right:28px;line-height:1.3}
+@media(min-width:640px){.modal-title{font-size:20px}}
+.modal-sub{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.4}
+@media(min-width:640px){.modal-sub{font-size:12px;margin-bottom:20px}}
+.modal-close{position:absolute;top:12px;right:12px;padding:6px;color:var(--muted);border-radius:8px;transition:all .15s}
 .modal-close:hover{background:var(--fill);color:var(--brand-dark)}
-.modal-close svg{width:20px;height:20px}
-.modal-label{font-size:12px;font-weight:700;color:#4b5563;margin-bottom:6px;display:block}
-.modal-input{width:100%;padding:12px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:14px;font-weight:700;color:var(--brand-dark);margin-bottom:14px}
+.modal-close svg{width:18px;height:18px}
+.modal-label{font-size:11px;font-weight:700;color:#4b5563;margin-bottom:6px;display:block}
+@media(min-width:640px){.modal-label{font-size:12px}}
+.modal-input{width:100%;padding:10px;background:var(--fill);border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;color:var(--brand-dark);margin-bottom:12px}
+@media(min-width:640px){.modal-input{padding:12px;font-size:14px;border-radius:12px;margin-bottom:14px}}
 .modal-input:focus{background:#fff;border-color:var(--brand-primary)}
-.modal-confirm{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:14px;border-radius:12px;transition:background .15s;margin-top:6px}
+.modal-confirm{width:100%;padding:12px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:13px;border-radius:10px;transition:background .15s;margin-top:4px}
+@media(min-width:640px){.modal-confirm{padding:14px;font-size:14px;border-radius:12px;margin-top:6px}}
 .modal-confirm:hover{background:var(--brand-hover)}
 .modal-confirm:disabled{opacity:.6;cursor:not-allowed}
-.modal-info{background:var(--fill);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px}
-.modal-info-row{display:flex;justify-content:space-between;padding:3px 0}
-.modal-info-row span:first-child{color:#6b7280;font-weight:600}
-.modal-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace}
-.msg{margin-top:10px;padding:10px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center}
-.msg.show{display:block}
-.msg.success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
-.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+.modal-info{background:var(--fill);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px}
+@media(min-width:640px){.modal-info{border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px}}
+.modal-info-row{display:flex;justify-content:space-between;padding:2px 0;gap:8px}
+.modal-info-row span:first-child{color:#6b7280;font-weight:600;flex-shrink:0}
+.modal-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
 
 /* toast */
-.toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:300;max-width:340px;font-size:13px;font-weight:700}
+.toast{position:fixed;bottom:80px;left:16px;right:16px;background:#065f46;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:300;font-size:12px;font-weight:700}
+@media(min-width:768px){.toast{bottom:24px;left:auto;right:24px;max-width:340px;padding:14px 20px;font-size:13px}}
 .toast.show{display:flex;animation:slideIn .3s}
 .toast.error{background:#991b1b}
-.toast svg{width:18px;height:18px;flex-shrink:0}
+.toast svg{width:16px;height:16px;flex-shrink:0}
 @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 /* mobile nav */
-.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.98);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 @media(min-width:768px){.mobile-nav{display:none}}
-.mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
-.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mobile-nav-inner{max-width:500px;margin:0 auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;min-width:0}
 .mnav-item.active{color:var(--brand-dark);font-weight:700}
-.mnav-item:hover{color:var(--brand-dark)}
 .mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
 .mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
-.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
+.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:767px){.md-only{display:none}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand">
@@ -253,7 +277,7 @@ main{padding-top:8px}
       <div class="wallet-left">
         <div class="tab-row">
           <button class="tab-btn active">Wallet</button>
-          <button class="tab-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-primary)"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>Visa card</button>
+          <button class="tab-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-primary)"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>Visa</button>
         </div>
 
         <div class="balance-card">
@@ -283,7 +307,7 @@ main{padding-top:8px}
             <button class="asset-tab" data-view="recent">Recent activity</button>
             <button class="asset-tab" data-view="all">All operations</button>
           </div>
-          <label class="hide-zero-label"><input type="checkbox" id="hideZero">Hide 0 balance</label>
+          <label class="hide-zero-label"><input type="checkbox" id="hideZero">Hide 0</label>
         </div>
 
         <div class="asset-list" id="assetList">
@@ -295,7 +319,6 @@ main{padding-top:8px}
   </div>
 </main>
 
-<!-- MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()" aria-label="Close">
@@ -305,13 +328,11 @@ main{padding-top:8px}
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
   <span id="toastMsg">Done</span>
 </div>
 
-<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Main Navigation">
   <div class="mobile-nav-inner">
     <a href="index.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
@@ -323,9 +344,7 @@ main{padding-top:8px}
 </nav>
 
 <script>
-/* ============================================================
-   SUPABASE
-============================================================ */
+/* ============ SUPABASE ============ */
 const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -335,9 +354,7 @@ let userBalances = {};
 let balanceHidden = false;
 let currentView = 'wallet';
 
-/* ============================================================
-   COINS + PRICES
-============================================================ */
+/* ============ COINS + PRICES ============ */
 const USD_PRICES = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
 const COINS = [
@@ -348,103 +365,67 @@ const COINS = [
   {sym:"BNB",  name:"BNB",       svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 7.5l3.2 3.2-3.2 3.2-3.2-3.2L16 7.5zm5.5 5.5l3.2 3.2-3.2 3.2-3.2-3.2 3.2-3.2zM7.3 16.2l3.2-3.2 3.2 3.2-3.2 3.2-3.2-3.2zm8.7 8.7l3.2-3.2-3.2-3.2-3.2 3.2 3.2 3.2zm0-5.8l2.9-2.9-2.9-2.9-2.9 2.9 2.9 2.9z" fill="#fff"/></svg>'},
 ];
 
-/* ============================================================
-   DEPOSIT ADDRESSES  ⚠️ REPLACE WITH REAL ONES
-============================================================ */
+/* ============ YOUR REAL DEPOSIT ADDRESSES ============ */
 const DEPOSIT_ADDRESSES = {
-  BTC:  'bc1qucnw8wt7fmd8xqsjmlvzcjdh9lep0h0nh7qwkl',
-  USDT: 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE',
-  ETH:  '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0',
-  SOL:  '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
-  BNB:  '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0'
+  BTC:  '1EBtTssZpAiQThPb4jDmkhqQru5BmcpM2N',
+  USDT: 'TDe4JVUhdWbQ8BgbDvN5WorDbuiGmj3guP',
+  ETH:  '0xE10454BaDb0f388F78E2807e355542f28D5F60b8',
+  SOL:  '5vmEAkzkhRGoR65H688cBzCG3E2XYGawhX5xKoDJfJcV',
+  BNB:  '0xE10454BaDb0f388F78E2807e355542f28D5F60b8'
 };
 const DEPOSIT_NETWORKS = { BTC:'Bitcoin', USDT:'TRC20', ETH:'ERC20', SOL:'Solana', BNB:'BEP20' };
 
-/* ============================================================
-   INIT — auth guard + avatar (metadata → profiles fallback)
-============================================================ */
+/* ============ INIT ============ */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
-  if(!session){
-    location.href = 'login.html';
-    return;
-  }
+  if(!session){ location.href = 'login.html'; return; }
   currentUser = session.user;
-
-  // ---- avatar initial with fallback chain ----
   await setAvatar(currentUser);
-
-  // hide notif badge by default
   document.getElementById('notifBadge').style.display = 'none';
-
   await loadBalances();
   renderAssets();
 })();
 
 async function setAvatar(user){
-  const avatarEl = document.getElementById('headerAvatar');
+  const el = document.getElementById('headerAvatar');
   let initial = '';
-
-  // 1. try user_metadata
   const meta = user.user_metadata || {};
-  const mFirst = (meta.first_name || '').trim();
-  const mLast  = (meta.last_name  || '').trim();
-  if(mFirst) initial = mFirst[0];
-  else if(mLast) initial = mLast[0];
-
-  // 2. try profiles table if metadata empty
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
   if(!initial){
-    const { data: prof } = await sb.from('profiles')
-      .select('first_name, last_name')
-      .eq('id', user.id)
-      .maybeSingle();
+    const { data: prof } = await sb.from('profiles').select('first_name, last_name').eq('id', user.id).maybeSingle();
     if(prof){
-      if(prof.first_name && prof.first_name.trim()) initial = prof.first_name.trim()[0];
-      else if(prof.last_name && prof.last_name.trim()) initial = prof.last_name.trim()[0];
+      if(prof.first_name) initial = prof.first_name[0];
+      else if(prof.last_name) initial = prof.last_name[0];
     }
   }
-
-  // 3. fallback to email first character
   if(!initial && user.email) initial = user.email[0];
-
-  // 4. final fallback
   if(!initial) initial = '?';
-
-  avatarEl.textContent = initial.toUpperCase();
-  console.log('[KRYPTOS] Avatar initial:', initial.toUpperCase(), '| metadata:', meta, '| email:', user.email);
+  el.textContent = initial.toUpperCase();
 }
 
-/* ============================================================
-   BALANCES
-============================================================ */
+/* ============ BALANCES ============ */
 async function loadBalances(){
   const { data, error } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
   userBalances = {};
   COINS.forEach(c => userBalances[c.sym] = 0);
-  if(!error && data){
-    data.forEach(b => userBalances[b.coin] = Number(b.amount));
-  }
+  if(!error && data){ data.forEach(b => userBalances[b.coin] = Number(b.amount)); }
   updateBalanceDisplay();
 }
 
 function totalUSD(){
-  let total = 0;
-  for(const sym in userBalances){
-    total += userBalances[sym] * (USD_PRICES[sym] || 0);
-  }
-  return total;
+  let t = 0;
+  for(const sym in userBalances) t += userBalances[sym] * (USD_PRICES[sym] || 0);
+  return t;
 }
 
 function updateBalanceDisplay(){
-  const usd = totalUSD();
-  const val = '$' + usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('balanceDisplay').textContent = balanceHidden ? '****' : val;
-  document.getElementById('headerBalance').textContent = balanceHidden ? '****' : val;
+  const v = '$' + totalUSD().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('balanceDisplay').textContent = balanceHidden ? '****' : v;
+  document.getElementById('headerBalance').textContent = balanceHidden ? '****' : v;
 }
 
-/* ============================================================
-   RENDER
-============================================================ */
+/* ============ RENDER ============ */
 function renderAssets(){
   if(currentView !== 'wallet'){ renderActivity(); return; }
   const list = document.getElementById('assetList');
@@ -488,10 +469,7 @@ async function renderActivity(){
   list.innerHTML = `<div class="empty-state">Loading transactions...</div>`;
   const { data, error } = await sb.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(50);
   if(error || !data || data.length === 0){
-    list.innerHTML = `<div class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-      No activity yet. Deposits, withdrawals, and trades will appear here.
-    </div>`;
+    list.innerHTML = `<div class="empty-state">No activity yet. Deposits, withdrawals, and trades will appear here.</div>`;
     return;
   }
   list.innerHTML = `<div class="activity-list">${data.map(tx=>{
@@ -527,9 +505,7 @@ document.querySelectorAll('.asset-tab').forEach(t => {
 });
 document.getElementById('hideZero').addEventListener('change', renderAssets);
 
-/* ============================================================
-   MODAL
-============================================================ */
+/* ============ MODAL ============ */
 function openModal(type, symbol){
   const coin = symbol || 'BTC';
   const c = COINS.find(x => x.sym === coin);
@@ -553,7 +529,6 @@ function openModal(type, symbol){
       <label class="modal-label">Transaction hash (optional)</label>
       <input class="modal-input" id="depTxHash" placeholder="0x... or transaction ID" style="font-family:monospace;font-size:11px" />
       <button class="modal-confirm" id="depSubmit" onclick="submitDeposit('${coin}')">I've Sent The Crypto</button>
-      <div class="msg" id="depMsg"></div>
     `;
   } else {
     const bal = userBalances[coin] || 0;
@@ -568,7 +543,6 @@ function openModal(type, symbol){
       <label class="modal-label">Amount (${coin})</label>
       <input class="modal-input" type="number" step="any" id="wdAmount" placeholder="0.00" />
       <button class="modal-confirm" id="wdSubmit" onclick="submitWithdraw('${coin}')">Request Withdrawal</button>
-      <div class="msg" id="wdMsg"></div>
     `;
   }
   document.getElementById('modalBackdrop').classList.add('show');
@@ -583,21 +557,12 @@ document.getElementById('modalBackdrop').addEventListener('click', e => {
   if(e.target.id === 'modalBackdrop') closeModal();
 });
 
-function showFormMsg(id, type, txt){
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.className = 'msg show ' + type;
-  el.textContent = txt;
-}
-
-/* ============================================================
-   SUBMIT DEPOSIT
-============================================================ */
+/* ============ SUBMIT DEPOSIT (silent — no popup) ============ */
 async function submitDeposit(coin){
   const amount = parseFloat(document.getElementById('depAmount').value);
   const txHash = document.getElementById('depTxHash').value.trim();
   const btn = document.getElementById('depSubmit');
-  if(!amount || amount <= 0){ showFormMsg('depMsg','error','Enter a valid amount.'); return; }
+  if(!amount || amount <= 0){ toast('Enter a valid amount.', true); return; }
 
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Submitting...';
@@ -612,28 +577,22 @@ async function submitDeposit(coin){
   });
   btn.disabled = false;
   btn.textContent = "I've Sent The Crypto";
-  if(error){ showFormMsg('depMsg','error', error.message); return; }
-  showFormMsg('depMsg','success','Deposit request submitted! Admin will review shortly.');
-  toast('Deposit request submitted');
-  setTimeout(() => {
-    closeModal();
-    if(currentView !== 'wallet'){ currentView = 'wallet'; document.querySelectorAll('.asset-tab').forEach((t,i)=>{t.classList.toggle('active', i===0);}); }
-    renderAssets();
-  }, 1800);
+  if(error){ toast(error.message, true); return; }
+  closeModal();
+  if(currentView !== 'wallet'){ currentView = 'wallet'; document.querySelectorAll('.asset-tab').forEach((t,i)=>{t.classList.toggle('active', i===0);}); }
+  renderAssets();
 }
 
-/* ============================================================
-   SUBMIT WITHDRAW
-============================================================ */
+/* ============ SUBMIT WITHDRAW (silent — no popup) ============ */
 async function submitWithdraw(coin){
   const addr = document.getElementById('wdAddr').value.trim();
   const amount = parseFloat(document.getElementById('wdAmount').value);
   const btn = document.getElementById('wdSubmit');
   const bal = userBalances[coin] || 0;
 
-  if(!addr || addr.length < 15){ showFormMsg('wdMsg','error','Enter a valid destination address.'); return; }
-  if(!amount || amount <= 0){ showFormMsg('wdMsg','error','Enter a valid amount.'); return; }
-  if(amount > bal){ showFormMsg('wdMsg','error','Insufficient balance. Available: ' + bal + ' ' + coin); return; }
+  if(!addr || addr.length < 15){ toast('Enter a valid destination address.', true); return; }
+  if(!amount || amount <= 0){ toast('Enter a valid amount.', true); return; }
+  if(amount > bal){ toast('Insufficient balance. Available: ' + bal + ' ' + coin, true); return; }
 
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Submitting...';
@@ -648,15 +607,11 @@ async function submitWithdraw(coin){
   });
   btn.disabled = false;
   btn.textContent = 'Request Withdrawal';
-  if(error){ showFormMsg('wdMsg','error', error.message); return; }
-  showFormMsg('wdMsg','success','Withdrawal request submitted! Admin will review shortly.');
-  toast('Withdrawal request submitted');
-  setTimeout(() => { closeModal(); }, 1800);
+  if(error){ toast(error.message, true); return; }
+  closeModal();
 }
 
-/* ============================================================
-   TOGGLES / REFRESH / TOAST
-============================================================ */
+/* ============ TOGGLES / REFRESH / TOAST ============ */
 document.getElementById('toggleBalance').addEventListener('click', () => { balanceHidden = !balanceHidden; updateBalanceDisplay(); });
 document.getElementById('headerEye').addEventListener('click', () => { balanceHidden = !balanceHidden; updateBalanceDisplay(); });
 document.getElementById('refreshBtn').addEventListener('click', async () => {
