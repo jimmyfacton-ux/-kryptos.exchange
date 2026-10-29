@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
@@ -28,7 +29,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 @media(min-width:768px){.container{padding:0 24px}}
 .flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
 .flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}.shrink-0{flex-shrink:0}
-.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-5{gap:20px}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
 .text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}
 .text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}
 .font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
@@ -36,7 +37,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .text-muted{color:var(--muted)}
 .rounded-lg{border-radius:8px}.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
 .shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}.shadow-md{box-shadow:0 4px 12px rgba(0,0,0,.08)}.shadow-lg{box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.uppercase{text-transform:uppercase}
 
 /* header */
 .site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -63,7 +63,10 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
 .notif-btn:hover{background:var(--fill)}
 .notif-btn svg{width:20px;height:20px;stroke-width:2.2}
-.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
+.btn-yellow{padding:8px 16px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:all .15s}
+.btn-yellow:hover{background:var(--brand-hover)}
+.btn-ghost{padding:8px 14px;color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:color .15s}
 
 /* main */
 main{padding-top:16px}
@@ -72,8 +75,8 @@ main{padding-top:16px}
 
 /* breadcrumb */
 .breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:16px}
-.breadcrumb button{transition:color .15s}
-.breadcrumb button:hover{color:var(--brand-dark)}
+.breadcrumb a{transition:color .15s}
+.breadcrumb a:hover{color:var(--brand-dark)}
 .breadcrumb .current{color:var(--brand-dark);font-weight:700}
 
 /* hero */
@@ -101,7 +104,7 @@ main{padding-top:16px}
 .job-header:hover{background:rgba(249,250,251,.8)}
 .job-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .job-badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.job-id{padding:2px 8px;background:#f3f4f6;color:#1f2937;font-family:monospace;font-size:11px;font-weight:700;border-radius:6px;letter-spacing:.04em}
+.job-id{padding:2px 8px;background:#f3f4f6;color:#1f2937;font-family:monospace;font-size:11px;font-weight:700;border-radius:6px}
 .job-cat{padding:2px 8px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:700;border-radius:6px}
 .job-vacancies{padding:2px 8px;background:#ecfdf5;color:#047857;font-size:11px;font-weight:700;border-radius:6px;display:flex;align-items:center;gap:4px}
 .job-vacancies svg{width:12px;height:12px}
@@ -129,8 +132,7 @@ main{padding-top:16px}
 .job-body-inner{padding:20px}
 .job-body-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
 .job-body-text{font-size:13px;color:#4b5563;line-height:1.7;margin-bottom:16px}
-.job-body-text:last-child{margin-bottom:0}
-.job-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.job-skills{display:flex;flex-wrap:wrap;gap:6px}
 .skill-chip{padding:4px 10px;background:#fff;border:1px solid var(--border);color:var(--brand-dark);font-size:11px;font-weight:600;border-radius:6px}
 
 /* form card */
@@ -161,7 +163,6 @@ form{display:flex;flex-direction:column;gap:20px}
 .role-radio{width:16px;height:16px;border-radius:9999px;border:1px solid #d1d5db;flex-shrink:0;margin-left:8px;display:flex;align-items:center;justify-content:center}
 .role-btn.active .role-radio{background:var(--brand-primary);border-color:var(--brand-hover);color:var(--brand-dark)}
 .role-radio svg{width:12px;height:12px;stroke-width:3}
-
 .form-row{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:640px){.form-row{grid-template-columns:1fr 1fr}}
 .form-input{width:100%;padding:10px 14px;font-size:13px;background:var(--fill);border:1px solid var(--border);border-radius:12px;color:var(--brand-dark);transition:all .15s}
@@ -179,18 +180,19 @@ form{display:flex;flex-direction:column;gap:20px}
 .file-drop-sub{font-size:11px;color:var(--muted);margin-top:4px}
 .file-drop.has-file{border-color:var(--success);background:#ecfdf5}
 .file-drop.has-file svg{color:var(--success)}
-.file-name{font-size:12px;font-weight:700;color:var(--brand-dark);margin-top:4px}
 .file-size{font-size:11px;color:var(--muted)}
-
 .submit-btn{width:100%;padding:14px 24px;background:var(--brand-primary);color:var(--brand-dark);font-weight:900;font-size:14px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,.08);transition:all .15s}
 .submit-btn:hover{background:var(--brand-hover)}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed}
 .submit-btn svg{width:16px;height:16px;stroke-width:2.4}
 .privacy-note{text-align:center;margin-top:8px;font-size:11px;color:var(--muted)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* success toast */
+/* toast */
 .toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:16px 24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);display:none;align-items:center;gap:12px;z-index:100;max-width:400px}
 .toast.show{display:flex;animation:slideIn .3s ease}
+.toast.error{background:#991b1b}
 @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .toast svg{width:24px;height:24px;flex-shrink:0}
 .toast-title{font-size:14px;font-weight:700}
@@ -200,7 +202,7 @@ form{display:flex;flex-direction:column;gap:20px}
 .mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 @media(min-width:768px){.mobile-nav{display:none}}
 .mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
-.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;position:relative}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500}
 .mnav-item.active{color:var(--brand-dark);font-weight:700}
 .mnav-item:hover{color:var(--brand-dark)}
 .mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
@@ -228,16 +230,9 @@ form{display:flex;flex-direction:column;gap:20px}
       <a href="wallet.html" class="nav-link">Wallet</a>
       <a href="careers.html" class="nav-link active">Careers <span class="nav-badge">HIRING</span></a>
     </nav>
-    <div class="header-actions">
-      <div class="balance">
-        <span class="balance-val">$0.00</span>
-        <button class="balance-eye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
-      </div>
-      <button class="avatar" aria-label="Profile">A</button>
-      <button class="notif-btn" aria-label="Notifications">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-        <span class="notif-badge">2</span>
-      </button>
+    <div class="header-actions" id="headerAuth">
+      <a href="signup.html" class="btn-yellow">Join us</a>
+      <a href="login.html" class="btn-ghost">Log in</a>
     </div>
   </div>
 </header>
@@ -245,14 +240,12 @@ form{display:flex;flex-direction:column;gap:20px}
 <main>
   <div class="careers-wrap">
 
-    <!-- BREADCRUMB -->
     <div class="breadcrumb">
       <a href="index.html">Home</a>
       <span>/</span>
       <span class="current">Careers &amp; Operational Roles</span>
     </div>
 
-    <!-- HERO -->
     <div class="careers-hero">
       <div class="hero-header">
         <div>
@@ -271,11 +264,9 @@ form{display:flex;flex-direction:column;gap:20px}
         </div>
       </div>
 
-      <!-- JOB LIST -->
-      <div class="jobs-list" id="jobsList"><!-- injected --></div>
+      <div class="jobs-list" id="jobsList"></div>
     </div>
 
-    <!-- APPLICATION FORM -->
     <div class="form-card" id="applyForm">
       <div class="form-header">
         <div class="form-badge">
@@ -289,7 +280,7 @@ form{display:flex;flex-direction:column;gap:20px}
       <form id="applicationForm" novalidate>
         <div>
           <label class="form-label">Selected Operational Role <span class="req">*</span></label>
-          <div class="role-grid" id="roleGrid"><!-- injected --></div>
+          <div class="role-grid" id="roleGrid"></div>
         </div>
 
         <div class="form-row">
@@ -340,16 +331,14 @@ form{display:flex;flex-direction:column;gap:20px}
   </div>
 </main>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
   <div>
-    <div class="toast-title">Application submitted!</div>
-    <div class="toast-sub">We'll review your submission and respond within 5 business days.</div>
+    <div class="toast-title" id="toastTitle">Application submitted!</div>
+    <div class="toast-sub" id="toastSub">We'll review your submission and respond within 5 business days.</div>
   </div>
 </div>
 
-<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Main Navigation">
   <div class="mobile-nav-inner">
     <a href="index.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
@@ -361,51 +350,77 @@ form{display:flex;flex-direction:column;gap:20px}
 </nav>
 
 <script>
+/* ========== SUPABASE ========== */
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const USD_PRICES = { BTC: 81223.18, USDT: 1, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
+
+let currentUser = null;
+let currentBalance = 0;
+let balanceHidden = false;
+let uploadedResumeUrl = null;
+
+/* ========== AUTH HEADER ========== */
+async function initAuth(){
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user || null;
+  await renderHeaderAuth();
+}
+
+async function renderHeaderAuth(){
+  const wrap = document.getElementById('headerAuth');
+  if(!wrap) return;
+
+  if(!currentUser){
+    wrap.innerHTML = `
+      <a href="signup.html" class="btn-yellow">Join us</a>
+      <a href="login.html" class="btn-ghost">Log in</a>
+    `;
+    return;
+  }
+
+  const { data: bals } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
+  currentBalance = 0;
+  if(bals) bals.forEach(b => currentBalance += Number(b.amount) * (USD_PRICES[b.coin] || 0));
+
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name && meta.first_name.trim()) initial = meta.first_name.trim()[0];
+  else if(meta.last_name && meta.last_name.trim()) initial = meta.last_name.trim()[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+
+  const balanceText = '$' + currentBalance.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  wrap.innerHTML = `
+    <div class="balance">
+      <span class="balance-val" id="hdrBal">${balanceHidden ? '****' : balanceText}</span>
+      <button class="balance-eye" id="hdrEye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <a href="wallet.html" class="avatar">${initial}</a>
+    <button class="notif-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+      <span class="notif-badge">0</span>
+    </button>
+  `;
+
+  document.getElementById('hdrEye').addEventListener('click', () => {
+    balanceHidden = !balanceHidden;
+    document.getElementById('hdrBal').textContent = balanceHidden ? '****' : balanceText;
+  });
+}
+
 /* ========== JOBS DATA ========== */
 const JOBS = [
-  {
-    id:"KRX-OPS-001",
-    title:"P2P Escrow Dispute & Risk Analyst",
-    category:"Escrow Operations & Risk Mitigation",
-    vacancies:"3 Vacancies",
-    salary:"$3,900",
-    deadline:"26th November 2026",
-    description:"You will handle disputes arising from peer-to-peer transactions, investigate fraud patterns, verify transaction evidence, and work with our escrow system to ensure fair outcomes. You'll collaborate with compliance and merchant operations teams to prevent systematic fraud.",
-    skills:["Dispute Resolution","P2P Trading","Fraud Detection","Customer Empathy","Escrow Systems"]
-  },
-  {
-    id:"KRX-OPS-002",
-    title:"Customer Support & Community Lead",
-    category:"Community & Customer Operations",
-    vacancies:"5 Vacancies",
-    salary:"$3,200",
-    deadline:"26th November 2026",
-    description:"Lead our 24/7 customer support operations and community engagement across Telegram, Discord, X, and WhatsApp. You'll manage a small team, respond to user inquiries, escalate critical issues, and maintain our reputation for fast, human support.",
-    skills:["Team Leadership","Live Chat Support","Community Management","Social Media","Customer Success"]
-  },
-  {
-    id:"KRX-OPS-003",
-    title:"P2P Merchant Acquisition Specialist",
-    category:"Liquidity & Market Operations",
-    vacancies:"4 Vacancies",
-    salary:"$5,200",
-    deadline:"26th November 2026",
-    description:"Onboard high-quality P2P merchants across Africa, Asia, and LATAM. Build partnerships with liquidity providers, negotiate competitive rates, and grow our marketplace of verified sellers. You'll own merchant pipelines and ensure smooth onboarding.",
-    skills:["B2B Sales","Crypto Trading","Negotiation","CRM Tools","Market Analysis"]
-  },
-  {
-    id:"KRX-OPS-004",
-    title:"KYC & Compliance Officer",
-    category:"Legal & Regulatory Compliance",
-    vacancies:"1 Vacancy",
-    salary:"$5,900",
-    deadline:"26th November 2026",
-    description:"Own our KYC verification pipeline, ensure AML compliance across jurisdictions, and maintain regulatory documentation. You'll work with external legal counsel, review suspicious activity, and help shape compliance policy as we expand into new markets.",
-    skills:["KYC/AML","Regulatory Compliance","Risk Assessment","Legal Documentation","Attention to Detail"]
-  },
+  {id:"KRX-OPS-001", title:"P2P Escrow Dispute & Risk Analyst", category:"Escrow Operations & Risk Mitigation", vacancies:"3 Vacancies", salary:"$3,900", deadline:"26th November 2026", description:"You will handle disputes arising from peer-to-peer transactions, investigate fraud patterns, verify transaction evidence, and work with our escrow system to ensure fair outcomes.", skills:["Dispute Resolution","P2P Trading","Fraud Detection","Customer Empathy","Escrow Systems"]},
+  {id:"KRX-OPS-002", title:"Customer Support & Community Lead", category:"Community & Customer Operations", vacancies:"5 Vacancies", salary:"$3,200", deadline:"26th November 2026", description:"Lead our 24/7 customer support operations and community engagement across Telegram, Discord, X, and WhatsApp.", skills:["Team Leadership","Live Chat Support","Community Management","Social Media","Customer Success"]},
+  {id:"KRX-OPS-003", title:"P2P Merchant Acquisition Specialist", category:"Liquidity & Market Operations", vacancies:"4 Vacancies", salary:"$5,200", deadline:"26th November 2026", description:"Onboard high-quality P2P merchants across Africa, Asia, and LATAM. Build partnerships with liquidity providers and grow our marketplace of verified sellers.", skills:["B2B Sales","Crypto Trading","Negotiation","CRM Tools","Market Analysis"]},
+  {id:"KRX-OPS-004", title:"KYC & Compliance Officer", category:"Legal & Regulatory Compliance", vacancies:"1 Vacancy", salary:"$5,900", deadline:"26th November 2026", description:"Own our KYC verification pipeline, ensure AML compliance across jurisdictions, and maintain regulatory documentation.", skills:["KYC/AML","Regulatory Compliance","Risk Assessment","Legal Documentation","Attention to Detail"]},
 ];
 
-/* ========== RENDER JOB LIST ========== */
+/* ========== RENDER JOBS ========== */
 const jobsList = document.getElementById('jobsList');
 let activeJobId = JOBS[0].id;
 
@@ -417,42 +432,27 @@ function renderJobs(){
           <div class="job-badges">
             <span class="job-id">${j.id}</span>
             <span class="job-cat">${j.category}</span>
-            <span class="job-vacancies">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
-              ${j.vacancies}
-            </span>
+            <span class="job-vacancies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>${j.vacancies}</span>
           </div>
           <h3 class="job-title">${j.title}</h3>
         </div>
         <div class="job-right">
           <div class="job-salary">
             <div class="job-salary-val">${j.salary}<small> / mo</small></div>
-            <div class="job-deadline">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
-              Deadline: ${j.deadline}
-            </div>
+            <div class="job-deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>Deadline: ${j.deadline}</div>
           </div>
           <div class="job-btn-row">
-            <button class="apply-btn" onclick="applyFor('${j.id}', event)">Apply
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </button>
-            <button class="details-btn" onclick="toggleJob('${j.id}', event)">
-              Details
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+            <button class="apply-btn" onclick="applyFor('${j.id}', event)">Apply <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            <button class="details-btn" onclick="toggleJob('${j.id}', event)">Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           </div>
         </div>
       </div>
-      <div class="job-body">
-        <div class="job-body-inner">
-          <div class="job-body-title">Role Description</div>
-          <p class="job-body-text">${j.description}</p>
-          <div class="job-body-title">Required Skills</div>
-          <div class="job-skills">
-            ${j.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('')}
-          </div>
-        </div>
-      </div>
+      <div class="job-body"><div class="job-body-inner">
+        <div class="job-body-title">Role Description</div>
+        <p class="job-body-text">${j.description}</p>
+        <div class="job-body-title">Required Skills</div>
+        <div class="job-skills">${j.skills.map(s=>`<span class="skill-chip">${s}</span>`).join('')}</div>
+      </div></div>
     </div>
   `).join('');
 }
@@ -461,12 +461,8 @@ function toggleJob(id, e){
   if(e) e.stopPropagation();
   activeJobId = activeJobId === id ? null : id;
   renderJobs();
-  // Sync role selection in form
-  if(activeJobId){
-    selectRole(activeJobId);
-  }
+  if(activeJobId) selectRole(activeJobId);
 }
-
 function applyFor(id, e){
   if(e) e.stopPropagation();
   activeJobId = id;
@@ -475,7 +471,7 @@ function applyFor(id, e){
   document.getElementById('applyForm').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-/* ========== ROLE SELECTOR IN FORM ========== */
+/* ========== ROLE SELECTOR ========== */
 const roleGrid = document.getElementById('roleGrid');
 let selectedRole = JOBS[0].id;
 
@@ -483,27 +479,20 @@ function renderRoles(){
   roleGrid.innerHTML = JOBS.map(j=>`
     <button type="button" class="role-btn ${j.id === selectedRole ? 'active' : ''}" onclick="selectRole('${j.id}')">
       <div class="role-btn-info">
-        <div class="role-btn-top">
-          <span class="role-code">${j.id}</span>
-          <span class="role-pay">${j.salary}/mo</span>
-        </div>
+        <div class="role-btn-top"><span class="role-code">${j.id}</span><span class="role-pay">${j.salary}/mo</span></div>
         <div class="role-name">${j.title}</div>
       </div>
-      <div class="role-radio">
-        ${j.id === selectedRole ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}
-      </div>
+      <div class="role-radio">${j.id === selectedRole ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : ''}</div>
     </button>
   `).join('');
   updateSubmitText();
 }
-
 function selectRole(id){
   selectedRole = id;
   renderRoles();
   activeJobId = id;
   renderJobs();
 }
-
 function updateSubmitText(){
   const job = JOBS.find(j=>j.id === selectedRole);
   document.getElementById('submitText').textContent = `Submit Application for ${job.title} (${job.salary}/mo)`;
@@ -518,10 +507,14 @@ const fileDropSub = document.getElementById('fileDropSub');
 fileInput.addEventListener('change', e=>{
   const file = e.target.files[0];
   if(file){
+    if(file.size > 10 * 1024 * 1024){
+      showToast('File too large','Max 10MB', true);
+      fileInput.value = '';
+      return;
+    }
     fileDrop.classList.add('has-file');
     fileDropTitle.textContent = '✓ ' + file.name;
-    const sizeKB = (file.size / 1024).toFixed(1);
-    fileDropSub.innerHTML = `<span class="file-size">${sizeKB} KB — click to change</span>`;
+    fileDropSub.innerHTML = `<span class="file-size">${(file.size/1024).toFixed(1)} KB — click to change</span>`;
   }
 });
 
@@ -535,20 +528,17 @@ fileDrop.addEventListener('drop', e=>{
   const file = e.dataTransfer.files[0];
   if(file){
     fileInput.files = e.dataTransfer.files;
-    const evt = new Event('change', {bubbles:true});
-    fileInput.dispatchEvent(evt);
+    fileInput.dispatchEvent(new Event('change', {bubbles:true}));
   }
 });
 
 /* ========== CHAR COUNT ========== */
 const coverLetter = document.getElementById('coverLetter');
 const charCount = document.getElementById('charCount');
-coverLetter.addEventListener('input', ()=>{
-  charCount.textContent = coverLetter.value.length + ' characters';
-});
+coverLetter.addEventListener('input', ()=>{ charCount.textContent = coverLetter.value.length + ' characters'; });
 
-/* ========== SUBMIT ========== */
-document.getElementById('applicationForm').addEventListener('submit', e=>{
+/* ========== SUBMIT APPLICATION ========== */
+document.getElementById('applicationForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const name = document.getElementById('fullName').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -556,27 +546,84 @@ document.getElementById('applicationForm').addEventListener('submit', e=>{
   const letter = coverLetter.value.trim();
 
   if(!name || !email || !phone || !letter){
-    alert('Please fill in all required fields (name, email, phone, cover letter).');
+    showToast('Missing fields','Please fill in all required fields.', true);
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showToast('Invalid email','Please enter a valid email address.', true);
     return;
   }
 
-  // Simulate submit
   const job = JOBS.find(j=>j.id === selectedRole);
-  showToast();
-  setTimeout(()=>{
-    console.log('Application submitted:', {name, email, phone, role: job.title, letter});
-  }, 100);
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+  try {
+    // upload resume if provided
+    let resumeUrl = null;
+    const file = fileInput.files[0];
+    if(file){
+      const ext = file.name.split('.').pop();
+      const path = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+      const { error: uploadErr } = await sb.storage.from('resumes').upload(path, file);
+      if(uploadErr){
+        console.error('Upload error:', uploadErr);
+        showToast('Upload failed', uploadErr.message, true);
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span id="submitText">Submit Application</span>`;
+        updateSubmitText();
+        return;
+      }
+      const { data: urlData } = sb.storage.from('resumes').getPublicUrl(path);
+      resumeUrl = urlData?.publicUrl;
+    }
+
+    // insert application
+    const { error } = await sb.from('applications').insert({
+      job_id: job.id,
+      job_title: job.title,
+      full_name: name,
+      email: email,
+      phone: phone,
+      cover_letter: letter,
+      resume_url: resumeUrl,
+      user_id: currentUser?.id || null,
+      status: 'new'
+    });
+
+    if(error) throw error;
+
+    showToast('Application submitted!','We\'ll review your submission and respond within 5 business days.');
+    document.getElementById('applicationForm').reset();
+    fileDrop.classList.remove('has-file');
+    fileDropTitle.textContent = 'Click to select or drag & drop your CV / Resume';
+    fileDropSub.textContent = 'Supports PDF or DOCX documents up to 10MB';
+    charCount.textContent = '0 characters';
+    document.getElementById('fileInput').value = '';
+  } catch(err){
+    console.error(err);
+    showToast('Submission failed', err.message || 'Please try again.', true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span id="submitText">Submit Application</span>`;
+    updateSubmitText();
+  }
 });
 
-function showToast(){
-  const toast = document.getElementById('toast');
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'), 5000);
+/* ========== TOAST ========== */
+function showToast(title, sub, isError){
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (isError ? ' error' : '');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  setTimeout(()=>t.classList.remove('show'), 5000);
 }
 
 /* ========== INIT ========== */
 renderJobs();
 renderRoles();
+initAuth();
 </script>
 </body>
 </html>
