@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
@@ -63,7 +64,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
 .notif-btn:hover{background:var(--fill)}
 .notif-btn svg{width:20px;height:20px;stroke-width:2.2}
-.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
 
 /* sub header */
 .sub-header{position:sticky;top:64px;z-index:30;background:#fff;border-bottom:1px solid var(--border);padding:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -88,7 +89,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 @media(min-width:768px){.p2p-wrap{padding:12px 24px 40px}}
 @media(max-width:767px){.p2p-wrap{max-width:680px}}
 
-/* carousel */
+/* promo */
 .promo{position:relative;background:linear-gradient(to right,#f9fafb,#f3f4f6);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;cursor:pointer;transition:box-shadow .15s;overflow:hidden}
 .promo:hover{box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .promo-inner{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -112,7 +113,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .currency-btn:hover{background:var(--fill)}
 .currency-btn svg{width:14px;height:14px;color:var(--muted)}
 
-/* filter row */
+/* filters */
 .filters{position:relative;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .filters-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .filter-pill{display:flex;align-items:center;gap:6px;background:var(--fill);border:1px solid var(--border);padding:6px 12px;border-radius:9999px;font-size:12px;font-weight:700;color:var(--brand-dark);transition:background .15s}
@@ -133,7 +134,7 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .live-refresh:hover{color:#000}
 .live-refresh svg{width:12px;height:12px}
 
-/* merchant card */
+/* merchant */
 .merchant-list{display:flex;flex-direction:column;gap:12px}
 .merchant{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;transition:border-color .15s}
 .merchant:hover{border-color:#d1d5db}
@@ -172,15 +173,16 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .buy-btn:active{transform:scale(.98)}
 .buy-btn.sell{background:var(--danger)}
 .buy-btn.sell:hover{background:#dc2626}
+.empty-state{background:#fff;border:1px dashed var(--border);border-radius:16px;padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
 
-/* escrow banner */
+/* escrow */
 .escrow{background:#f9fafb;border:1px solid #f3f4f6;border-radius:16px;padding:16px;margin-top:24px;margin-bottom:32px;font-size:12px;color:#6b7280;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .escrow-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .escrow-head svg{width:16px;height:16px;color:#059669;flex-shrink:0}
 .escrow-head span{font-size:14px;font-weight:800;color:#030712}
 .escrow p{line-height:1.6;color:#4b5563}
 
-/* desktop bottom cards */
+/* desk cards */
 .desk-nav{display:none;grid-template-columns:repeat(5,1fr);gap:14px;padding-top:16px;border-top:1px solid var(--border);margin-bottom:48px}
 @media(min-width:768px){.desk-nav{display:grid}}
 .desk-card{padding:16px;border-radius:16px;border:1px solid var(--border);text-align:left;background:#fff;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -190,6 +192,41 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .desk-card.active .dc-title{color:#fff}
 .desk-card .dc-desc{font-size:11px;color:var(--muted)}
 .desk-card.active .dc-desc{color:#d1d5db}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;border-radius:24px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:auto}
+.modal-title{font-size:18px;font-weight:900;color:var(--brand-dark);margin-bottom:4px;padding-right:32px}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.modal-close{position:absolute;top:16px;right:16px;padding:6px;color:var(--muted);border-radius:8px;transition:all .15s}
+.modal-close:hover{background:var(--fill);color:var(--brand-dark)}
+.modal-close svg{width:20px;height:20px}
+.modal-label{font-size:12px;font-weight:700;color:#4b5563;margin-bottom:6px;display:block}
+.modal-input{width:100%;padding:12px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:14px;font-weight:700;color:var(--brand-dark);margin-bottom:14px}
+.modal-input:focus{background:#fff;border-color:var(--brand-primary)}
+.modal-confirm{width:100%;padding:14px;background:var(--success);color:#fff;font-weight:800;font-size:14px;border-radius:12px;transition:background .15s;margin-top:6px}
+.modal-confirm:hover{background:var(--success-hover)}
+.modal-confirm.sell{background:var(--danger)}
+.modal-confirm.sell:hover{background:#dc2626}
+.modal-confirm:disabled{opacity:.6;cursor:not-allowed}
+.modal-info{background:var(--fill);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px}
+.modal-info-row{display:flex;justify-content:space-between;padding:3px 0}
+.modal-info-row span:first-child{color:#6b7280;font-weight:600}
+.modal-info-row span:last-child{color:#111827;font-weight:800}
+.msg{margin-top:10px;padding:10px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center}
+.msg.show{display:block}
+.msg.success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#065f46;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:300;max-width:340px;font-size:13px;font-weight:700}
+.toast.show{display:flex;animation:slideIn .3s}
+.toast.error{background:#991b1b}
+.toast svg{width:18px;height:18px;flex-shrink:0}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 /* mobile nav */
 .mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
@@ -202,12 +239,11 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 .mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
 .mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
 @media(max-width:767px){.md-only{display:none}}
-@media(min-width:768px){.mob-only{display:none}}
 </style>
 </head>
 <body>
 
-<!-- MAIN HEADER -->
+<!-- HEADER -->
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand">
@@ -220,25 +256,25 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       <a href="index.html" class="nav-link">Home</a>
       <a href="p2p.html" class="nav-link active">P2P</a>
       <a href="trade.html" class="nav-link">Trade</a>
-      <a href="#" class="nav-link">Swap</a>
-      <a href="#" class="nav-link">Wallet</a>
-      <a href="#" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
+      <a href="swap.html" class="nav-link">Swap</a>
+      <a href="wallet.html" class="nav-link">Wallet</a>
+      <a href="careers.html" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
     </nav>
     <div class="header-actions">
       <div class="balance">
-        <span class="balance-val">$0.00</span>
-        <button class="balance-eye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <span class="balance-val" id="headerBalance">$0.00</span>
+        <button class="balance-eye" id="headerEye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
       </div>
-      <button class="avatar" aria-label="Profile">A</button>
+      <button class="avatar" id="headerAvatar" aria-label="Profile">?</button>
       <button class="notif-btn" aria-label="Notifications">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-        <span class="notif-badge">2</span>
+        <span class="notif-badge" id="notifBadge">0</span>
       </button>
     </div>
   </div>
 </header>
 
-<!-- SUB HEADER (P2P tabs) -->
+<!-- SUB HEADER -->
 <div class="sub-header">
   <div class="sub-inner">
     <div class="sub-left">
@@ -257,7 +293,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 <main>
   <div class="p2p-wrap">
 
-    <!-- PROMO -->
     <div class="promo">
       <div class="promo-inner">
         <div class="promo-text">
@@ -273,7 +308,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       </div>
     </div>
 
-    <!-- BUY / SELL + currency -->
     <div class="row-toggle">
       <div class="buy-sell" id="buySell">
         <button class="active" data-side="buy">Buy</button>
@@ -282,7 +316,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       <button class="currency-btn"><span>KES</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
     </div>
 
-    <!-- FILTERS -->
     <div class="filters">
       <div class="filters-left">
         <button class="filter-pill">
@@ -296,7 +329,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       <button class="filter-icon" title="Advanced"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg></button>
     </div>
 
-    <!-- LIVE RATE -->
     <div class="live-strip">
       <div class="live-left">
         <span class="live-dot"></span>
@@ -306,10 +338,10 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       <button class="live-refresh" title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></button>
     </div>
 
-    <!-- MERCHANT LIST -->
-    <div class="merchant-list" id="merchantList"><!-- injected --></div>
+    <div class="merchant-list" id="merchantList">
+      <div class="empty-state">Loading merchants...</div>
+    </div>
 
-    <!-- ESCROW -->
     <div class="escrow">
       <div class="escrow-head">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -318,7 +350,6 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
       <p>All P2P transactions are safeguarded by Kryptos escrow. Sellers must never release cryptocurrency until confirmed payment has cleared in their bank account or mobile wallet.</p>
     </div>
 
-    <!-- DESKTOP BOTTOM CARDS -->
     <div class="desk-nav">
       <button class="desk-card active"><div class="dc-title">P2P Trading</div><p class="dc-desc">Browse active USDT &amp; BTC ads</p></button>
       <button class="desk-card"><div class="dc-title">Orders</div><p class="dc-desc">Track active &amp; completed trades</p></button>
@@ -329,6 +360,21 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 
   </div>
 </main>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">Done</span>
+</div>
 
 <!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="P2P Navigation">
@@ -342,20 +388,18 @@ select{appearance:none;-webkit-appearance:none;background:transparent;border:non
 </nav>
 
 <script>
-/* ========== MERCHANT DATA ========== */
-const MERCHANTS = [
-  {name:"Brian_mboj791",  status:"recent", price:"127.30", trades:"3,170", avail:"4,200", limitMin:"52,016", limitMax:"455,137", pays:["mpesa","bank","equity"]},
-  {name:"Brian_mqij149",  status:"online", price:"127.48", trades:"3,516", avail:"4,700", limitMin:"6,502",  limitMax:"715,215", pays:["equity","kcb","airtel"]},
-  {name:"David_kiad730",  status:"online", price:"127.67", trades:"3,862", avail:"5,200", limitMin:"9,753",  limitMax:"195,059", pays:["airtel","mpesa","bank"]},
-  {name:"Chebet_nhqx843", status:"online", price:"127.67", trades:"2,030", avail:"4,700", limitMin:"19,506", limitMax:"715,215", pays:["mpesa","bank","equity"]},
-  {name:"Victor_kuic442", status:"online", price:"127.85", trades:"4,208", avail:"5,700", limitMin:"15,605", limitMax:"455,137", pays:["bank","equity","kcb"]},
-  {name:"Dennis_olxa393", status:"recent", price:"128.04", trades:"4,554", avail:"6,200", limitMin:"23,407", limitMax:"715,215", pays:["kcb","airtel","mpesa"]},
-  {name:"Kamau_mvad107",  status:"online", price:"128.23", trades:"4,900", avail:"2,200", limitMin:"32,510", limitMax:"195,059", pays:["mpesa","bank","equity"]},
-  {name:"Kiptoo_muye975", status:"online", price:"128.41", trades:"5,246", avail:"2,700", limitMin:"45,514", limitMax:"455,137", pays:["equity","kcb","airtel"]},
-  {name:"Maina_kipf230",  status:"late",   price:"128.60", trades:"992",   avail:"3,200", limitMin:"65,020", limitMax:"715,215", pays:["airtel","mpesa","bank"]},
-  {name:"Akinyi_wxdg387", status:"recent", price:"130.42", trades:"1,338", avail:"3,700", limitMin:"7,542",  limitMax:"195,059", pays:["bank","equity","kcb"]},
-  {name:"Atieno_oxht185", status:"online", price:"133.01", trades:"1,684", avail:"4,200", limitMin:"13,004", limitMax:"455,137", pays:["kcb","airtel","mpesa"]},
-];
+/* ============================================================
+   SUPABASE
+============================================================ */
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentSide = 'buy';
+let allMerchants = [];
+
+const USD_PRICE = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
 const PAY_LABELS = {
   mpesa:{label:"M-PESA Safaricom", cls:"mpesa"},
@@ -364,26 +408,73 @@ const PAY_LABELS = {
   kcb:{label:"KCB Bank", cls:"bank"},
   airtel:{label:"Airtel Money", cls:"airtel"},
 };
-
 const STATUS = {
   online:{cls:"status-online", label:"Online"},
   recent:{cls:"status-recent", label:"4 mins ago"},
   late:{cls:"status-late",   label:"1 hour ago"},
 };
-
 const VERIFIED_SVG = `<svg class="verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>`;
 
-let currentSide = 'buy';
+/* ============================================================
+   INIT
+============================================================ */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ location.href = 'login.html'; return; }
+  currentUser = session.user;
+  await setAvatar(currentUser);
+  document.getElementById('notifBadge').style.display = 'none';
+  await loadMerchants();
+})();
 
+async function setAvatar(user){
+  const avatarEl = document.getElementById('headerAvatar');
+  let initial = '';
+  const meta = user.user_metadata || {};
+  const mFirst = (meta.first_name || '').trim();
+  const mLast  = (meta.last_name  || '').trim();
+  if(mFirst) initial = mFirst[0];
+  else if(mLast) initial = mLast[0];
+  if(!initial){
+    const { data: prof } = await sb.from('profiles').select('first_name, last_name').eq('id', user.id).maybeSingle();
+    if(prof){
+      if(prof.first_name && prof.first_name.trim()) initial = prof.first_name.trim()[0];
+      else if(prof.last_name && prof.last_name.trim()) initial = prof.last_name.trim()[0];
+    }
+  }
+  if(!initial && user.email) initial = user.email[0];
+  if(!initial) initial = '?';
+  avatarEl.textContent = initial.toUpperCase();
+}
+
+/* ============================================================
+   LOAD MERCHANTS
+============================================================ */
+async function loadMerchants(){
+  const list = document.getElementById('merchantList');
+  list.innerHTML = `<div class="empty-state">Loading merchants...</div>`;
+  const { data, error } = await sb.from('merchants').select('*').order('price_kes', {ascending:true});
+  if(error){ list.innerHTML = `<div class="empty-state">Error loading merchants: ${error.message}</div>`; return; }
+  allMerchants = data || [];
+  renderMerchants();
+}
+
+/* ============================================================
+   RENDER
+============================================================ */
 function renderMerchants(){
   const list = document.getElementById('merchantList');
+  if(allMerchants.length === 0){
+    list.innerHTML = `<div class="empty-state">No merchants available right now.</div>`;
+    return;
+  }
   const actionLabel = currentSide === 'buy' ? 'Buy' : 'Sell';
   const actionClass = currentSide === 'buy' ? 'buy-btn' : 'buy-btn sell';
-  const verb = currentSide === 'buy' ? 'Available' : 'Available'; // unchanged for now
-  list.innerHTML = MERCHANTS.map(m=>{
-    const st = STATUS[m.status];
-    const chips = m.pays.map(p=>{
-      const pl = PAY_LABELS[p];
+
+  list.innerHTML = allMerchants.map(m => {
+    const st = STATUS[m.status] || STATUS.online;
+    const chips = (m.payments || []).map(p => {
+      const pl = PAY_LABELS[p] || {label: p, cls: 'bank'};
       return `<span class="pay-chip"><span class="bar ${pl.cls}"></span>${pl.label}</span>`;
     }).join('');
     return `<div class="merchant">
@@ -396,66 +487,166 @@ function renderMerchants(){
         <button class="view-profile">View Profile &gt;</button>
       </div>
       <div class="merchant-stats">
-        <span>Trades ${m.trades} (98.6%)</span><span class="sep">·</span>
+        <span>Trades ${Number(m.trades).toLocaleString()} (${m.rating}%)</span><span class="sep">·</span>
         <span>👍 99%</span><span class="sep">·</span>
         <span>30 min</span>
       </div>
       <div class="merchant-price">
         <span class="cur">K.Sh</span>
-        <span class="val">${m.price}</span>
+        <span class="val">${Number(m.price_kes).toFixed(2)}</span>
         <span class="unit">/USDT</span>
       </div>
       <div class="merchant-foot">
         <div class="merchant-meta">
-          <div class="row">Limit ${m.limitMin}-${m.limitMax} KES</div>
-          <div class="row">${verb} ${m.avail} USDT</div>
+          <div class="row">Limit ${Number(m.limit_min).toLocaleString()}-${Number(m.limit_max).toLocaleString()} KES</div>
+          <div class="row">Available ${Number(m.available_usdt).toLocaleString()} USDT</div>
           <div class="pay-chips">${chips}</div>
         </div>
-        <button class="${actionClass}">${actionLabel}</button>
+        <button class="${actionClass}" onclick="openP2PModal('${m.id}')">${actionLabel}</button>
       </div>
     </div>`;
   }).join('');
 }
 
 /* Buy/Sell toggle */
-document.querySelectorAll('#buySell button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#buySell button').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('#buySell button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#buySell button').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     currentSide = b.dataset.side;
     renderMerchants();
   });
 });
 
-/* Sub tabs (P2P / Express) */
-document.querySelectorAll('.sub-tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
+/* Sub tabs */
+document.querySelectorAll('.sub-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
   });
 });
 
-/* Buy button clicks */
-document.getElementById('merchantList').addEventListener('click', e=>{
-  const btn = e.target.closest('.buy-btn');
-  if(btn){
-    const card = btn.closest('.merchant');
-    const name = card.querySelector('.merchant-name').textContent;
-    const price = card.querySelector('.val').textContent;
-    alert((currentSide==='buy'?'Buy from ':'Sell to ') + name + ' @ K.Sh' + price + '/USDT\n\n(Order form would open here)');
-  }
+/* ============================================================
+   P2P ORDER MODAL
+============================================================ */
+function openP2PModal(merchantId){
+  const m = allMerchants.find(x => x.id === merchantId);
+  if(!m) return;
+  const isBuy = currentSide === 'buy';
+  const actionVerb = isBuy ? 'Buy' : 'Sell';
+  const minAmt = (Number(m.limit_min) / Number(m.price_kes)).toFixed(2);
+  const maxAmt = (Number(m.limit_max) / Number(m.price_kes)).toFixed(2);
+
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-title">${actionVerb} USDT from ${m.name}</div>
+    <div class="modal-sub">You will ${isBuy ? 'send KES via' : 'receive KES via'} your chosen payment method</div>
+    <div class="modal-info">
+      <div class="modal-info-row"><span>Price</span><span>K.Sh ${Number(m.price_kes).toFixed(2)} / USDT</span></div>
+      <div class="modal-info-row"><span>Available</span><span>${Number(m.available_usdt).toLocaleString()} USDT</span></div>
+      <div class="modal-info-row"><span>Limits</span><span>K.Sh ${Number(m.limit_min).toLocaleString()} – ${Number(m.limit_max).toLocaleString()}</span></div>
+    </div>
+    <label class="modal-label">Amount (USDT) — ${minAmt} to ${maxAmt}</label>
+    <input class="modal-input" type="number" step="any" id="p2pAmount" placeholder="0.00" />
+    <label class="modal-label">Payment Method</label>
+    <select class="modal-input" id="p2pPayment">
+      ${(m.payments||[]).map(p => `<option value="${p}">${(PAY_LABELS[p]||{label:p}).label}</option>`).join('')}
+    </select>
+    <div class="modal-info" style="margin-top:6px">
+      <div class="modal-info-row"><span>You will ${isBuy?'pay':'receive'}</span><strong id="p2pFiat">K.Sh 0.00</strong></div>
+    </div>
+    <button class="modal-confirm ${isBuy?'':'sell'}" id="p2pSubmit" onclick="submitP2POrder('${m.id}')">${actionVerb} USDT</button>
+    <div class="msg" id="p2pMsg"></div>
+  `;
+
+  // live fiat calc
+  setTimeout(() => {
+    const inp = document.getElementById('p2pAmount');
+    const out = document.getElementById('p2pFiat');
+    inp.addEventListener('input', () => {
+      const amt = parseFloat(inp.value) || 0;
+      const fiat = amt * Number(m.price_kes);
+      out.textContent = 'K.Sh ' + fiat.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+    });
+    inp.focus();
+  }, 50);
+
+  document.getElementById('modalBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalBackdrop').addEventListener('click', e => {
+  if(e.target.id === 'modalBackdrop') closeModal();
 });
 
-/* Live rate ticker */
+/* ============================================================
+   SUBMIT P2P ORDER
+============================================================ */
+async function submitP2POrder(merchantId){
+  const m = allMerchants.find(x => x.id === merchantId);
+  if(!m) return;
+  const amt = parseFloat(document.getElementById('p2pAmount').value);
+  const pay = document.getElementById('p2pPayment').value;
+  const btn = document.getElementById('p2pSubmit');
+
+  if(!amt || amt <= 0){ showP2PMsg('error','Enter a valid amount.'); return; }
+  if(amt > Number(m.available_usdt)){ showP2PMsg('error','Amount exceeds merchant availability.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+  try {
+    const { data, error } = await sb.rpc('create_p2p_order', {
+      p_merchant_id: merchantId,
+      p_amount: amt,
+      p_payment: pay,
+      p_side: currentSide
+    });
+    if(error || data?.error) throw new Error(data?.error || error?.message || 'Order failed');
+
+    showP2PMsg('success', `P2P order created! Amount: ${amt} USDT · K.Sh ${Number(data.fiat).toLocaleString()}`);
+    toast(`${currentSide === 'buy' ? 'Buy' : 'Sell'} order created — check your P2P Orders`);
+    setTimeout(() => {
+      closeModal();
+      loadMerchants();
+    }, 2000);
+  } catch(err){
+    showP2PMsg('error', err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = (currentSide === 'buy' ? 'Buy' : 'Sell') + ' USDT';
+  }
+}
+
+function showP2PMsg(type, txt){
+  const el = document.getElementById('p2pMsg');
+  if(!el) return;
+  el.className = 'msg show ' + type;
+  el.textContent = txt;
+}
+
+/* ============================================================
+   LIVE RATE
+============================================================ */
 let rate = 129.90;
-setInterval(()=>{
+setInterval(() => {
   rate += (Math.random() - 0.5) * 0.3;
   const el = document.querySelector('.live-rate strong');
   if(el) el.textContent = '1 USDT ≈ K.Sh' + rate.toFixed(2);
 }, 4000);
 
-/* Init */
-renderMerchants();
+/* ============================================================
+   TOAST
+============================================================ */
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (isError ? ' error' : '');
+  document.getElementById('toastMsg').textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
 </script>
 </body>
 </html>
