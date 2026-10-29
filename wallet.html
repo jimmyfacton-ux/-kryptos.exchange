@@ -212,7 +212,7 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .modal-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
 
-/* ============ SUCCESS POPUP ============ */
+/* success popup */
 .success-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
 .success-backdrop.show{display:flex;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -240,6 +240,52 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .toast svg{width:16px;height:16px;flex-shrink:0}
 @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+/* drawer */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:200;display:none}
+.drawer-backdrop.show{display:block}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:320px;max-width:88vw;background:#fff;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .25s ease}
+.drawer-backdrop.show .drawer{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.drawer-logo{font-size:18px;font-weight:900;color:var(--brand-dark);letter-spacing:-.03em}
+.drawer-logo span{color:var(--brand-hover)}
+.drawer-close{padding:8px;border-radius:10px;color:#6b7280}
+.drawer-close svg{width:20px;height:20px}
+.drawer-body{flex:1;overflow-y:auto;padding:12px 12px 24px;overscroll-behavior:contain}
+.drawer-row{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:var(--brand-dark);transition:background .15s;cursor:pointer}
+.drawer-row:hover{background:var(--fill)}
+.drawer-row > svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:#6b7280;stroke-width:2}
+.drawer-row-content{flex:1;min-width:0}
+.drawer-row-title{font-size:14px;font-weight:800;color:#111827}
+.drawer-row-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.drawer-row-desc{font-size:11px;color:#6b7280;margin-top:2px}
+.drawer-badge{font-size:9px;font-weight:800;padding:1px 6px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.drawer-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
+.drawer-badge.gray{background:#f3f4f6;color:#111827}
+.drawer-badge.green{background:rgba(14,203,129,.15);color:var(--success)}
+.drawer-badge.green-light{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:700}
+.drawer-group{border-top:1px solid #f3f4f6;padding-top:4px;margin-top:4px}
+.drawer-section{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px;border-radius:12px;font-size:14px;font-weight:800;color:var(--brand-dark);transition:background .15s}
+.drawer-section-left{display:flex;align-items:center;gap:12px}
+.drawer-section-left svg{width:18px;height:18px;color:#6b7280;flex-shrink:0}
+.drawer-section .chev{width:16px;height:16px;color:#9ca3af;transition:transform .2s}
+.drawer-section.open .chev{transform:rotate(180deg)}
+.drawer-sub{padding-left:42px;padding-right:8px;padding-top:4px;padding-bottom:4px;display:none}
+.drawer-sub.open{display:block}
+.drawer-sub-item{display:block;padding:8px;border-radius:8px;transition:background .15s;text-decoration:none;cursor:pointer}
+.drawer-sub-item:hover{background:var(--fill)}
+.drawer-sub-title{font-size:13px;font-weight:700;color:var(--brand-dark)}
+.drawer-sub-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.drawer-sub-desc{font-size:11px;color:#6b7280;margin-top:2px;line-height:1.4}
+.drawer-auth{margin-top:16px;padding:0 4px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:16px}
+.drawer-auth-btn{padding:11px;border-radius:12px;font-weight:800;font-size:13px;text-align:center;text-decoration:none;display:block}
+.drawer-auth-btn.login{background:var(--fill);color:var(--brand-dark);border:1px solid var(--border)}
+.drawer-auth-btn.signup{background:var(--brand-primary);color:var(--brand-dark)}
+.drawer-auth-btn.logout{background:#fee2e2;color:#991b1b}
+.drawer-user{padding:12px;background:var(--fill);border-radius:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.drawer-user-avatar{width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+.drawer-user-email{font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawer-user-bal{font-size:11px;color:#6b7280;margin-top:1px}
+
 /* mobile nav */
 .mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.98);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 @media(min-width:768px){.mobile-nav{display:none}}
@@ -257,7 +303,7 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand">
-      <button class="menu-btn" aria-label="Menu">
+      <button class="menu-btn" aria-label="Menu" onclick="openDrawer()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
       </button>
       <a href="index.html" class="logo-text">KRYPTO<span class="accent">S</span><span class="logo-sub">.exchange</span></a>
@@ -270,16 +316,9 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
       <a href="wallet.html" class="nav-link active">Wallet</a>
       <a href="careers.html" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
     </nav>
-    <div class="header-actions">
-      <div class="balance">
-        <span class="balance-val" id="headerBalance">$0.00</span>
-        <button class="balance-eye" id="headerEye" title="Hide Balance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
-      </div>
-      <button class="avatar" id="headerAvatar" aria-label="Profile">?</button>
-      <button class="notif-btn" aria-label="Notifications">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-        <span class="notif-badge" id="notifBadge">0</span>
-      </button>
+    <div class="header-actions" id="headerAuth">
+      <a href="signup.html" style="padding:7px 12px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:12px;border-radius:10px;text-decoration:none;white-space:nowrap">Join us</a>
+      <a href="login.html" style="padding:7px 10px;color:var(--brand-dark);font-weight:700;font-size:12px;text-decoration:none;white-space:nowrap">Log in</a>
     </div>
   </div>
 </header>
@@ -339,7 +378,6 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
   </div>
 </main>
 
-<!-- INPUT MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()" aria-label="Close">
@@ -349,7 +387,6 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
   </div>
 </div>
 
-<!-- SUCCESS POPUP -->
 <div class="success-backdrop" id="successBackdrop">
   <div class="success-modal">
     <div class="success-circle">
@@ -358,7 +395,7 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
     <h2 class="success-title" id="successTitle">Deposit Submitted</h2>
     <p class="success-desc" id="successDesc">Your deposit is being verified. Amount will reflect in your wallet shortly.</p>
     <div class="success-info" id="successInfo"></div>
-    <button class="success-btn" id="successBtn" onclick="closeSuccess()">Got it</button>
+    <button class="success-btn" onclick="closeSuccess()">Got it</button>
     <p class="success-note" id="successNote">Deposits are usually processed within 10-30 minutes.</p>
   </div>
 </div>
@@ -378,8 +415,52 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
   </div>
 </nav>
 
+<!-- DRAWER -->
+<div class="drawer-backdrop" id="drawerBackdrop">
+  <div class="drawer">
+    <div class="drawer-head">
+      <a href="index.html" class="drawer-logo">KRYPTO<span>S</span></a>
+      <button class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <a href="index.html" class="drawer-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <div class="drawer-row-content"><div class="drawer-row-title">Main</div></div>
+      </a>
+
+      <div class="drawer-group">
+        <button class="drawer-section open" onclick="toggleGroup('trade')">
+          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span>Trade</span></div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <div class="drawer-sub open" id="group-trade">
+          <a href="p2p.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Trading</span><span class="drawer-badge yellow">LOW FEES</span></div><p class="drawer-sub-desc">Trade OTC bank &amp; mobile money</p></a>
+          <a href="p2p-orders.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Orders</span><span class="drawer-badge gray">ESCROW</span></div><p class="drawer-sub-desc">Track active &amp; completed trades</p></a>
+          <a href="trade.html" class="drawer-sub-item"><div class="drawer-sub-title">Spot Trade</div><p class="drawer-sub-desc">Order book trading &amp; charts</p></a>
+          <a href="swap.html" class="drawer-sub-item"><div class="drawer-sub-title">Instant Swap</div><p class="drawer-sub-desc">One-click crypto conversion</p></a>
+        </div>
+      </div>
+
+      <div class="drawer-group">
+        <button class="drawer-section open" onclick="toggleGroup('wallet')">
+          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span>Wallet</span></div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <div class="drawer-sub open" id="group-wallet">
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">My assets</div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Deposit</div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Withdraw</div></a>
+        </div>
+      </div>
+
+      <a href="careers.html" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Careers</span><span class="drawer-badge green-light">We're hiring</span></div><div class="drawer-row-desc">Explore 4 open roles</div></div></a>
+
+      <div class="drawer-auth" id="drawerAuth"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ============ SUPABASE ============ */
 const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -388,8 +469,8 @@ let currentUser = null;
 let userBalances = {};
 let balanceHidden = false;
 let currentView = 'wallet';
+let currentBalance = 0;
 
-/* ============ COINS + PRICES ============ */
 const USD_PRICES = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
 const COINS = [
@@ -409,53 +490,68 @@ const DEPOSIT_ADDRESSES = {
 };
 const DEPOSIT_NETWORKS = { BTC:'Bitcoin', USDT:'TRC20', ETH:'ERC20', SOL:'Solana', BNB:'BEP20' };
 
-/* ============ INIT ============ */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if(!session){ location.href = 'login.html'; return; }
   currentUser = session.user;
   await setAvatar(currentUser);
-  document.getElementById('notifBadge').style.display = 'none';
   await loadBalances();
   renderAssets();
 })();
 
 async function setAvatar(user){
-  const el = document.getElementById('headerAvatar');
-  let initial = '';
   const meta = user.user_metadata || {};
+  let initial = '?';
   if(meta.first_name) initial = meta.first_name[0];
   else if(meta.last_name) initial = meta.last_name[0];
-  if(!initial){
-    const { data: prof } = await sb.from('profiles').select('first_name, last_name').eq('id', user.id).maybeSingle();
-    if(prof){
-      if(prof.first_name) initial = prof.first_name[0];
-      else if(prof.last_name) initial = prof.last_name[0];
-    }
-  }
-  if(!initial && user.email) initial = user.email[0];
-  if(!initial) initial = '?';
-  el.textContent = initial.toUpperCase();
+  else if(user.email) initial = user.email[0];
+  return initial.toUpperCase();
 }
 
 async function loadBalances(){
-  const { data, error } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
+  const { data } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
   userBalances = {};
   COINS.forEach(c => userBalances[c.sym] = 0);
-  if(!error && data){ data.forEach(b => userBalances[b.coin] = Number(b.amount)); }
+  if(data) data.forEach(b => userBalances[b.coin] = Number(b.amount));
+  currentBalance = 0;
+  for(const sym in userBalances) currentBalance += userBalances[sym] * (USD_PRICES[sym] || 0);
+  renderHeaderAuth();
   updateBalanceDisplay();
 }
 
-function totalUSD(){
-  let t = 0;
-  for(const sym in userBalances) t += userBalances[sym] * (USD_PRICES[sym] || 0);
-  return t;
-}
+function totalUSD(){ return currentBalance; }
 
 function updateBalanceDisplay(){
-  const v = '$' + totalUSD().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const v = '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   document.getElementById('balanceDisplay').textContent = balanceHidden ? '****' : v;
-  document.getElementById('headerBalance').textContent = balanceHidden ? '****' : v;
+}
+
+function renderHeaderAuth(){
+  const wrap = document.getElementById('headerAuth');
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+  const v = '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  wrap.innerHTML = `
+    <div class="balance">
+      <span class="balance-val" id="hdrBal">${balanceHidden ? '****' : v}</span>
+      <button class="balance-eye" id="headerEye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <a href="wallet.html" class="avatar">${initial}</a>
+    <button class="notif-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+      <span class="notif-badge">0</span>
+    </button>
+  `;
+  document.getElementById('headerEye').addEventListener('click', () => {
+    balanceHidden = !balanceHidden;
+    document.getElementById('hdrBal').textContent = balanceHidden ? '****' : v;
+    updateBalanceDisplay();
+  });
 }
 
 function renderAssets(){
@@ -537,7 +633,6 @@ document.querySelectorAll('.asset-tab').forEach(t => {
 });
 document.getElementById('hideZero').addEventListener('change', renderAssets);
 
-/* ============ MODAL ============ */
 function openModal(type, symbol){
   const coin = symbol || 'BTC';
   const c = COINS.find(x => x.sym === coin);
@@ -549,29 +644,29 @@ function openModal(type, symbol){
     const network = DEPOSIT_NETWORKS[coin] || '';
     content.innerHTML = `
       <div class="modal-title">Deposit ${c.name}</div>
-      <div class="modal-sub">Send ${coin} to the address below, then confirm on this page.</div>
+      <div class="modal-sub">Send ${coin} to the address below, then confirm.</div>
       <div class="modal-info">
         <div class="modal-info-row"><span>Coin</span><span>${coin}</span></div>
         <div class="modal-info-row"><span>Network</span><span>${network}</span></div>
       </div>
-      <label class="modal-label">Deposit address (${network})</label>
+      <label class="modal-label">Deposit address</label>
       <input class="modal-input" readonly value="${addr}" onclick="this.select()" style="font-family:monospace;font-size:11px" />
-      <label class="modal-label">Amount you sent (${coin})</label>
+      <label class="modal-label">Amount (${coin})</label>
       <input class="modal-input" type="number" step="any" id="depAmount" placeholder="0.00" />
-      <label class="modal-label">Transaction hash (optional)</label>
-      <input class="modal-input" id="depTxHash" placeholder="0x... or transaction ID" style="font-family:monospace;font-size:11px" />
+      <label class="modal-label">Tx hash (optional)</label>
+      <input class="modal-input" id="depTxHash" placeholder="0x..." style="font-family:monospace;font-size:11px" />
       <button class="modal-confirm" id="depSubmit" onclick="submitDeposit('${coin}')">I've Sent The Crypto</button>
     `;
   } else {
     const bal = userBalances[coin] || 0;
     content.innerHTML = `
       <div class="modal-title">Withdraw ${c.name}</div>
-      <div class="modal-sub">Submit a withdrawal request. Admin will review and send after approval.</div>
+      <div class="modal-sub">Admin will review and send after approval.</div>
       <div class="modal-info">
         <div class="modal-info-row"><span>Available</span><span>${bal.toFixed(8).replace(/\.?0+$/,'')} ${coin}</span></div>
       </div>
       <label class="modal-label">Destination address</label>
-      <input class="modal-input" id="wdAddr" placeholder="Paste your ${coin} wallet address" style="font-family:monospace;font-size:11px" />
+      <input class="modal-input" id="wdAddr" placeholder="Paste address" style="font-family:monospace;font-size:11px" />
       <label class="modal-label">Amount (${coin})</label>
       <input class="modal-input" type="number" step="any" id="wdAmount" placeholder="0.00" />
       <button class="modal-confirm" id="wdSubmit" onclick="submitWithdraw('${coin}')">Request Withdrawal</button>
@@ -589,7 +684,6 @@ document.getElementById('modalBackdrop').addEventListener('click', e => {
   if(e.target.id === 'modalBackdrop') closeModal();
 });
 
-/* ============ SUBMIT DEPOSIT (with success popup) ============ */
 async function submitDeposit(coin){
   const amount = parseFloat(document.getElementById('depAmount').value);
   const txHash = document.getElementById('depTxHash').value.trim();
@@ -614,7 +708,6 @@ async function submitDeposit(coin){
 
   if(error){ toast(error.message, true); return; }
 
-  // close input modal, then show success popup
   closeModal();
   if(currentView !== 'wallet'){
     currentView = 'wallet';
@@ -624,7 +717,6 @@ async function submitDeposit(coin){
   showSuccessPopup('deposit', coin, amount);
 }
 
-/* ============ SUBMIT WITHDRAW (with success popup) ============ */
 async function submitWithdraw(coin){
   const addr = document.getElementById('wdAddr').value.trim();
   const amount = parseFloat(document.getElementById('wdAmount').value);
@@ -657,25 +749,17 @@ async function submitWithdraw(coin){
   showSuccessPopup('withdraw', coin, amount);
 }
 
-/* ============ SUCCESS POPUP ============ */
 function showSuccessPopup(type, coin, amount){
   const isDeposit = type === 'deposit';
-  const titleEl = document.getElementById('successTitle');
-  const descEl = document.getElementById('successDesc');
-  const infoEl = document.getElementById('successInfo');
-  const noteEl = document.getElementById('successNote');
+  document.getElementById('successTitle').textContent = isDeposit ? 'Deposit Submitted' : 'Withdrawal Submitted';
+  document.getElementById('successDesc').textContent = isDeposit
+    ? 'Your deposit is being verified. Amount will reflect in your wallet shortly.'
+    : 'Your withdrawal request is being reviewed. Amount will be sent after admin approval.';
+  document.getElementById('successNote').textContent = isDeposit
+    ? 'Deposits are usually processed within 10-30 minutes after network confirmation.'
+    : 'Withdrawals are typically processed within 30 minutes to 2 hours.';
 
-  if(isDeposit){
-    titleEl.textContent = 'Deposit Submitted';
-    descEl.textContent = 'Your deposit is being verified. Amount will reflect in your wallet shortly.';
-    noteEl.textContent = 'Deposits are usually processed within 10–30 minutes after network confirmation.';
-  } else {
-    titleEl.textContent = 'Withdrawal Submitted';
-    descEl.textContent = 'Your withdrawal request is being reviewed. Amount will be sent after admin approval.';
-    noteEl.textContent = 'Withdrawals are typically processed within 30 minutes to 2 hours.';
-  }
-
-  infoEl.innerHTML = `
+  document.getElementById('successInfo').innerHTML = `
     <div class="success-info-row"><span>Coin</span><span>${coin}</span></div>
     <div class="success-info-row"><span>Amount</span><span>${amount} ${coin}</span></div>
     <div class="success-info-row"><span>Status</span><span style="color:#ea580c">Pending</span></div>
@@ -688,13 +772,15 @@ function showSuccessPopup(type, coin, amount){
 function closeSuccess(){
   document.getElementById('successBackdrop').classList.remove('show');
   document.body.style.overflow = '';
-  // refresh balances in case admin already approved (unlikely but safe)
   loadBalances().then(() => renderAssets());
 }
 
-/* ============ TOGGLES / REFRESH / TOAST ============ */
-document.getElementById('toggleBalance').addEventListener('click', () => { balanceHidden = !balanceHidden; updateBalanceDisplay(); });
-document.getElementById('headerEye').addEventListener('click', () => { balanceHidden = !balanceHidden; updateBalanceDisplay(); });
+document.getElementById('toggleBalance').addEventListener('click', () => {
+  balanceHidden = !balanceHidden;
+  updateBalanceDisplay();
+  const hdrBal = document.getElementById('hdrBal');
+  if(hdrBal) hdrBal.textContent = balanceHidden ? '****' : '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+});
 document.getElementById('refreshBtn').addEventListener('click', async () => {
   const btn = document.getElementById('refreshBtn');
   btn.classList.add('spinning');
@@ -715,6 +801,58 @@ setInterval(async () => {
     if(currentView === 'wallet') renderAssets();
   }
 }, 30000);
+
+/* ============ DRAWER ============ */
+function openDrawer(){
+  document.getElementById('drawerBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderDrawerAuth();
+}
+function closeDrawer(){
+  document.getElementById('drawerBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function toggleGroup(name){
+  const group = document.getElementById('group-' + name);
+  if(!group) return;
+  const isOpen = group.classList.contains('open');
+  group.classList.toggle('open', !isOpen);
+  const section = group.previousElementSibling;
+  if(section) section.classList.toggle('open', !isOpen);
+}
+document.getElementById('drawerBackdrop').addEventListener('click', e => {
+  if(e.target.id === 'drawerBackdrop') closeDrawer();
+});
+
+async function renderDrawerAuth(){
+  const wrap = document.getElementById('drawerAuth');
+  if(!wrap) return;
+  if(!currentUser){
+    wrap.innerHTML = `<a href="login.html" class="drawer-auth-btn login">Log in</a><a href="signup.html" class="drawer-auth-btn signup">Create account</a>`;
+    return;
+  }
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+  const bal = '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  wrap.innerHTML = `
+    <div class="drawer-user">
+      <div class="drawer-user-avatar">${initial}</div>
+      <div style="min-width:0;flex:1"><div class="drawer-user-email">${currentUser.email || ''}</div><div class="drawer-user-bal">${bal}</div></div>
+    </div>
+    <a href="wallet.html" class="drawer-auth-btn login">My wallet</a>
+    <button onclick="doLogout()" class="drawer-auth-btn logout">Log out</button>
+  `;
+}
+async function doLogout(){
+  if(confirm('Log out of KRYPTOS?')){
+    await sb.auth.signOut();
+    location.href = 'login.html';
+  }
+}
 </script>
 </body>
 </html>
