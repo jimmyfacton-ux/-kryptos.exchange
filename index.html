@@ -19,7 +19,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
 html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
-body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
 ::selection{background:var(--brand-primary);color:var(--brand-dark)}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
@@ -28,410 +28,503 @@ a{color:inherit;text-decoration:none}
 input,select{font-family:inherit}
 img,svg{display:block;max-width:100%}
 select{appearance:none;-webkit-appearance:none;background:transparent;border:none;outline:none;cursor:pointer}
+
 .container{max-width:1280px;margin:0 auto;padding:0 16px}
 @media(min-width:768px){.container{padding:0 24px}}
 .flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
 .flex-col{flex-direction:column}.flex-1{flex:1}.shrink-0{flex-shrink:0}
 .gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
-.text-xs{font-size:12px}.text-sm{font-size:14px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:20px}.text-2xl{font-size:24px}.text-3xl{font-size:30px}
-.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
-.tracking-tight{letter-spacing:-.02em}
-.text-muted{color:var(--muted)}
-.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
-.shadow-xs{box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.text-xs{font-size:12px}.text-sm{font-size:14px}
+.font-bold{font-weight:700}.font-extrabold{font-weight:800}
 
-/* header */
+/* ============ HEADER ============ */
 .site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.header-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
-@media(max-width:640px){.header-inner{height:56px}}
-.brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.menu-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
+.header-inner{height:56px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+@media(min-width:640px){.header-inner{height:64px}}
+.brand{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.menu-btn{display:flex;align-items:center;gap:6px;padding:6px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
 .menu-btn:hover{background:var(--fill)}
 .menu-btn svg{width:22px;height:22px;stroke-width:2.4}
-.logo-text{font-weight:800;font-size:20px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:2px}
+.logo-text{font-weight:800;font-size:17px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:1px}
+@media(min-width:640px){.logo-text{font-size:20px}}
 .logo-text .accent{color:var(--brand-hover)}
-.logo-sub{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-left:2px}
-.nav-links{display:flex;align-items:center;gap:4px;margin-left:24px}
-.nav-link{padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
+.logo-sub{font-size:9px;font-weight:700;color:var(--muted);margin-left:1px}
+@media(min-width:640px){.logo-sub{font-size:10px}}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:16px}
+.nav-link{padding:7px 10px;font-size:13px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
 .nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
 .nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
-.nav-badge{margin-left:6px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
-.header-actions{display:flex;align-items:center;gap:10px}
-.btn-yellow{padding:8px 16px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:all .15s}
+.nav-badge{margin-left:4px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
+.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-yellow{padding:7px 12px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:12px;border-radius:10px;transition:all .15s;white-space:nowrap}
+@media(min-width:640px){.btn-yellow{padding:8px 16px;font-size:14px;border-radius:12px}}
 .btn-yellow:hover{background:var(--brand-hover)}
-.btn-yellow:active{transform:scale(.99)}
-.btn-ghost{padding:8px 14px;color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;transition:color .15s}
-.btn-ghost:hover{color:#000}
+.btn-ghost{padding:7px 10px;color:var(--brand-dark);font-weight:700;font-size:12px;border-radius:10px;white-space:nowrap}
+@media(min-width:640px){.btn-ghost{padding:8px 14px;font-size:14px}}
 .balance{display:flex;align-items:center;gap:4px}
-.balance-val{font-size:14px;font-weight:700;color:var(--brand-dark)}
+.balance-val{font-size:13px;font-weight:700;color:var(--brand-dark);font-family:ui-monospace,monospace}
+@media(min-width:640px){.balance-val{font-size:14px}}
 .balance-eye{color:var(--muted);padding:2px}
 .balance-eye svg{width:14px;height:14px}
-.avatar{width:32px;height:32px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
-.notif-btn{position:relative;padding:8px;color:var(--brand-dark);border-radius:8px;transition:background .15s}
+.avatar{width:30px;height:30px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
+@media(min-width:640px){.avatar{width:32px;height:32px}}
+.notif-btn{position:relative;padding:6px;color:var(--brand-dark);border-radius:8px;flex-shrink:0}
 .notif-btn:hover{background:var(--fill)}
-.notif-btn svg{width:20px;height:20px;stroke-width:2.2}
-.notif-badge{position:absolute;top:2px;right:2px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
+.notif-btn svg{width:18px;height:18px;stroke-width:2.2}
+@media(min-width:640px){.notif-btn svg{width:20px;height:20px}}
+.notif-badge{position:absolute;top:0;right:0;min-width:16px;height:16px;padding:0 4px;background:#dc2626;color:#fff;font-size:9px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
 
-/* hero */
-.hero-wrap{padding-top:16px;padding-bottom:16px}
-.hero-grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:flex-start}
+/* ============ HERO ============ */
+.hero-wrap{padding-top:16px;padding-bottom:24px}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:20px;align-items:flex-start}
 @media(min-width:1280px){.hero-grid{grid-template-columns:7fr 5fr;gap:32px}}
-.hero-left{display:flex;flex-direction:column;gap:16px}
-.hero-title{font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-.02em;text-align:center}
-@media(min-width:640px){.hero-title{font-size:40px}}
-@media(min-width:1280px){.hero-title{font-size:48px;text-align:left}}
-.hero-sub{font-size:14px;color:var(--muted);font-weight:500;line-height:1.6;text-align:center;max-width:560px;margin:0 auto}
-@media(min-width:1280px){.hero-sub{text-align:left;margin:0}}
+.hero-left{display:flex;flex-direction:column;gap:14px;min-width:0}
+.hero-title{font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.02em;text-align:center;padding:0 4px}
+@media(min-width:640px){.hero-title{font-size:36px}}
+@media(min-width:1280px){.hero-title{font-size:48px;text-align:left;padding:0}}
+.hero-sub{font-size:13px;color:var(--muted);font-weight:500;line-height:1.6;text-align:center;padding:0 8px}
+@media(min-width:640px){.hero-sub{font-size:14px;max-width:560px;margin:0 auto}}
+@media(min-width:1280px){.hero-sub{text-align:left;margin:0;padding:0}}
 
 /* ticker */
-.ticker{position:relative;width:100%;overflow:hidden;border-radius:16px;background:#fff;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:24px;z-index:10;pointer-events:none}
+.ticker{position:relative;width:100%;overflow:hidden;border-radius:12px;background:#fff;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.ticker{border-radius:16px}}
+.ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:20px;z-index:10;pointer-events:none}
 .ticker::before{left:0;background:linear-gradient(to right,#fff,transparent)}
 .ticker::after{right:0;background:linear-gradient(to left,#fff,transparent)}
-.ticker-track{display:flex;align-items:center;gap:24px;padding:10px 0;width:max-content;animation:scroll 30s linear infinite}
+.ticker-track{display:flex;align-items:center;gap:16px;padding:10px 0;width:max-content;animation:scroll 30s linear infinite}
 .ticker:hover .ticker-track{animation-play-state:paused}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ticker-item{display:flex;align-items:center;gap:10px;padding:0 12px;flex-shrink:0}
-.ticker-icon{width:20px;height:20px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ticker-icon svg{width:16px;height:16px}
-.ticker-name{font-size:12px;font-weight:600;color:#6b7280;line-height:1.2}
-.ticker-price-row{display:flex;align-items:center;gap:6px;line-height:1.2;margin-top:2px}
-.ticker-price{font-size:12px;font-weight:800;color:#111827}
-.ticker-change{font-size:11px;font-weight:700;color:var(--success)}
+.ticker-item{display:flex;align-items:center;gap:8px;padding:0 8px;flex-shrink:0}
+.ticker-icon{width:18px;height:18px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ticker-icon svg{width:14px;height:14px}
+.ticker-name{font-size:11px;font-weight:600;color:#6b7280;line-height:1.2}
+.ticker-price-row{display:flex;align-items:center;gap:5px;line-height:1.2;margin-top:2px}
+.ticker-price{font-size:11px;font-weight:800;color:#111827}
+.ticker-change{font-size:10px;font-weight:700;color:var(--success);white-space:nowrap}
 .ticker-change.down{color:var(--danger)}
 
-/* security cards */
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.feature-card{display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.feature-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.feature-icon svg{width:18px;height:18px;stroke-width:2}
+/* security features - only show on large screens */
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.feature-card{display:flex;gap:10px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.feature-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feature-icon svg{width:16px;height:16px;stroke-width:2}
 .fi-green{background:rgba(14,203,129,.1);color:var(--success)}
 .fi-dark{background:rgba(24,26,32,.05);color:var(--brand-dark)}
 .fi-yellow{background:rgba(252,213,53,.2);color:var(--brand-dark)}
 .fi-purple{background:#faf5ff;color:#9333ea}
-.feature-title{font-size:13px;font-weight:700;color:var(--brand-dark);line-height:1.3}
-.feature-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5}
+.feature-title{font-size:12px;font-weight:700;color:var(--brand-dark);line-height:1.3}
+.feature-desc{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.5}
+@media(min-width:768px){.md-only-flex{display:block}}
+@media(max-width:767px){.md-only-flex{display:none!important}}
 
 /* P2P widget */
-.widget-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:6px;margin-bottom:16px}
-.tab{flex:1;padding:10px;text-align:center;font-weight:700;font-size:14px;border-radius:12px;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.hero-right{min-width:0}
+.widget-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+@media(min-width:640px){.widget-card{padding:20px;border-radius:16px}}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:12px}
+.tab{flex:1;min-width:0;padding:8px 4px;text-align:center;font-weight:700;font-size:11px;border-radius:10px;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:640px){.tab{padding:10px;font-size:13px;gap:6px}}
 .tab.active{background:var(--brand-dark);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1)}
 .tab:hover:not(.active){color:var(--brand-dark)}
-.tab .hot{background:var(--brand-primary);color:var(--brand-dark);font-size:9px;font-weight:700;padding:2px 6px;border-radius:9999px;text-transform:uppercase}
-.widget-desc{font-size:14px;color:var(--muted);font-weight:500;line-height:1.6;margin-bottom:20px}
-.field-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
-.selector{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--fill);border:1px solid var(--border);border-radius:16px;transition:background .15s;gap:12px}
+.tab .hot{background:var(--brand-primary);color:var(--brand-dark);font-size:8px;font-weight:700;padding:1px 4px;border-radius:9999px;text-transform:uppercase}
+@media(min-width:640px){.tab .hot{font-size:9px;padding:2px 6px}}
+.widget-desc{font-size:12px;color:var(--muted);font-weight:500;line-height:1.5;margin-bottom:14px}
+@media(min-width:640px){.widget-desc{font-size:13px;margin-bottom:18px}}
+.field-label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.selector{display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--fill);border:1px solid var(--border);border-radius:12px;transition:background .15s;gap:8px}
+@media(min-width:640px){.selector{padding:12px 14px;border-radius:14px;gap:12px}}
 .selector:hover{background:rgba(234,236,239,.6)}
-.selector-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.selector svg.coin{width:28px;height:28px;flex-shrink:0}
-.selector select{background:transparent;font-weight:700;color:var(--brand-dark);font-size:16px;width:100%;cursor:pointer}
-.selector small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
-.swap-wrap{position:relative;margin:16px 0}
-.swap-btn{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);width:32px;height:32px;background:var(--brand-primary);border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.12);border:2px solid #fff;z-index:10;transition:all .15s}
-.swap-btn:hover{background:var(--brand-hover)}
-.swap-btn svg{width:16px;height:16px;stroke-width:2.5}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:16px;border-top:1px solid var(--border);margin-top:8px}
-.quick-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:10px}
-.quick-btn{display:flex;align-items:center;justify-content:space-between;padding:12px;background:#fff;border:1px solid var(--border);border-radius:16px;transition:all .15s;gap:8px}
+.selector-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.selector svg.coin{width:24px;height:24px;flex-shrink:0}
+@media(min-width:640px){.selector svg.coin{width:28px;height:28px}}
+.selector select{background:transparent;font-weight:700;color:var(--brand-dark);font-size:13px;width:100%;cursor:pointer;min-width:0}
+@media(min-width:640px){.selector select{font-size:15px}}
+.selector small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(min-width:640px){.selector small{font-size:11px;white-space:normal}}
+.swap-wrap{position:relative;margin:14px 0}
+.swap-btn{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);width:30px;height:30px;background:var(--brand-primary);border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.12);border:2px solid #fff;z-index:10;transition:all .15s}
+.swap-btn svg{width:14px;height:14px;stroke-width:2.5}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:14px;border-top:1px solid var(--border);margin-top:6px}
+.quick-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:8px}
+.quick-btn{display:flex;align-items:center;justify-content:space-between;padding:9px;background:#fff;border:1px solid var(--border);border-radius:12px;transition:all .15s;gap:4px;min-width:0}
+@media(min-width:640px){.quick-btn{padding:12px;border-radius:14px;gap:8px}}
 .quick-btn:hover{transform:translateY(-1px)}
 .quick-btn.buy{border-color:rgba(14,203,129,.3)}
-.quick-btn.buy:hover{background:rgba(14,203,129,.05)}
 .quick-btn.sell{border-color:rgba(246,70,93,.3)}
-.quick-btn.sell:hover{background:rgba(246,70,93,.05)}
-.quick-btn .qa-left{display:flex;align-items:center;gap:10px;text-align:left}
-.quick-btn svg.coin{width:24px;height:24px}
-.quick-btn .qa-ticker{font-weight:700;font-size:12px}
+.quick-btn .qa-left{display:flex;align-items:center;gap:6px;text-align:left;min-width:0;flex:1}
+.quick-btn svg.coin{width:20px;height:20px;flex-shrink:0}
+@media(min-width:640px){.quick-btn svg.coin{width:24px;height:24px}}
+.quick-btn .qa-ticker{font-weight:700;font-size:11px}
+@media(min-width:640px){.quick-btn .qa-ticker{font-size:12px}}
 .qa-buy{color:var(--success)}.qa-sell{color:var(--danger)}
-.quick-btn small{display:block;font-size:10px;color:var(--muted)}
-.quick-btn .arrow{width:16px;height:16px}
-.btn-primary-lg{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:14px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:all .15s}
+.quick-btn small{display:block;font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(min-width:640px){.quick-btn small{font-size:10px}}
+.quick-btn .arrow{width:14px;height:14px;flex-shrink:0}
+@media(min-width:640px){.quick-btn .arrow{width:16px;height:16px}}
+.btn-primary-lg{width:100%;padding:12px;background:var(--brand-primary);color:var(--brand-dark);font-weight:700;font-size:13px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;transition:all .15s}
+@media(min-width:640px){.btn-primary-lg{padding:14px;font-size:14px;margin-top:20px}}
 .btn-primary-lg:hover{background:var(--brand-hover)}
-.btn-primary-lg svg{width:16px;height:16px}
+.btn-primary-lg svg{width:14px;height:14px}
+@media(min-width:640px){.btn-primary-lg svg{width:16px;height:16px}}
 
-/* markets table */
-.section-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative}
-.section-title{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--brand-dark)}
-.section-sub{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.5}
-.filter-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:16px 0}
-.filter-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.pill{padding:8px 14px;border-radius:9999px;font-size:13px;font-weight:600;background:var(--fill);color:var(--muted);border:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:6px;cursor:pointer}
+/* ============ SECTION STACK ============ */
+.section-stack{display:flex;flex-direction:column;gap:40px;margin-top:32px}
+@media(min-width:768px){.section-stack{gap:64px;margin-top:48px}}
+
+/* ============ MARKETS ============ */
+.section-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:768px){.section-card{border-radius:16px;padding:24px}}
+.section-title{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--brand-dark)}
+@media(min-width:640px){.section-title{font-size:24px}}
+.section-sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+@media(min-width:640px){.section-sub{font-size:14px}}
+.filter-bar{display:flex;flex-direction:column;gap:12px;align-items:stretch;margin:14px 0}
+@media(min-width:768px){.filter-bar{flex-direction:row;justify-content:space-between;align-items:center;gap:8px}}
+.filter-pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+@media(min-width:640px){.filter-pills{gap:8px}}
+.pill{padding:6px 10px;border-radius:9999px;font-size:11px;font-weight:600;background:var(--fill);color:var(--muted);border:1px solid var(--border);transition:all .15s;display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}
+@media(min-width:640px){.pill{padding:8px 14px;font-size:13px;gap:6px}}
 .pill:hover{background:#e5e7eb;color:var(--brand-dark)}
 .pill.active{background:var(--brand-primary);color:var(--brand-dark);border-color:var(--brand-primary);font-weight:700}
-.pill.green{background:#fff;color:var(--brand-dark);border-color:var(--border)}
-.pill .badge-green{background:rgba(14,203,129,.15);color:var(--success);font-size:10px;font-weight:700;padding:2px 6px;border-radius:9999px}
+.pill.green{background:#fff;color:var(--brand-dark)}
+.pill .badge-green{background:rgba(14,203,129,.15);color:var(--success);font-size:9px;font-weight:700;padding:1px 5px;border-radius:9999px}
 .pill.yellow-border{border-color:var(--brand-primary);background:rgba(252,213,53,.15);color:var(--brand-dark);font-weight:700}
-.pill svg{width:14px;height:14px}
-.table-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.select-wrap,.search-wrap{position:relative;display:flex;align-items:center}
-.select-wrap select{padding:10px 36px 10px 14px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:600;color:var(--brand-dark);cursor:pointer;transition:all .15s}
-.select-wrap svg{position:absolute;right:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
-.search-wrap input{width:220px;padding:10px 12px 10px 34px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:500;color:var(--brand-dark);outline:none;transition:all .15s}
+.pill svg{width:12px;height:12px}
+@media(min-width:640px){.pill svg{width:14px;height:14px}}
+.table-controls{display:flex;flex-direction:column;gap:8px;width:100%}
+@media(min-width:768px){.table-controls{flex-direction:row;width:auto}}
+.select-wrap,.search-wrap{position:relative;display:flex;align-items:center;width:100%}
+@media(min-width:768px){.select-wrap,.search-wrap{width:auto}}
+.select-wrap select{padding:9px 32px 9px 12px;background:var(--fill);border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:600;color:var(--brand-dark);cursor:pointer;width:100%}
+.select-wrap svg{position:absolute;right:10px;width:14px;height:14px;color:var(--muted);pointer-events:none}
+.search-wrap input{width:100%;padding:9px 12px 9px 32px;background:var(--fill);border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:500;color:var(--brand-dark);outline:none}
+@media(min-width:768px){.search-wrap input{width:200px}}
 .search-wrap input::placeholder{color:var(--muted)}
 .search-wrap input:focus{background:#fff;border-color:var(--brand-primary)}
-.search-wrap svg{position:absolute;left:10px;width:16px;height:16px;color:var(--muted);pointer-events:none}
-@media(max-width:640px){.search-wrap input{width:100%}.table-controls{width:100%}.search-wrap{flex:1}}
-.market-table{width:100%;border-collapse:collapse;text-align:left}
+.search-wrap svg{position:absolute;left:10px;width:14px;height:14px;color:var(--muted);pointer-events:none}
+
+/* mobile card list */
+.mobile-market{display:block}
+@media(min-width:768px){.mobile-market{display:none}}
+.market-table{display:none}
+@media(min-width:768px){.market-table{display:table;width:100%;border-collapse:collapse;text-align:left}}
 .market-table th{padding:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
 .market-table th.text-right{text-align:right}.market-table th.text-center{text-align:center}
 .market-table td{padding:14px 12px;border-bottom:1px solid #F0F2F5}
 .market-table tbody tr{transition:background .15s;cursor:pointer}
 .market-table tbody tr:hover{background:#F9FAFB}
 .market-table td:last-child{border-bottom:none}
-.asset-cell{display:flex;align-items:center;gap:12px}
-.coin-logo{width:40px;height:40px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.coin-logo svg{width:26px;height:26px}
-.coin-symbol{font-size:15px;font-weight:700;color:var(--brand-dark);display:flex;align-items:center;gap:6px;transition:color .15s}
-tr:hover .coin-symbol{color:var(--brand-hover)}
-.mcap-badge{background:rgba(252,213,53,.2);border:1px solid rgba(252,213,53,.4);color:var(--brand-dark);font-size:9px;font-weight:900;padding:1px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
-.coin-name{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px}
+.asset-cell{display:flex;align-items:center;gap:10px}
+.coin-logo{width:36px;height:36px;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+@media(min-width:640px){.coin-logo{width:40px;height:40px}}
+.coin-logo svg{width:22px;height:22px}
+@media(min-width:640px){.coin-logo svg{width:26px;height:26px}}
+.coin-symbol{font-size:14px;font-weight:700;color:var(--brand-dark);display:flex;align-items:center;gap:5px}
+.mcap-badge{background:rgba(252,213,53,.2);border:1px solid rgba(252,213,53,.4);color:var(--brand-dark);font-size:8px;font-weight:900;padding:1px 5px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.coin-name{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
 .vol-cell .val{font-weight:700;font-size:13px;color:var(--brand-dark);white-space:nowrap}
 .vol-cell .sub{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap}
-.spark{width:90px;height:26px}
-.price-cell .price{font-size:15px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em}
+.spark{width:80px;height:24px}
+.price-cell .price{font-size:14px;font-weight:700;color:var(--brand-dark)}
 .price-cell .usd{font-size:12px;color:var(--muted);margin-top:2px}
-.change-badge{display:inline-block;width:80px;padding:6px 8px;text-align:center;border-radius:8px;font-weight:700;font-size:13px;color:#fff}
+.change-badge{display:inline-block;width:76px;padding:5px 6px;text-align:center;border-radius:6px;font-weight:700;font-size:12px;color:#fff}
 .change-badge.up{background:var(--success)}
 .change-badge.down{background:var(--danger)}
-.trade-btn{display:inline-flex;align-items:center;gap:4px;padding:8px 14px;background:var(--brand-primary);color:var(--brand-dark);font-size:12px;font-weight:700;border-radius:8px;transition:background .15s}
+.trade-btn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;background:var(--brand-primary);color:var(--brand-dark);font-size:11px;font-weight:700;border-radius:6px;transition:background .15s}
 .trade-btn:hover{background:var(--brand-hover)}
-.trade-btn svg{width:12px;height:12px}
-.table-footer{display:flex;justify-content:center;padding-top:14px;border-top:1px solid var(--border);margin-top:8px}
-.table-footer button{padding:10px 20px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:700;color:var(--brand-dark);display:inline-flex;align-items:center;gap:6px;transition:background .15s}
-.table-footer button:hover{background:#e5e7eb}
-.table-footer svg{width:16px;height:16px;color:var(--muted)}
-.table-link{display:flex;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border);margin-top:14px;font-size:11px;color:var(--muted)}
-.table-link button{color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px}
-.table-link button:hover{color:var(--brand-hover)}
-.table-link svg{width:12px;height:12px}
-.mobile-market{display:none}
-@media(max-width:767px){.market-table{display:none}.mobile-market{display:block}}
-.mobile-market-row{display:flex;align-items:center;justify-content:space-between;padding:14px 10px;border-bottom:1px solid #F0F2F5;cursor:pointer;transition:background .15s;gap:8px}
-.mobile-market-row:hover{background:#F9FAFB}
+.trade-btn svg{width:11px;height:11px}
+
+.mobile-market-row{display:flex;align-items:center;justify-content:space-between;padding:12px 8px;border-bottom:1px solid #F0F2F5;gap:8px;text-decoration:none;color:inherit}
 .mobile-market-row:last-child{border-bottom:none}
+.mobile-market-row:hover{background:#F9FAFB}
 .mobile-asset{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
-.mobile-asset .coin-logo{width:36px;height:36px}
-.mobile-asset .coin-logo svg{width:23px;height:23px}
+.mobile-asset .coin-logo{width:34px;height:34px}
+.mobile-asset .coin-logo svg{width:22px;height:22px}
 .mobile-price{text-align:right;flex-shrink:0}
 .mobile-price .price{font-size:13px;font-weight:700;color:var(--brand-dark)}
-.mobile-price .usd{font-size:10px;color:var(--muted);margin-top:2px}
-.mobile-change{width:64px;padding:6px;text-align:center;border-radius:8px;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
+.mobile-price .usd{font-size:10px;color:var(--muted);margin-top:1px}
+.mobile-change{width:60px;padding:5px;text-align:center;border-radius:6px;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
 .mobile-change.up{background:var(--success)}
 .mobile-change.down{background:var(--danger)}
 
-/* metrics */
-.metrics-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;text-align:center}
+.table-footer{display:flex;justify-content:center;padding-top:12px;border-top:1px solid var(--border);margin-top:8px}
+.table-footer button{padding:8px 14px;background:var(--fill);border:1px solid var(--border);border-radius:10px;font-size:11px;font-weight:700;color:var(--brand-dark);display:inline-flex;align-items:center;gap:4px}
+.table-footer svg{width:14px;height:14px;color:var(--muted)}
+.table-link{display:flex;justify-content:center;padding-top:12px;border-top:1px solid var(--border);margin-top:12px;font-size:11px;color:var(--muted)}
+.table-link a{color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.table-link svg{width:11px;height:11px}
+
+/* ============ METRICS ============ */
+.metrics-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px 16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:768px){.metrics-card{border-radius:24px;padding:32px}}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 12px;text-align:center}
 @media(min-width:768px){.metrics-grid{grid-template-columns:repeat(4,1fr);gap:32px}}
 .metric{display:flex;flex-direction:column;align-items:center}
-.metric-label{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:6px}
-.metric-value{font-size:32px;font-weight:800;color:var(--brand-dark);letter-spacing:-.03em}
+.metric-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+@media(min-width:640px){.metric-label{font-size:13px;margin-bottom:6px}}
+.metric-value{font-size:22px;font-weight:800;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.metric-value{font-size:28px}}
+@media(min-width:1024px){.metric-value{font-size:32px}}
 .metric-value.orange{color:var(--orange)}
 
-/* partner */
-.partner-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:48px 32px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;align-items:center}
-.partner-big{font-size:64px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(to bottom,#25E096,#0ECB81,#0A8754);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 8px 16px rgba(14,203,129,.35))}
-@media(min-width:640px){.partner-big{font-size:80px}}
+/* ============ PARTNER ============ */
+.partner-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:32px 20px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;align-items:center}
+@media(min-width:640px){.partner-card{border-radius:24px;padding:48px 32px}}
+.partner-big{font-size:42px;font-weight:900;letter-spacing:-.04em;background:linear-gradient(to bottom,#25E096,#0ECB81,#0A8754);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@media(min-width:640px){.partner-big{font-size:64px}}
+@media(min-width:1024px){.partner-big{font-size:80px}}
 .partner-big span{color:#34D399;-webkit-text-fill-color:#34D399}
-.partner-amount{font-size:40px;font-weight:900;color:var(--success);letter-spacing:-.03em;margin-top:8px}
-@media(min-width:640px){.partner-amount{font-size:48px}}
-.partner-label{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-dark);margin-top:6px}
-.partner-sub{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-top:6px;padding-bottom:16px;border-bottom:1px solid rgba(14,203,129,.2);max-width:280px;margin-left:auto;margin-right:auto}
-.partner-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:16px;max-width:440px;line-height:1.6}
+.partner-amount{font-size:28px;font-weight:900;color:var(--success);letter-spacing:-.02em;margin-top:6px}
+@media(min-width:640px){.partner-amount{font-size:40px}}
+@media(min-width:1024px){.partner-amount{font-size:48px}}
+.partner-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--brand-dark);margin-top:6px;padding:0 8px}
+@media(min-width:640px){.partner-label{font-size:13px}}
+.partner-sub{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--success);margin-top:6px;padding-bottom:14px;border-bottom:1px solid rgba(14,203,129,.2);max-width:280px;width:100%;margin-left:auto;margin-right:auto}
+@media(min-width:640px){.partner-sub{font-size:12px;padding-bottom:16px}}
+.partner-desc{font-size:12px;color:var(--muted);font-weight:500;margin-top:14px;max-width:440px;line-height:1.6}
+@media(min-width:640px){.partner-desc{font-size:14px}}
 .partner-desc strong{color:var(--brand-dark)}
-.btn-green-lg{margin-top:24px;padding:14px 40px;background:var(--success);color:#fff;font-weight:800;font-size:14px;border-radius:9999px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(14,203,129,.2);transition:all .15s}
+.btn-green-lg{margin-top:18px;padding:11px 28px;background:var(--success);color:#fff;font-weight:800;font-size:12px;border-radius:9999px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(14,203,129,.2);transition:all .15s}
+@media(min-width:640px){.btn-green-lg{padding:14px 40px;font-size:14px;margin-top:24px}}
 .btn-green-lg:hover{background:var(--success-hover)}
-.btn-green-lg svg{width:16px;height:16px;stroke-width:2.5}
+.btn-green-lg svg{width:14px;height:14px;stroke-width:2.5}
+@media(min-width:640px){.btn-green-lg svg{width:16px;height:16px}}
 
-/* products */
-.product-grid{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:640px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+/* ============ PRODUCTS ============ */
+.section-heading-center{text-align:center;margin-bottom:24px;padding:0 8px}
+@media(min-width:640px){.section-heading-center{margin-bottom:32px}}
+.section-heading-center h2{font-size:22px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
+@media(min-width:640px){.section-heading-center h2{font-size:32px}}
+.section-heading-center p{font-size:12px;color:var(--muted);font-weight:500;margin-top:6px;max-width:512px;margin-left:auto;margin-right:auto;line-height:1.5}
+@media(min-width:640px){.section-heading-center p{font-size:14px}}
+
+.product-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.product-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
 @media(min-width:1024px){.product-grid{grid-template-columns:repeat(4,1fr)}}
-.product-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+.product-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;color:inherit}
+@media(min-width:640px){.product-card{border-radius:16px;padding:24px}}
 .product-card:hover{border-color:var(--success);box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .product-card.wide{grid-column:span 1}
 @media(min-width:1024px){.product-card.wide{grid-column:span 2}}
 .product-top{display:flex;align-items:center;justify-content:space-between}
-.product-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid}
-.product-icon svg{width:20px;height:20px}
+.product-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid}
+@media(min-width:640px){.product-icon{width:40px;height:40px;border-radius:12px}}
+.product-icon svg{width:18px;height:18px}
+@media(min-width:640px){.product-icon svg{width:20px;height:20px}}
 .pi-green{background:#ecfdf5;color:var(--success);border-color:#d1fae5}
 .pi-orange{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
 .pi-blue{background:#eff6ff;color:#2563eb;border-color:#dbeafe}
 .pi-amber{background:#fffbeb;color:#b45309;border-color:#fde68a}
 .pi-sky{background:#f0f9ff;color:#0284c7;border-color:#e0f2fe}
 .pi-emerald{background:#ecfdf5;color:#059669;border-color:#d1fae5}
-.product-badge{font-size:10px;font-weight:900;padding:2px 8px;border-radius:9999px;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+.product-badge{font-size:9px;font-weight:900;padding:2px 6px;border-radius:9999px;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+@media(min-width:640px){.product-badge{font-size:10px;padding:2px 8px}}
 .bg-orange{background:var(--orange)}.bg-amber{background:#F59E0B}
-.product-title{font-size:16px;font-weight:800;color:var(--brand-dark);margin-top:16px;transition:color .15s}
+.product-title{font-size:15px;font-weight:800;color:var(--brand-dark);margin-top:12px;transition:color .15s}
+@media(min-width:640px){.product-title{font-size:16px;margin-top:16px}}
 .product-card:hover .product-title{color:var(--success)}
-.product-desc{font-size:12px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.6}
-.product-hover{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--success);opacity:0;margin-top:16px;transition:opacity .2s}
-.product-card:hover .product-hover{opacity:1}
+.product-desc{font-size:11px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.5}
+@media(min-width:640px){.product-desc{font-size:12px;line-height:1.6}}
+.product-hover{display:none;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--success);margin-top:16px}
+@media(min-width:768px){.product-card:hover .product-hover{display:flex}}
 .product-hover svg{width:14px;height:14px}
 
-/* why */
-.why-grid{display:grid;grid-template-columns:1fr;gap:16px}
+/* ============ WHY ============ */
+.why-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:768px){.why-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
-.why-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.why-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid}
-.why-icon svg{width:28px;height:28px;stroke-width:2}
+.why-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.why-card{border-radius:24px;padding:28px}}
+.why-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;border:1px solid}
+@media(min-width:640px){.why-icon{width:56px;height:56px;border-radius:16px;margin-bottom:16px}}
+.why-icon svg{width:22px;height:22px;stroke-width:2}
+@media(min-width:640px){.why-icon svg{width:28px;height:28px}}
 .wi-purple{background:linear-gradient(to bottom right,rgba(99,102,241,.1),rgba(168,85,247,.1),rgba(236,72,153,.1));border-color:#e0e7ff;color:#4f46e5}
 .wi-cyan{background:linear-gradient(to bottom right,rgba(6,182,212,.1),rgba(59,130,246,.1));border-color:#cffafe;color:#0891b2}
 .wi-emerald{background:#ecfdf5;border-color:#d1fae5;color:var(--success)}
-.why-title{font-size:18px;font-weight:800;color:var(--brand-dark)}
-.why-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px;line-height:1.6}
+.why-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
+@media(min-width:640px){.why-title{font-size:18px}}
+.why-desc{font-size:13px;color:var(--muted);font-weight:500;margin-top:6px;line-height:1.6}
+@media(min-width:640px){.why-desc{font-size:14px;margin-top:8px}}
 
-/* help */
-.help-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:24px}
-@media(min-width:640px){.help-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
-.help-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;justify-content:space-between}
-.help-title{font-size:18px;font-weight:800;color:var(--brand-dark)}
-.help-desc{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px;line-height:1.6}
-.help-link{margin-top:20px;color:var(--success);font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:4px;align-self:flex-start;transition:color .15s}
-.help-link:hover{color:var(--success-hover)}
-.help-link svg{width:14px;height:14px}
-.dl-label{font-size:12px;font-weight:700;color:var(--brand-dark);margin-bottom:10px}
-.dl-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:56px}
-@media(min-width:640px){.dl-grid{grid-template-columns:repeat(2,1fr)}}
-.dl-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.dl-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid}
-.dl-icon svg{width:20px;height:20px;stroke-width:2}
-.dl-title{font-size:13px;font-weight:800;color:var(--brand-dark)}
-.dl-sub{font-size:11px;color:var(--muted);font-weight:500}
+/* ============ HELP ============ */
+.help-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px}
+@media(min-width:640px){.help-grid{grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:24px}}
+.help-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;flex-direction:column;justify-content:space-between}
+@media(min-width:640px){.help-card{border-radius:24px;padding:28px}}
+.help-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
+@media(min-width:640px){.help-title{font-size:18px}}
+.help-desc{font-size:12px;color:var(--muted);font-weight:500;margin-top:6px;line-height:1.5}
+@media(min-width:640px){.help-desc{font-size:14px;line-height:1.6}}
+.help-link{margin-top:14px;color:var(--success);font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:4px;align-self:flex-start}
+@media(min-width:640px){.help-link{margin-top:20px;font-size:14px}}
+.help-link svg{width:12px;height:12px}
+@media(min-width:640px){.help-link svg{width:14px;height:14px}}
+.dl-label{font-size:11px;font-weight:700;color:var(--brand-dark);margin-bottom:8px}
+@media(min-width:640px){.dl-label{font-size:12px;margin-bottom:10px}}
+.dl-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:40px}
+@media(min-width:640px){.dl-grid{grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:56px}}
+.dl-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.dl-card{border-radius:16px;padding:16px;gap:14px}}
+.dl-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid}
+@media(min-width:640px){.dl-icon{width:40px;height:40px;border-radius:12px}}
+.dl-icon svg{width:18px;height:18px;stroke-width:2}
+@media(min-width:640px){.dl-icon svg{width:20px;height:20px}}
+.dl-title{font-size:12px;font-weight:800;color:var(--brand-dark)}
+@media(min-width:640px){.dl-title{font-size:13px}}
+.dl-sub{font-size:10px;color:var(--muted);font-weight:500}
+@media(min-width:640px){.dl-sub{font-size:11px}}
 
-/* FAQ */
-.faq-list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-.faq-item{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:all .15s}
-.faq-q{width:100%;padding:18px 20px;text-align:left;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s}
-.faq-q:hover{background:rgba(249,250,251,.5)}
-.faq-q span.fq{font-weight:700;font-size:14px;color:var(--brand-dark);padding-right:16px}
-.faq-icon{width:24px;height:24px;border-radius:9999px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;color:#6b7280;flex-shrink:0;transition:transform .2s}
-.faq-icon svg{width:14px;height:14px;stroke-width:2.5}
+/* ============ FAQ ============ */
+.faq-list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+@media(min-width:640px){.faq-list{gap:10px}}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.faq-item{border-radius:16px}}
+.faq-q{width:100%;padding:14px 16px;text-align:left;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:12px}
+@media(min-width:640px){.faq-q{padding:18px 20px}}
+.faq-q span.fq{font-weight:700;font-size:12px;color:var(--brand-dark);flex:1;line-height:1.4}
+@media(min-width:640px){.faq-q span.fq{font-size:14px}}
+.faq-icon{width:22px;height:22px;border-radius:9999px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;color:#6b7280;flex-shrink:0;transition:transform .2s}
+@media(min-width:640px){.faq-icon{width:24px;height:24px}}
+.faq-icon svg{width:12px;height:12px;stroke-width:2.5}
+@media(min-width:640px){.faq-icon svg{width:14px;height:14px}}
 .faq-item.open .faq-icon{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 20px}
-.faq-a-inner{padding-bottom:18px;font-size:13px;color:var(--muted);line-height:1.6}
-.faq-item.open .faq-a{max-height:300px}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 16px}
+@media(min-width:640px){.faq-a{padding:0 20px}}
+.faq-a-inner{padding-bottom:14px;font-size:12px;color:var(--muted);line-height:1.6}
+@media(min-width:640px){.faq-a-inner{padding-bottom:18px;font-size:13px}}
+.faq-item.open .faq-a{max-height:400px}
 
-/* footer */
-.footer{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
-.escrow-banner{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;flex-direction:column;gap:16px;justify-content:space-between;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-@media(min-width:640px){.escrow-banner{flex-direction:row;align-items:center}}
-.escrow-left{display:flex;align-items:center;gap:14px}
-.escrow-icon{width:44px;height:44px;border-radius:12px;background:#ecfdf5;color:var(--success);display:flex;align-items:center;justify-content:center;border:1px solid #d1fae5;flex-shrink:0}
-.escrow-icon svg{width:24px;height:24px}
-.escrow-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.escrow-title{font-size:16px;font-weight:800;color:var(--brand-dark)}
-.escrow-badge{padding:2px 10px;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;border-radius:9999px}
-.escrow-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6;max-width:640px}
-.btn-dark{padding:10px 20px;background:var(--brand-dark);color:#fff;font-size:12px;font-weight:700;border-radius:12px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+/* ============ FOOTER ============ */
+.footer{margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+@media(min-width:640px){.footer{margin-top:64px;padding-top:32px}}
+.escrow-banner{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.escrow-banner{border-radius:16px;padding:20px 24px;margin-bottom:24px;flex-direction:row;align-items:center;gap:16px}}
+.escrow-left{display:flex;align-items:flex-start;gap:10px}
+@media(min-width:640px){.escrow-left{align-items:center;gap:14px}}
+.escrow-icon{width:36px;height:36px;border-radius:10px;background:#ecfdf5;color:var(--success);display:flex;align-items:center;justify-content:center;border:1px solid #d1fae5;flex-shrink:0}
+@media(min-width:640px){.escrow-icon{width:44px;height:44px;border-radius:12px}}
+.escrow-icon svg{width:18px;height:18px}
+@media(min-width:640px){.escrow-icon svg{width:24px;height:24px}}
+.escrow-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.escrow-title{font-size:13px;font-weight:800;color:var(--brand-dark)}
+@media(min-width:640px){.escrow-title{font-size:16px}}
+.escrow-badge{padding:2px 8px;background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;border-radius:9999px}
+@media(min-width:640px){.escrow-badge{font-size:11px;padding:2px 10px}}
+.escrow-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5;max-width:640px}
+@media(min-width:640px){.escrow-desc{font-size:12px;line-height:1.6}}
+.btn-dark{padding:9px 16px;background:var(--brand-dark);color:#fff;font-size:11px;font-weight:700;border-radius:10px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:4px;width:100%}
+@media(min-width:640px){.btn-dark{padding:10px 20px;font-size:12px;width:auto;border-radius:12px;gap:6px}}
 .btn-dark:hover{background:#000}
-.btn-dark svg{width:14px;height:14px}
-.quicklinks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
+.btn-dark svg{width:12px;height:12px}
+@media(min-width:640px){.btn-dark svg{width:14px;height:14px}}
+
+.quicklinks{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:24px}
+@media(min-width:640px){.quicklinks{grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}}
 @media(min-width:768px){.quicklinks{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1024px){.quicklinks{grid-template-columns:repeat(5,1fr)}}
-.ql{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;text-align:left;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.ql{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;text-align:left;transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.03);text-decoration:none;color:inherit}
+@media(min-width:640px){.ql{border-radius:16px;padding:16px}}
 .ql:hover{background:#f9fafb;border-color:var(--brand-primary)}
-.ql-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ql-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:6px}
 .ql-title{font-size:12px;font-weight:700;color:var(--brand-dark)}
-.ql:hover .ql-title{color:var(--brand-hover)}
-.ql-badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:700}
+.ql-badge{font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700;white-space:nowrap}
+@media(min-width:640px){.ql-badge{font-size:10px;padding:2px 6px}}
 .ql-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
 .ql-badge.gray{background:#f3f4f6;color:#6b7280}
 .ql-badge.green{background:#ecfdf5;color:var(--success);border:1px solid #a7f3d0}
 .ql-badge.blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
-.ql-desc{font-size:11px;color:var(--muted);line-height:1.5}
-.footer-bottom{display:flex;flex-direction:column;gap:16px;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
-@media(min-width:768px){.footer-bottom{flex-direction:row;align-items:center}}
-.footer-brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.footer-logo{width:20px;height:20px;background:var(--brand-primary);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--brand-dark);font-weight:800;font-size:10px}
-.footer-brand .fb-name{font-weight:700;color:var(--brand-dark)}
-.footer-links{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-.footer-links button{transition:color .15s;font-weight:500}
-.footer-links button:hover{color:var(--brand-dark)}
-.footer-links .hiring{color:#047857;font-weight:700;display:flex;align-items:center;gap:4px}
-.footer-links .hiring .badge{background:#d1fae5;color:#065f46;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px}
+.ql-desc{font-size:10px;color:var(--muted);line-height:1.4}
+@media(min-width:640px){.ql-desc{font-size:11px;line-height:1.5}}
 
-/* to-top */
-.to-top{position:fixed;bottom:96px;right:20px;z-index:30;width:44px;height:44px;border-radius:9999px;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .15s;opacity:0;pointer-events:none;transform:translateY(8px)}
+.footer-bottom{display:flex;flex-direction:column;gap:14px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+@media(min-width:640px){.footer-bottom{font-size:12px;padding-top:20px;gap:16px}}
+@media(min-width:768px){.footer-bottom{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-brand{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+@media(min-width:640px){.footer-brand{gap:12px}}
+.footer-logo{width:18px;height:18px;background:var(--brand-primary);border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--brand-dark);font-weight:800;font-size:9px}
+@media(min-width:640px){.footer-logo{width:20px;height:20px;border-radius:6px;font-size:10px}}
+.footer-brand .fb-name{font-weight:700;color:var(--brand-dark)}
+.footer-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap;row-gap:8px}
+@media(min-width:640px){.footer-links{gap:24px}}
+.footer-links a,.footer-links button{transition:color .15s;font-weight:500;font-size:11px}
+@media(min-width:640px){.footer-links a,.footer-links button{font-size:12px}}
+.footer-links .hiring{color:#047857;font-weight:700;display:flex;align-items:center;gap:4px}
+.footer-links .hiring .badge{background:#d1fae5;color:#065f46;font-size:9px;font-weight:900;padding:1px 5px;border-radius:5px}
+@media(min-width:640px){.footer-links .hiring .badge{font-size:10px;padding:2px 6px;border-radius:6px}}
+
+/* to top */
+.to-top{position:fixed;bottom:88px;right:16px;z-index:30;width:40px;height:40px;border-radius:9999px;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .15s;opacity:0;pointer-events:none;transform:translateY(8px)}
+@media(min-width:768px){.to-top{bottom:24px;right:24px;width:44px;height:44px}}
 .to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
-.to-top:hover{background:var(--success-hover)}
-.to-top svg{width:20px;height:20px;stroke-width:2.5}
-@media(min-width:768px){.to-top{bottom:24px}}
+.to-top svg{width:18px;height:18px;stroke-width:2.5}
+@media(min-width:768px){.to-top svg{width:20px;height:20px}}
 
 /* mobile nav */
-.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.98);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
 @media(min-width:768px){.mobile-nav{display:none}}
-.mobile-nav-inner{max-width:440px;margin:0 auto;padding:6px 8px;display:flex;align-items:center;justify-content:space-between}
-.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500}
+.mobile-nav-inner{max-width:500px;margin:0 auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;min-width:0}
 .mnav-item.active{color:var(--brand-dark);font-weight:700}
-.mnav-item:hover{color:var(--brand-dark)}
 .mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
 .mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
-.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em}
+.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* section spacing */
-.section-stack{display:flex;flex-direction:column;gap:64px;margin-top:48px;position:relative}
-.section-heading-center{text-align:center;margin-bottom:32px}
-.section-heading-center h2{font-size:28px;font-weight:900;color:var(--brand-dark);letter-spacing:-.02em}
-@media(min-width:640px){.section-heading-center h2{font-size:32px}}
-.section-heading-center p{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px;max-width:512px;margin-left:auto;margin-right:auto}
-.pb-safe{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
-@media(min-width:768px){.pb-safe{padding-bottom:0}}
-main{padding-top:8px}
-@media(min-width:768px){main{padding-top:16px}}
-@media(max-width:767px){.md-only-flex{display:none}}
+/* main padding */
+main{padding-top:8px;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+@media(min-width:768px){main{padding-top:16px;padding-bottom:0}}
 
-/* ============ NAV DRAWER ============ */
+/* drawer */
 .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:200;display:none}
 .drawer-backdrop.show{display:block}
-.drawer{position:absolute;top:0;left:0;bottom:0;width:340px;max-width:88vw;background:#fff;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .25s ease}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:320px;max-width:85vw;background:#fff;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .25s ease}
+@media(min-width:640px){.drawer{width:340px}}
 .drawer-backdrop.show .drawer{transform:translateX(0)}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.drawer-logo{font-size:20px;font-weight:900;color:var(--brand-dark);letter-spacing:-.03em}
+.drawer-logo{font-size:18px;font-weight:900;color:var(--brand-dark);letter-spacing:-.03em}
+@media(min-width:640px){.drawer-logo{font-size:20px}}
 .drawer-logo span{color:var(--brand-hover)}
 .drawer-close{padding:8px;border-radius:10px;color:#6b7280}
-.drawer-close:hover{background:var(--fill);color:var(--brand-dark)}
 .drawer-close svg{width:20px;height:20px}
 .drawer-body{flex:1;overflow-y:auto;padding:12px 12px 24px;overscroll-behavior:contain}
-.drawer-row{display:flex;align-items:flex-start;gap:14px;padding:12px;border-radius:12px;text-decoration:none;color:var(--brand-dark);transition:background .15s;cursor:pointer}
+.drawer-row{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:var(--brand-dark);transition:background .15s;cursor:pointer}
 .drawer-row:hover{background:var(--fill)}
-.drawer-row > svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;color:#6b7280;stroke-width:2}
+.drawer-row > svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:#6b7280;stroke-width:2}
 .drawer-row-content{flex:1;min-width:0}
-.drawer-row-title{font-size:15px;font-weight:800;color:#111827;display:block}
-.drawer-row-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.drawer-row-desc{font-size:12px;color:#6b7280;margin-top:2px}
-.drawer-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.drawer-row-title{font-size:14px;font-weight:800;color:#111827;display:block}
+.drawer-row-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.drawer-row-desc{font-size:11px;color:#6b7280;margin-top:2px}
+.drawer-badge{font-size:9px;font-weight:800;padding:1px 6px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
 .drawer-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
 .drawer-badge.gray{background:#f3f4f6;color:#111827}
 .drawer-badge.green{background:rgba(14,203,129,.15);color:var(--success)}
 .drawer-badge.green-light{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:700}
 .drawer-group{border-top:1px solid #f3f4f6;padding-top:4px;margin-top:4px}
-.drawer-section{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px;border-radius:12px;font-size:15px;font-weight:800;color:var(--brand-dark);transition:background .15s}
+.drawer-section{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px;border-radius:12px;font-size:14px;font-weight:800;color:var(--brand-dark);transition:background .15s}
 .drawer-section:hover{background:var(--fill)}
-.drawer-section-left{display:flex;align-items:center;gap:14px}
-.drawer-section-left svg{width:20px;height:20px;color:#6b7280;flex-shrink:0}
+.drawer-section-left{display:flex;align-items:center;gap:12px}
+.drawer-section-left svg{width:18px;height:18px;color:#6b7280;flex-shrink:0}
 .drawer-section .chev{width:16px;height:16px;color:#9ca3af;transition:transform .2s}
 .drawer-section.open .chev{transform:rotate(180deg)}
-.drawer-sub{padding-left:44px;padding-right:8px;padding-top:4px;padding-bottom:4px;display:none}
+.drawer-sub{padding-left:42px;padding-right:8px;padding-top:4px;padding-bottom:4px;display:none}
 .drawer-sub.open{display:block}
 .drawer-sub-item{display:block;padding:8px;border-radius:8px;transition:background .15s;text-decoration:none;cursor:pointer}
 .drawer-sub-item:hover{background:var(--fill)}
-.drawer-sub-title{font-size:14px;font-weight:700;color:var(--brand-dark)}
-.drawer-sub-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.drawer-sub-note{font-size:11px;color:#9ca3af;margin-left:auto}
-.drawer-sub-desc{font-size:12px;color:#6b7280;margin-top:2px;line-height:1.4}
+.drawer-sub-title{font-size:13px;font-weight:700;color:var(--brand-dark)}
+.drawer-sub-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.drawer-sub-note{font-size:10px;color:#9ca3af;margin-left:auto}
+.drawer-sub-desc{font-size:11px;color:#6b7280;margin-top:2px;line-height:1.4}
 .drawer-auth{margin-top:16px;padding:0 4px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:16px}
-.drawer-auth-btn{padding:12px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;transition:all .15s;text-decoration:none;display:block}
+.drawer-auth-btn{padding:11px;border-radius:12px;font-weight:800;font-size:13px;text-align:center;transition:all .15s;text-decoration:none;display:block}
 .drawer-auth-btn.login{background:var(--fill);color:var(--brand-dark);border:1px solid var(--border)}
-.drawer-auth-btn.login:hover{background:#e5e7eb}
 .drawer-auth-btn.signup{background:var(--brand-primary);color:var(--brand-dark)}
-.drawer-auth-btn.signup:hover{background:var(--brand-hover)}
 .drawer-auth-btn.logout{background:#fee2e2;color:#991b1b}
-.drawer-auth-btn.logout:hover{background:#fecaca}
 .drawer-user{padding:12px;background:var(--fill);border-radius:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .drawer-user-avatar{width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
 .drawer-user-email{font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .drawer-user-bal{font-size:11px;color:#6b7280;margin-top:1px}
+
+@media(max-width:767px){.md-only-flex{display:none!important}}
 </style>
 </head>
 <body>
@@ -440,7 +533,7 @@ main{padding-top:8px}
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand">
-      <button class="menu-btn" aria-label="Open menu">
+      <button class="menu-btn" aria-label="Open menu" onclick="openDrawer()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
       </button>
       <a href="index.html" class="logo-text" title="KRYPTOS Home">
@@ -457,16 +550,14 @@ main{padding-top:8px}
       <a href="careers.html" class="nav-link">Careers <span class="nav-badge">HIRING</span></a>
     </nav>
 
-    <!-- AUTH AREA — filled by JS -->
     <div class="header-actions" id="headerAuth">
-      <!-- default (logged out) -->
       <a href="signup.html" class="btn-yellow">Join us</a>
       <a href="login.html" class="btn-ghost">Log in</a>
     </div>
   </div>
 </header>
 
-<main class="pb-safe">
+<main>
   <div class="container hero-wrap">
     <div class="hero-grid">
 
@@ -478,7 +569,7 @@ main{padding-top:8px}
           <div class="ticker-track" id="tickerTrack"></div>
         </div>
 
-        <div style="display:none" class="md-only-flex" id="securityDesktop">
+        <div style="display:none" class="md-only-flex">
           <div style="width:100%">
             <div class="text-xs font-bold" style="text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px">Platform Security &amp; Market Advantage</div>
             <div class="feature-grid">
@@ -505,7 +596,7 @@ main{padding-top:8px}
 
       <div class="hero-right">
         <div class="tabs">
-          <button class="tab active"><span>P2P Trading</span> <span class="hot">HOT</span></button>
+          <button class="tab active"><span>P2P</span> <span class="hot">HOT</span></button>
           <a href="swap.html" class="tab">Swap</a>
           <a href="trade.html" class="tab">Trade</a>
         </div>
@@ -516,24 +607,23 @@ main{padding-top:8px}
           <div class="field-label">I want to buy</div>
           <div class="selector">
             <div class="selector-left">
-              <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2zm-3.8-0.8c2.5 0 4.6-0.3 5.4-0.8-0.8-0.5-2.9-0.8-5.4-0.8s-4.6 0.3-5.4 0.8c0.8 0.5 2.9 0.8 5.4 0.8zm8.7-0.9c0 1.3-3.9 2.3-8.7 2.3s-8.7-1-8.7-2.3c0-1 2.3-1.8 5.7-2.1V7.5h6v3.6c3.4 0.3 5.7 1.1 5.7 2.1z" fill="#FFF"/></svg>
+              <svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg>
               <div style="flex:1;min-width:0">
                 <select aria-label="Select crypto">
                   <option>All crypto (USDT &amp; BTC)</option>
                   <option>Tether USD (TRC20 USDT)</option>
                   <option>Bitcoin (BTC)</option>
                 </select>
-                <small>Verified BTC &amp; TRC20 USDT available</small>
+                <small>Verified BTC &amp; TRC20 USDT</small>
               </div>
             </div>
-            <svg style="width:16px;height:16px;color:var(--muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
           </div>
 
           <div class="swap-wrap">
             <div class="selector">
               <div class="selector-left">
-                <div style="width:28px;height:28px;border-radius:9999px;background:rgba(24,26,32,.05);display:flex;align-items:center;justify-content:center;color:var(--brand-dark);flex-shrink:0">
-                  <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                <div style="width:24px;height:24px;border-radius:9999px;background:rgba(24,26,32,.05);display:flex;align-items:center;justify-content:center;color:var(--brand-dark);flex-shrink:0">
+                  <svg style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 </div>
                 <div style="flex:1;min-width:0">
                   <select aria-label="Payment method">
@@ -546,29 +636,28 @@ main{padding-top:8px}
                     <option>Wise</option>
                     <option>Zelle</option>
                   </select>
-                  <small>Local banking &amp; mobile money enabled</small>
+                  <small>Local banking enabled</small>
                 </div>
               </div>
-              <svg style="width:16px;height:16px;color:var(--muted);margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
             </div>
-            <button class="swap-btn" title="Switch Buy / Sell">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+            <button class="swap-btn" onclick="event.preventDefault()" title="Switch Buy / Sell">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
             </button>
           </div>
 
-          <div style="margin-top:28px">
-            <div class="quick-label">Quick P2P Action Triggers</div>
+          <div style="margin-top:20px">
+            <div class="quick-label">Quick Actions</div>
             <div class="quick-actions">
-              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY BTC</div><small>Bitcoin</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
-              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL BTC</div><small>Instant Cashout</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.9 14.9v-0.1c-0.1 0-1.8 0.1-3.8 0.1s-3.7-0.1-3.8-0.1v0.1c0 0.7 2.1 1.2 4.7 1.3v4.9h2v-4.9c2.6-0.1 4.7-0.6 4.7-1.3h0.2z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL USDT</div><small>TRON TRC20</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn buy"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-buy">BUY BTC</div><small>Bitcoin</small></div></div><svg class="arrow" style="color:var(--success)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+              <a href="p2p.html" class="quick-btn sell"><div class="qa-left"><svg class="coin" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M23.2 13.6c0.4-2.5-1.5-3.8-4.1-4.7l0.8-3.3-2-0.5-0.8 3.2c-0.5-0.1-1.1-0.3-1.6-0.4l0.8-3.3-2-0.5-0.8 3.3c-0.4-0.1-0.9-0.2-1.3-0.3l-2.8-0.7-0.5 2.2s1.5 0.3 1.5 0.4c0.8 0.2 1 0.7 0.9 1.2l-1 4.1c0.1 0 0.2 0.1 0.3 0.1-0.1 0-0.2 0-0.3-0.1l-1.4 5.7c-0.1 0.3-0.4 0.7-0.9 0.6 0 0.1-1.5-0.4-1.5-0.4l-1 2.4 2.6 0.7c0.5 0.1 1 0.3 1.5 0.4l-0.8 3.4 2 0.5 0.8-3.3c0.6 0.2 1.1 0.3 1.6 0.4l-0.8 3.3 2 0.5 0.8-3.4c3.5 0.7 6.1 0.4 7.2-2.8 0.9-2.5-0.1-4-1.8-4.9 1.3-0.3 2.2-1.2 2.5-3z" fill="#FFF"/></svg><div><div class="qa-ticker qa-sell">SELL BTC</div><small>Cashout</small></div></div><svg class="arrow" style="color:var(--danger)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
             </div>
           </div>
 
           <a href="p2p.html" class="btn-primary-lg">
             <span>Explore P2P Marketplace</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
       </div>
@@ -582,23 +671,21 @@ main{padding-top:8px}
       <!-- MARKETS TABLE -->
       <section class="section-card">
         <h2 class="section-title">Top Assets by Market Cap</h2>
-        <p class="section-sub">Real-time prices, 1-hour, 24-hour, and 7-day trend changes. Ranked from largest market capitalization starting with Bitcoin (BTC).</p>
+        <p class="section-sub">Real-time prices, 24-hour changes, ranked by market cap.</p>
 
         <div class="filter-bar">
           <div class="filter-pills">
-            <button class="pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/></svg>Crypto Spot (150)</button>
-            <a href="p2p.html" class="pill green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--success)"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>P2P <span class="badge-green">0% Fee</span></a>
-            <button class="pill">All Assets</button>
-            <a href="wallet.html" class="pill yellow-border"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Deposit assets</a>
+            <button class="pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/></svg>Spot</button>
+            <a href="p2p.html" class="pill green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--success)"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>P2P <span class="badge-green">0%</span></a>
+            <a href="wallet.html" class="pill yellow-border"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Deposit</a>
           </div>
 
           <div class="table-controls">
             <div class="select-wrap">
               <select aria-label="Sort">
                 <option>Sort: Market Cap</option>
-                <option>Sort: Top Gainers (24h)</option>
-                <option>Sort: Top Losers (24h)</option>
-                <option>Sort: 7d Trend (%)</option>
+                <option>Sort: Top Gainers</option>
+                <option>Sort: Top Losers</option>
               </select>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
             </div>
@@ -609,15 +696,15 @@ main{padding-top:8px}
           </div>
         </div>
 
-        <div style="overflow-x:auto">
+        <div style="overflow-x:auto" class="market-table-wrap">
           <table class="market-table">
             <thead>
               <tr>
                 <th>Asset</th>
-                <th class="text-right">24h Volume / Cap</th>
-                <th class="text-center">7d Chart</th>
-                <th class="text-right">Price (USD)</th>
-                <th class="text-center">24h Change</th>
+                <th class="text-right">Volume / Cap</th>
+                <th class="text-center">7d</th>
+                <th class="text-right">Price</th>
+                <th class="text-center">24h</th>
                 <th class="text-right">Action</th>
               </tr>
             </thead>
@@ -626,17 +713,17 @@ main{padding-top:8px}
         </div>
 
         <div class="mobile-market">
-          <div style="display:flex;justify-content:space-between;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">
-            <span>Asset</span><div style="display:flex;gap:24px;padding-right:4px"><span>Price</span><span style="width:64px;text-align:center">24h</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">
+            <span>Asset</span><div style="display:flex;gap:16px;padding-right:4px"><span>Price</span><span style="width:60px;text-align:center">24h</span></div>
           </div>
           <div id="mobileMarketBody"></div>
         </div>
 
         <div class="table-footer">
-          <button>Show More (25 of 150 displayed) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button>Show More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
         </div>
         <div class="table-link">
-          <a href="p2p.html" style="color:var(--brand-dark);font-weight:700;display:inline-flex;align-items:center;gap:4px">Trade via P2P Escrow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          <a href="p2p.html">Trade via P2P Escrow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         </div>
       </section>
 
@@ -644,10 +731,10 @@ main{padding-top:8px}
       <section>
         <div class="metrics-card">
           <div class="metrics-grid">
-            <div class="metric"><span class="metric-label">Users trust us</span><span class="metric-value orange">1,677,890</span></div>
-            <div class="metric"><span class="metric-label">Average trade time</span><span class="metric-value">5min</span></div>
-            <div class="metric"><span class="metric-label">Countries supported</span><span class="metric-value">153</span></div>
-            <div class="metric"><span class="metric-label">Payment methods</span><span class="metric-value">345</span></div>
+            <div class="metric"><span class="metric-label">Users trust us</span><span class="metric-value orange">1.6M+</span></div>
+            <div class="metric"><span class="metric-label">Avg trade time</span><span class="metric-value">5min</span></div>
+            <div class="metric"><span class="metric-label">Countries</span><span class="metric-value">153</span></div>
+            <div class="metric"><span class="metric-label">Pay methods</span><span class="metric-value">345</span></div>
           </div>
         </div>
       </section>
@@ -657,10 +744,10 @@ main{padding-top:8px}
         <div class="partner-card">
           <div class="partner-big">50K<span>+</span></div>
           <div class="partner-amount">$50,000+</div>
-          <div class="partner-label">Top Traders' Commissions &amp; Bonuses This Year</div>
+          <div class="partner-label">Top Traders' Commissions This Year</div>
           <div class="partner-sub">From Our Partner Program</div>
           <p class="partner-desc">Other crypto companies have affiliates. <strong>KRYPTOS</strong> has partners.</p>
-          <button class="btn-green-lg">Join program <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <button class="btn-green-lg">Join program <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </div>
       </section>
 
@@ -668,40 +755,37 @@ main{padding-top:8px}
       <section>
         <div class="section-heading-center">
           <h2>Our products</h2>
-          <p>Discover our full range of tools designed to make crypto easy and accessible</p>
+          <p>Tools to make crypto easy</p>
         </div>
         <div class="product-grid">
           <a href="p2p.html" class="product-card">
             <div>
               <div class="product-top">
-                <div class="product-icon pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <div class="product-icon pi-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
                 <span class="product-badge bg-orange">HOT</span>
               </div>
               <div class="product-title">P2P</div>
-              <p class="product-desc">Trade crypto directly with verified peers worldwide with zero fees and escrow protection</p>
+              <p class="product-desc">Trade crypto with verified peers. Zero fees, escrow protection.</p>
             </div>
-            <div class="product-hover"><span>Trade P2P</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </a>
           <div class="product-card">
             <div>
               <div class="product-top">
-                <div class="product-icon pi-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg></div>
+                <div class="product-icon pi-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/></svg></div>
               </div>
-              <div class="product-title">Gift card store</div>
-              <p class="product-desc">Use crypto to buy instant gift cards for global brands</p>
+              <div class="product-title">Gift cards</div>
+              <p class="product-desc">Buy gift cards for global brands with crypto.</p>
             </div>
-            <div class="product-hover"><span>Browse store</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
           <a href="swap.html" class="product-card">
             <div>
               <div class="product-top">
                 <div class="product-icon pi-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg></div>
-                <span class="product-badge bg-amber">BEST RATE</span>
+                <span class="product-badge bg-amber">BEST</span>
               </div>
               <div class="product-title">Swap</div>
-              <p class="product-desc">Exchange your crypto instantly with fast, low-fee swaps</p>
+              <p class="product-desc">Exchange crypto instantly. Fast, low-fee swaps.</p>
             </div>
-            <div class="product-hover"><span>Swap now</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </a>
           <a href="wallet.html" class="product-card">
             <div>
@@ -709,9 +793,8 @@ main{padding-top:8px}
                 <div class="product-icon pi-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div>
               </div>
               <div class="product-title">Wallet</div>
-              <p class="product-desc">Send and receive crypto safely in your secure KRYPTOS wallet</p>
+              <p class="product-desc">Send & receive crypto safely in your wallet.</p>
             </div>
-            <div class="product-hover"><span>View balance</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </a>
           <div class="product-card wide">
             <div>
@@ -719,9 +802,8 @@ main{padding-top:8px}
                 <div class="product-icon pi-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
               </div>
               <div class="product-title">Visa card</div>
-              <p class="product-desc">Spend your crypto anywhere with a virtual card</p>
+              <p class="product-desc">Spend your crypto anywhere with a virtual card.</p>
             </div>
-            <div class="product-hover"><span>Get virtual card</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
           <a href="wallet.html" class="product-card wide">
             <div>
@@ -729,9 +811,8 @@ main{padding-top:8px}
                 <div class="product-icon pi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></div>
               </div>
               <div class="product-title">Cash out</div>
-              <p class="product-desc">Cash out crypto to your bank or mobile wallet instantly</p>
+              <p class="product-desc">Cash out crypto to your bank or mobile wallet instantly.</p>
             </div>
-            <div class="product-hover"><span>Sell crypto</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </a>
         </div>
       </section>
@@ -740,32 +821,32 @@ main{padding-top:8px}
       <section>
         <div class="section-heading-center">
           <h2>Why KRYPTOS?</h2>
-          <p>Safe, easy, and reliable trading for everyone</p>
+          <p>Safe, easy, reliable trading for everyone</p>
         </div>
         <div class="why-grid">
           <div class="why-card">
-            <div class="why-icon wi-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="why-icon wi-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
             <h3 class="why-title">Peer-to-peer freedom</h3>
-            <p class="why-desc">Trade quickly and easily with thousands of global offers, without intermediaries or complicated restrictions</p>
+            <p class="why-desc">Trade with thousands of global offers, no intermediaries or complicated restrictions.</p>
           </div>
           <div class="why-card">
-            <div class="why-icon wi-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
-            <h3 class="why-title">Multiple payment methods</h3>
-            <p class="why-desc">Choose from a wide range of local and international payment options - bank transfers, e-wallets, gift cards, and more</p>
+            <div class="why-icon wi-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+            <h3 class="why-title">500+ Payment methods</h3>
+            <p class="why-desc">Local and international options — bank transfers, e-wallets, mobile money, and more.</p>
           </div>
           <div class="why-card">
-            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
             <h3 class="why-title">Smart dispute protection</h3>
-            <p class="why-desc">A fast and neutral dispute system that protects your rights and ensures every trade is completed safely and transparently</p>
+            <p class="why-desc">Fast, neutral dispute system that protects every trade — safe and transparent.</p>
           </div>
           <div class="why-card">
-            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
-            <h3 class="why-title">Global access &amp; instant support</h3>
-            <p class="why-desc">A worldwide platform with real-time customer support to guarantee a smooth and reliable trading experience</p>
+            <div class="why-icon wi-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg></div>
+            <h3 class="why-title">Global &amp; instant support</h3>
+            <p class="why-desc">Worldwide platform with real-time support for a smooth trading experience.</p>
           </div>
         </div>
-        <div class="text-center" style="margin-top:32px">
-          <button class="btn-green-lg">Discover now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        <div style="text-align:center;margin-top:24px">
+          <button class="btn-green-lg">Discover now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </div>
       </section>
 
@@ -773,33 +854,33 @@ main{padding-top:8px}
       <section>
         <div class="section-heading-center">
           <h2>Help center</h2>
-          <p>Find guides, answers, and support in one place</p>
+          <p>Guides, answers, and support</p>
         </div>
         <div class="help-grid">
           <div class="help-card">
             <div>
               <div class="help-title">KRYPTOS academy</div>
-              <p class="help-desc">Join millions of traders and learn by trading P2P</p>
+              <p class="help-desc">Learn by trading P2P with millions of traders</p>
             </div>
-            <button class="help-link">Go to academy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            <button class="help-link">Go to academy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
           </div>
           <div class="help-card">
             <div>
               <div class="help-title">24/7 support</div>
-              <p class="help-desc">Reach out to us for answers to your specific questions</p>
+              <p class="help-desc">Reach out for answers to your specific questions</p>
             </div>
-            <button class="help-link">Contact us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            <button class="help-link">Contact us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
           </div>
         </div>
 
         <div class="dl-label">Download KRYPTOS application</div>
         <div class="dl-grid">
           <div class="dl-card">
-            <div class="dl-icon" style="background:#ecfdf5;color:var(--success);border-color:#d1fae5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
+            <div class="dl-icon" style="background:#ecfdf5;color:var(--success);border-color:#d1fae5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
             <div><div class="dl-title">Android</div><div class="dl-sub">Download Android app</div></div>
           </div>
           <div class="dl-card">
-            <div class="dl-icon" style="background:#f9fafb;color:var(--brand-dark);border-color:#e5e7eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
+            <div class="dl-icon" style="background:#f9fafb;color:var(--brand-dark);border-color:#e5e7eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
             <div><div class="dl-title">iOS</div><div class="dl-sub">Download iOS app</div></div>
           </div>
         </div>
@@ -808,8 +889,8 @@ main{padding-top:8px}
       <!-- FAQ -->
       <section>
         <div class="section-heading-center">
-          <h2>Frequently asked questions</h2>
-          <p>Find answers to the most popular questions asked by our users</p>
+          <h2>FAQs</h2>
+          <p>Most popular questions from our users</p>
         </div>
         <div class="faq-list" id="faqList"></div>
       </section>
@@ -818,34 +899,34 @@ main{padding-top:8px}
       <footer class="footer">
         <div class="escrow-banner">
           <div class="escrow-left">
-            <div class="escrow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="escrow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
             <div>
-              <div class="escrow-title-row"><span class="escrow-title">100% Escrow Protection Active</span><span class="escrow-badge">Kryptos Secure Custody</span></div>
-              <p class="escrow-desc">All P2P transactions are safeguarded by Kryptos escrow. Sellers must never release cryptocurrency until confirmed payment has cleared in their bank account or mobile wallet.</p>
+              <div class="escrow-title-row"><span class="escrow-title">100% Escrow Protection</span><span class="escrow-badge">Kryptos Secure</span></div>
+              <p class="escrow-desc">All P2P transactions are safeguarded by Kryptos escrow. Sellers never release crypto until payment clears.</p>
             </div>
           </div>
           <a href="p2p.html" class="btn-dark">Explore P2P <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
         </div>
 
         <div class="quicklinks">
-          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Trading</span><span class="ql-badge yellow">0% Fee</span></div><p class="ql-desc">Trade USDT &amp; BTC with 500+ local payment methods</p></a>
-          <a href="p2p-orders.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Orders</span><span class="ql-badge gray">Live Escrow</span></div><p class="ql-desc">Track active trades, escrow release &amp; receipts</p></a>
-          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">My Offers / Ads</span><span class="ql-badge green">Merchant</span></div><p class="ql-desc">Create buy/sell ads &amp; set custom margins</p></a>
-          <a href="#" class="ql"><div class="ql-title-row"><span class="ql-title">Messages</span><span class="ql-badge gray">Chat</span></div><p class="ql-desc">Direct chat with verified trade counterparties</p></a>
-          <a href="wallet.html" class="ql"><div class="ql-title-row"><span class="ql-title">Profile &amp; KYC</span><span class="ql-badge blue">Security</span></div><p class="ql-desc">Verification status, limits &amp; merchant trust rating</p></a>
+          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Trading</span><span class="ql-badge yellow">0% Fee</span></div><p class="ql-desc">Trade USDT &amp; BTC with local payment methods</p></a>
+          <a href="p2p-orders.html" class="ql"><div class="ql-title-row"><span class="ql-title">P2P Orders</span><span class="ql-badge gray">Escrow</span></div><p class="ql-desc">Track active trades &amp; receipts</p></a>
+          <a href="p2p.html" class="ql"><div class="ql-title-row"><span class="ql-title">My Offers</span><span class="ql-badge green">Merchant</span></div><p class="ql-desc">Create buy/sell ads &amp; margins</p></a>
+          <a href="#" class="ql"><div class="ql-title-row"><span class="ql-title">Messages</span><span class="ql-badge gray">Chat</span></div><p class="ql-desc">Chat with trade counterparties</p></a>
+          <a href="wallet.html" class="ql"><div class="ql-title-row"><span class="ql-title">Profile &amp; KYC</span><span class="ql-badge blue">Security</span></div><p class="ql-desc">Verification, limits &amp; trust rating</p></a>
         </div>
 
         <div class="footer-bottom">
           <div class="footer-brand">
             <div class="footer-logo">K</div>
             <span class="fb-name">KRYPTOS Crypto &amp; P2P</span>
-            <span>© 2026 All rights reserved.</span>
+            <span>© 2026</span>
           </div>
           <div class="footer-links">
-            <a href="careers.html" class="hiring">We are Hiring <span class="badge">4 Roles</span></a>
-            <button>Escrow Rules &amp; Safety</button>
-            <button>Help Center</button>
-            <button>Partner Program</button>
+            <a href="careers.html" class="hiring">Hiring <span class="badge">4 roles</span></a>
+            <button>Escrow</button>
+            <button>Help</button>
+            <button>Partner</button>
           </div>
         </div>
       </footer>
@@ -855,20 +936,20 @@ main{padding-top:8px}
 </main>
 
 <button class="to-top" id="toTop" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
 </button>
 
 <nav class="mobile-nav" aria-label="Mobile Navigation">
   <div class="mobile-nav-inner">
-    <a href="index.html" class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
-    <a href="p2p.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></a>
-    <a href="trade.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></a>
-    <a href="swap.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></a>
-    <a href="wallet.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></a>
+    <a href="index.html" class="mnav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mnav-label">Home</span></a>
+    <a href="p2p.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span class="mnav-label">P2P</span></a>
+    <a href="trade.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span class="mnav-label">Trade</span></a>
+    <a href="swap.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg><span class="mnav-label">Swap</span></a>
+    <a href="wallet.html" class="mnav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span class="mnav-label">Wallet</span></a>
   </div>
 </nav>
 
-<!-- NAV DRAWER -->
+<!-- DRAWER -->
 <div class="drawer-backdrop" id="drawerBackdrop">
   <div class="drawer">
     <div class="drawer-head">
@@ -887,12 +968,9 @@ main{padding-top:8px}
           <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
         </button>
         <div class="drawer-sub open" id="group-trade">
-          <a href="p2p.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Trading</span><span class="drawer-badge yellow">LOW FEES</span></div><p class="drawer-sub-desc">Trade OTC bank and Mobile money</p></a>
-          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">My offers</div><p class="drawer-sub-desc">View and manage your created offers</p></a>
+          <a href="p2p.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Trading</span><span class="drawer-badge yellow">LOW FEES</span></div><p class="drawer-sub-desc">Trade OTC bank &amp; mobile money</p></a>
           <a href="p2p-orders.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">P2P Orders</span><span class="drawer-badge gray">ESCROW</span></div><p class="drawer-sub-desc">Track active &amp; completed trades</p></a>
-          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Notifications</div><p class="drawer-sub-desc">Order updates and trade notifications</p></a>
-          <a href="trade.html" class="drawer-sub-item"><div class="drawer-sub-title">Spot Trade</div><p class="drawer-sub-desc">Order book trading &amp; spot charts</p></a>
-          <a href="index.html#markets" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">Crypto Spot (Top 150)</span><span class="drawer-badge green">LIVE</span></div><p class="drawer-sub-desc">Top 150 crypto assets by live market cap</p></a>
+          <a href="trade.html" class="drawer-sub-item"><div class="drawer-sub-title">Spot Trade</div><p class="drawer-sub-desc">Order book trading &amp; charts</p></a>
           <a href="swap.html" class="drawer-sub-item"><div class="drawer-sub-title">Instant Swap</div><p class="drawer-sub-desc">One-click crypto conversion</p></a>
         </div>
       </div>
@@ -903,29 +981,14 @@ main{padding-top:8px}
           <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
         </button>
         <div class="drawer-sub" id="group-wallet">
-          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title-row"><span class="drawer-sub-title">My assets</span><span class="drawer-sub-note">Overview</span></div></a>
+          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">My assets</div></a>
           <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Deposit</div></a>
           <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Withdraw</div></a>
-          <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Virtual Visa Card</div></a>
           <a href="wallet.html" class="drawer-sub-item"><div class="drawer-sub-title">Transaction history</div></a>
         </div>
       </div>
 
-      <a href="#" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Referral Program</span><span class="drawer-badge yellow">5 USDT BONUS</span></div><div class="drawer-row-desc">Earn 5 USDT for every verified friend</div></div></a>
-
-      <a href="careers.html" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Careers</span><span class="drawer-badge green-light">We're hiring</span></div><div class="drawer-row-desc">Explore 4 open roles &amp; apply directly</div></div></a>
-
-      <div class="drawer-group">
-        <button class="drawer-section" onclick="toggleGroup('support')">
-          <div class="drawer-section-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg><span>Support</span></div>
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-        </button>
-        <div class="drawer-sub" id="group-support">
-          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Help Center &amp; FAQs</div></a>
-          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">Contact Support</div></a>
-          <a href="#" class="drawer-sub-item"><div class="drawer-sub-title">P2P Safety Rules &amp; Escrow</div></a>
-        </div>
-      </div>
+      <a href="careers.html" class="drawer-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg><div class="drawer-row-content"><div class="drawer-row-title-row"><span class="drawer-row-title">Careers</span><span class="drawer-badge green-light">We're hiring</span></div><div class="drawer-row-desc">Explore 4 open roles</div></div></a>
 
       <div class="drawer-auth" id="drawerAuth"></div>
     </div>
@@ -933,48 +996,40 @@ main{padding-top:8px}
 </div>
 
 <script>
-/* ============ SUPABASE ============ */
 const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 const USD_PRICES = { BTC: 81223.18, USDT: 1, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
-/* ============ DATA ============ */
 const COINS = [
-  {sym:"BTC", name:"Bitcoin",  bg:"#F7931A", price:"81,109.81", chg:"+0.77%", up:true,  mcap:"$1.65 Trillion", vol:"$62.88B", rank:"#1", spark:"#0ECB81"},
-  {sym:"ETH", name:"Ethereum", bg:"#627EEA", price:"2,354.54",  chg:"+0.43%", up:true,  mcap:"$299.7 Billion", vol:"$11.39B", rank:"#2", spark:"#F6465D"},
-  {sym:"USDT",name:"Tether USD",bg:"#26A17B",price:"1.00",      chg:"+0.01%", up:true,  mcap:"$183.7 Billion", vol:"$14.0M",  rank:"#3", spark:"#0ECB81"},
-  {sym:"BNB", name:"BNB",      bg:"#F3BA2F", price:"612.45",    chg:"+0.45%", up:true,  mcap:"$97.3 Billion",  vol:"$3.70B",  rank:"",   spark:"#F6465D"},
-  {sym:"XRP", name:"XRP",      bg:"#23292F", price:"1.341",     chg:"+0.46%", up:true,  mcap:"$84.7 Billion",  vol:"$3.22B",  rank:"",   spark:"#F6465D"},
-  {sym:"USDC",name:"USDC",     bg:"#2775CA", price:"1.0013",    chg:"+0.03%", up:true,  mcap:"$72.8 Billion",  vol:"$2.77B",  rank:"",   spark:"#0ECB81"},
-  {sym:"SOL", name:"Solana",   bg:"#141414", price:"102.29",    chg:"+1.14%", up:true,  mcap:"$62.8 Billion",  vol:"$2.39B",  rank:"",   spark:"#F6465D"},
-  {sym:"LINK",name:"Chainlink",bg:"#375BD2", price:"12.76",     chg:"-2.07%", up:false, mcap:"$9.5 Billion",   vol:"$362.7M", rank:"",   spark:"#F6465D"},
-  {sym:"ADA", name:"Cardano",  bg:"#0033AD", price:"0.2359",    chg:"-4.14%", up:false, mcap:"$8.7 Billion",   vol:"$329.9M", rank:"",   spark:"#F6465D"},
-  {sym:"LTC", name:"Litecoin", bg:"#A6A9AA", price:"61.12",     chg:"+0.41%", up:true,  mcap:"$4.8 Billion",   vol:"$180.5M", rank:"",   spark:"#F6465D"},
+  {sym:"BTC", name:"Bitcoin",  bg:"#F7931A", price:"81,109.81", chg:"+0.77%", up:true, mcap:"$1.65T", vol:"$62.88B", rank:"#1"},
+  {sym:"ETH", name:"Ethereum", bg:"#627EEA", price:"2,354.54", chg:"+0.43%", up:true, mcap:"$299.7B", vol:"$11.39B", rank:"#2"},
+  {sym:"USDT",name:"Tether",   bg:"#26A17B", price:"1.00",     chg:"+0.01%", up:true, mcap:"$183.7B", vol:"$14.0M", rank:"#3"},
+  {sym:"BNB", name:"BNB",      bg:"#F3BA2F", price:"612.45",   chg:"+0.45%", up:true, mcap:"$97.3B", vol:"$3.70B", rank:""},
+  {sym:"SOL", name:"Solana",   bg:"#141414", price:"102.29",   chg:"+1.14%", up:true, mcap:"$62.8B", vol:"$2.39B", rank:""},
+  {sym:"XRP", name:"XRP",      bg:"#23292F", price:"1.341",    chg:"+0.46%", up:true, mcap:"$84.7B", vol:"$3.22B", rank:""},
+  {sym:"LINK",name:"Chainlink",bg:"#375BD2", price:"12.76",    chg:"-2.07%", up:false,mcap:"$9.5B",  vol:"$362.7M", rank:""},
+  {sym:"ADA", name:"Cardano",  bg:"#0033AD", price:"0.2359",   chg:"-4.14%", up:false,mcap:"$8.7B",  vol:"$329.9M", rank:""},
 ];
 
 const TICKER = [
-  {sym:"BTC", name:"Bitcoin",  price:"81,109.81", chg:"+1,462.50 (+1.78%)", up:true,  color:"#F7931A"},
-  {sym:"ETH", name:"Ethereum", price:"2,354.54",  chg:"+48.20 (+1.83%)",    up:true,  color:"#627EEA"},
-  {sym:"USDT",name:"Tether",   price:"1.00000",   chg:"+0.00002 (+0.00%)",  up:true,  color:"#26A17B"},
-  {sym:"SOL", name:"Solana",   price:"102.28",    chg:"+0.62 (+0.59%)",     up:true,  color:"#14F195"},
-  {sym:"BNB", name:"BNB",      price:"612.45",    chg:"+6.85 (+1.15%)",     up:true,  color:"#F3BA2F"},
+  {sym:"BTC", name:"BTC", price:"81,109.81", chg:"+1.78%", up:true},
+  {sym:"ETH", name:"ETH", price:"2,354.54",  chg:"+1.83%", up:true},
+  {sym:"USDT",name:"USDT",price:"1.0000",    chg:"+0.00%", up:true},
+  {sym:"SOL", name:"SOL", price:"102.28",    chg:"+0.59%", up:true},
+  {sym:"BNB", name:"BNB", price:"612.45",    chg:"+1.15%", up:true},
 ];
 
 const FAQS = [
-  {q:"What is KRYPTOS?", a:"KRYPTOS is a modern peer-to-peer cryptocurrency trading and multi-network wallet platform supporting BTC, USDT (TRC20), ETH, and SOL with 500+ local payment methods."},
-  {q:"Which cryptocurrencies can I buy and sell on KRYPTOS?", a:"You can trade Bitcoin (BTC), Tether (USDT TRC20), Ethereum (ETH), Solana (SOL), and 150+ other crypto assets."},
-  {q:"How can I buy Bitcoin or USDT on KRYPTOS?", a:"Browse the P2P marketplace, pick a verified merchant, choose your payment method, and complete the trade through escrow protection."},
-  {q:"Which payment methods are supported?", a:"We support 500+ payment methods including M-PESA, bank transfers, Revolut, SEPA Instant, UPI, PayPal, Wise, Zelle, and mobile money across 153 countries."},
-  {q:"Which countries does KRYPTOS support?", a:"KRYPTOS operates in 153 countries with full local payment integration. Some regions may have KYC requirements."},
-  {q:"Is P2P trading on KRYPTOS safe?", a:"Yes. All trades are protected by escrow — seller crypto is locked until payment is verified. Our dispute system ensures fair outcomes."},
-  {q:"What is KRYPTOS Swap?", a:"Swap lets you instantly exchange one crypto for another at competitive rates with low fees, no order book needed."},
-  {q:"What is KRYPTOS P2P?", a:"P2P (peer-to-peer) trading connects you directly with verified merchants to buy or sell crypto using your preferred local payment method."},
-  {q:"Why choose KRYPTOS?", a:"Zero maker fees, escrow protection, 500+ payment methods, instant settlement, and 24/7 support — built for both beginners and pro traders."},
+  {q:"What is KRYPTOS?", a:"KRYPTOS is a P2P cryptocurrency trading and multi-network wallet platform supporting BTC, USDT (TRC20), ETH, and SOL with 500+ local payment methods."},
+  {q:"Which cryptocurrencies can I trade?", a:"You can trade Bitcoin, Tether USDT, Ethereum, Solana, and 150+ other crypto assets."},
+  {q:"How do I buy crypto?", a:"Browse the P2P marketplace, pick a verified merchant, choose your payment method, and complete the trade through escrow protection."},
+  {q:"Which payment methods are supported?", a:"500+ payment methods including M-PESA, bank transfers, Revolut, SEPA Instant, UPI, PayPal, Wise, Zelle, and mobile money."},
+  {q:"Is P2P trading safe?", a:"Yes. All trades are protected by escrow — seller crypto is locked until payment is verified. Our dispute system ensures fair outcomes."},
+  {q:"Does KRYPTOS have a wallet?", a:"Yes. Every account has a secure multi-network wallet for BTC, USDT, ETH, SOL, and 150+ assets."},
+  {q:"Why choose KRYPTOS?", a:"Zero maker fees, escrow protection, 500+ payment methods, instant settlement, and 24/7 support."},
 ];
 
-/* ============ AUTH — conditional header ============ */
 let currentUser = null;
 let currentBalance = 0;
 let balanceHidden = false;
@@ -988,59 +1043,36 @@ async function initAuth(){
 async function renderHeaderAuth(){
   const wrap = document.getElementById('headerAuth');
   if(!wrap) return;
-
   if(!currentUser){
-    wrap.innerHTML = `
-      <a href="signup.html" class="btn-yellow">Join us</a>
-      <a href="login.html" class="btn-ghost">Log in</a>
-    `;
+    wrap.innerHTML = `<a href="signup.html" class="btn-yellow">Join us</a><a href="login.html" class="btn-ghost">Log in</a>`;
     return;
   }
-
-  // logged in — fetch balances
   const { data: bals } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
   currentBalance = 0;
   if(bals) bals.forEach(b => currentBalance += Number(b.amount) * (USD_PRICES[b.coin] || 0));
-
   const meta = currentUser.user_metadata || {};
   let initial = '?';
-  if(meta.first_name && meta.first_name.trim()) initial = meta.first_name.trim()[0];
-  else if(meta.last_name && meta.last_name.trim()) initial = meta.last_name.trim()[0];
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
   else if(currentUser.email) initial = currentUser.email[0];
   initial = initial.toUpperCase();
-
   const balanceText = '$' + currentBalance.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-
   wrap.innerHTML = `
     <div class="balance">
       <span class="balance-val" id="hdrBal">${balanceHidden ? '****' : balanceText}</span>
-      <button class="balance-eye" id="hdrEye" title="Hide Balance">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
+      <button class="balance-eye" id="hdrEye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
-    <a href="wallet.html" class="avatar" aria-label="Profile">${initial}</a>
-    <button class="notif-btn" aria-label="Notifications">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-      <span class="notif-badge" id="hdrNotif">0</span>
-    </button>
+    <a href="wallet.html" class="avatar">${initial}</a>
+    <button class="notif-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></button>
   `;
-
   document.getElementById('hdrEye').addEventListener('click', () => {
     balanceHidden = !balanceHidden;
     document.getElementById('hdrBal').textContent = balanceHidden ? '****' : balanceText;
   });
 }
 
-/* ============ DRAWER ============ */
-function openDrawer(){
-  document.getElementById('drawerBackdrop').classList.add('show');
-  document.body.style.overflow = 'hidden';
-  renderDrawerAuth();
-}
-function closeDrawer(){
-  document.getElementById('drawerBackdrop').classList.remove('show');
-  document.body.style.overflow = '';
-}
+function openDrawer(){ document.getElementById('drawerBackdrop').classList.add('show'); document.body.style.overflow = 'hidden'; renderDrawerAuth(); }
+function closeDrawer(){ document.getElementById('drawerBackdrop').classList.remove('show'); document.body.style.overflow = ''; }
 function toggleGroup(name){
   const group = document.getElementById('group-' + name);
   if(!group) return;
@@ -1049,54 +1081,33 @@ function toggleGroup(name){
   const section = group.previousElementSibling;
   if(section) section.classList.toggle('open', !isOpen);
 }
-
-document.querySelectorAll('.menu-btn').forEach(b => b.addEventListener('click', openDrawer));
-document.getElementById('drawerBackdrop').addEventListener('click', e => {
-  if(e.target.id === 'drawerBackdrop') closeDrawer();
-});
+document.getElementById('drawerBackdrop').addEventListener('click', e => { if(e.target.id === 'drawerBackdrop') closeDrawer(); });
 
 async function renderDrawerAuth(){
   const wrap = document.getElementById('drawerAuth');
   if(!wrap) return;
-
   if(!currentUser){
-    wrap.innerHTML = `
-      <a href="login.html" class="drawer-auth-btn login">Log in</a>
-      <a href="signup.html" class="drawer-auth-btn signup">Create a new account</a>
-    `;
+    wrap.innerHTML = `<a href="login.html" class="drawer-auth-btn login">Log in</a><a href="signup.html" class="drawer-auth-btn signup">Create account</a>`;
     return;
   }
-
   const meta = currentUser.user_metadata || {};
   let initial = '?';
-  if(meta.first_name && meta.first_name.trim()) initial = meta.first_name.trim()[0];
-  else if(meta.last_name && meta.last_name.trim()) initial = meta.last_name.trim()[0];
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
   else if(currentUser.email) initial = currentUser.email[0];
   initial = initial.toUpperCase();
-
   const bal = '$' + currentBalance.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-
   wrap.innerHTML = `
     <div class="drawer-user">
       <div class="drawer-user-avatar">${initial}</div>
-      <div style="min-width:0;flex:1">
-        <div class="drawer-user-email">${currentUser.email || ''}</div>
-        <div class="drawer-user-bal">${bal}</div>
-      </div>
+      <div style="min-width:0;flex:1"><div class="drawer-user-email">${currentUser.email||''}</div><div class="drawer-user-bal">${bal}</div></div>
     </div>
     <a href="wallet.html" class="drawer-auth-btn login">My wallet</a>
     <button onclick="doLogout()" class="drawer-auth-btn logout">Log out</button>
   `;
 }
+async function doLogout(){ if(confirm('Log out of KRYPTOS?')){ await sb.auth.signOut(); location.href = 'login.html'; } }
 
-async function doLogout(){
-  if(confirm('Log out of KRYPTOS?')){
-    await sb.auth.signOut();
-    location.href = 'login.html';
-  }
-}
-
-/* ============ TICKER ============ */
 function renderTicker(){
   const track = document.getElementById('tickerTrack');
   const svgs = {
@@ -1115,38 +1126,32 @@ function renderTicker(){
   track.innerHTML = html;
 }
 
-/* ============ MARKET TABLE ============ */
-function sparkline(color){
-  return `<svg class="spark" viewBox="0 0 100 32"><path d="M0 16 C8 16 8 12 16 12 C24 12 24 13 33 13 C41 13 41 9 50 9 C58 9 58 10 66 10 C74 10 74 5 83 5 C91 5 91 7 100 7" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/></svg>`;
-}
-
 function renderMarket(){
   const tbody = document.getElementById('marketBody');
   const mb = document.getElementById('mobileMarketBody');
   let html = '', mobileHtml = '';
   COINS.forEach(c=>{
-    const rankBadge = c.rank ? `<span class="mcap-badge">${c.rank} MCAP</span>` : '';
+    const rankBadge = c.rank ? `<span class="mcap-badge">${c.rank}</span>` : '';
     html += `<tr>
       <td><div class="asset-cell"><div class="coin-logo" style="background:${c.bg}"><svg viewBox="0 0 32 32" fill="none"><text x="16" y="21" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${c.sym[0]}</text></svg></div><div><div class="coin-symbol">${c.sym} ${rankBadge}</div><div class="coin-name">${c.name}</div></div></div></td>
-      <td class="text-right vol-cell"><div class="val">${c.mcap}</div><div class="sub">24h Vol: ${c.vol}</div></td>
-      <td class="text-center">${sparkline(c.spark)}</td>
+      <td class="text-right vol-cell"><div class="val">${c.mcap}</div><div class="sub">${c.vol}</div></td>
+      <td class="text-center"><svg class="spark" viewBox="0 0 100 32"><path d="M0 16 C8 16 8 12 16 12 C24 12 24 13 33 13 C41 13 41 9 50 9 C58 9 58 10 66 10 C74 10 74 5 83 5 C91 5 91 7 100 7" fill="none" stroke="${c.up?'#0ECB81':'#F6465D'}" stroke-width="2" stroke-linecap="round"/></svg></td>
       <td class="text-right price-cell"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></td>
       <td class="text-center"><span class="change-badge ${c.up?'up':'down'}">${c.chg}</span></td>
       <td class="text-right"><a href="trade.html" class="trade-btn">Trade <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></td>
     </tr>`;
-    mobileHtml += `<a href="trade.html" class="mobile-market-row" style="color:inherit;text-decoration:none">
-      <div class="mobile-asset"><div class="coin-logo" style="background:${c.bg}"><svg viewBox="0 0 32 32" fill="none"><text x="16" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${c.sym[0]}</text></svg></div><div><div class="coin-symbol" style="font-size:14px">${c.sym}</div><div class="coin-name" style="font-size:12px">${c.name}</div></div></div>
-      <div style="display:flex;align-items:center;gap:12px"><div class="mobile-price"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></div><div class="mobile-change ${c.up?'up':'down'}">${c.chg}</div></div>
+    mobileHtml += `<a href="trade.html" class="mobile-market-row">
+      <div class="mobile-asset"><div class="coin-logo" style="background:${c.bg}"><svg viewBox="0 0 32 32" fill="none"><text x="16" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${c.sym[0]}</text></svg></div><div><div class="coin-symbol" style="font-size:14px">${c.sym}</div><div class="coin-name" style="font-size:11px">${c.name}</div></div></div>
+      <div style="display:flex;align-items:center;gap:10px"><div class="mobile-price"><div class="price">${c.price}</div><div class="usd">$${c.price}</div></div><div class="mobile-change ${c.up?'up':'down'}">${c.chg}</div></div>
     </a>`;
   });
   tbody.innerHTML = html;
   mb.innerHTML = mobileHtml;
 }
 
-/* ============ FAQ ============ */
 function renderFaq(){
   const list = document.getElementById('faqList');
-  list.innerHTML = FAQS.map(f=>`<div class="faq-item"><button class="faq-q"><span class="fq">${f.q}</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span></button><div class="faq-a"><div class="faq-a-inner">${f.a}</div></div></div>`).join('');
+  list.innerHTML = FAQS.map(f=>`<div class="faq-item"><button class="faq-q"><span class="fq">${f.q}</span><span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span></button><div class="faq-a"><div class="faq-a-inner">${f.a}</div></div></div>`).join('');
   list.querySelectorAll('.faq-q').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const item = btn.parentElement;
@@ -1157,33 +1162,19 @@ function renderFaq(){
   });
 }
 
-/* ============ SEARCH ============ */
-function initSearch(){
-  const inp = document.getElementById('coinSearch');
-  inp.addEventListener('input',()=>{
-    const q = inp.value.toLowerCase();
-    document.querySelectorAll('#marketBody tr').forEach(tr=>{
-      tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
-    document.querySelectorAll('#mobileMarketBody .mobile-market-row').forEach(r=>{
-      r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
-  });
-}
+document.getElementById('coinSearch').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('#marketBody tr').forEach(tr => { tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+  document.querySelectorAll('#mobileMarketBody .mobile-market-row').forEach(r => { r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+});
 
-/* ============ BACK TO TOP ============ */
-function initToTop(){
-  const btn = document.getElementById('toTop');
-  window.addEventListener('scroll',()=>{ btn.classList.toggle('visible', window.scrollY > 400); });
-  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-}
+const toTopBtn = document.getElementById('toTop');
+window.addEventListener('scroll', () => { toTopBtn.classList.toggle('visible', window.scrollY > 400); });
+toTopBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ============ INIT ============ */
 renderTicker();
 renderMarket();
 renderFaq();
-initSearch();
-initToTop();
 initAuth();
 </script>
 </body>
