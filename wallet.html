@@ -184,7 +184,7 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .pill.approved,.pill.completed{background:#d1fae5;color:#065f46}
 .pill.rejected,.pill.failed{background:#fee2e2;color:#991b1b}
 
-/* modal */
+/* input modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
 .modal-backdrop.show{display:flex}
 .modal{background:#fff;border-radius:18px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:auto;max-height:90vh;overflow-y:auto}
@@ -211,6 +211,26 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .modal-info-row span:first-child{color:#6b7280;font-weight:600;flex-shrink:0}
 .modal-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--brand-dark);border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+
+/* ============ SUCCESS POPUP ============ */
+.success-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.success-backdrop.show{display:flex;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.success-modal{background:#fff;border-radius:24px;max-width:400px;width:100%;padding:32px 24px;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.4);animation:popIn .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.success-circle{width:72px;height:72px;border-radius:9999px;background:#d1fae5;border:3px solid #6ee7b7;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:successPulse 1.5s ease-out}
+@keyframes successPulse{0%{box-shadow:0 0 0 0 rgba(14,203,129,.5)}70%{box-shadow:0 0 0 16px rgba(14,203,129,0)}100%{box-shadow:0 0 0 0 rgba(14,203,129,0)}}
+.success-circle svg{width:38px;height:38px;stroke:var(--success);stroke-width:3;stroke-dasharray:60;stroke-dashoffset:60;animation:checkDraw .5s .2s forwards ease-out}
+@keyframes checkDraw{to{stroke-dashoffset:0}}
+.success-title{font-size:22px;font-weight:900;color:#030712;margin-bottom:8px;letter-spacing:-.02em}
+.success-desc{font-size:13px;color:#6b7280;line-height:1.6;margin-bottom:20px;padding:0 4px}
+.success-info{background:#f9fafb;border-radius:12px;padding:14px;margin-bottom:20px;text-align:left}
+.success-info-row{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;gap:8px}
+.success-info-row span:first-child{color:#6b7280;font-weight:600}
+.success-info-row span:last-child{color:#111827;font-weight:800;font-family:ui-monospace,monospace;text-align:right;overflow:hidden;text-overflow:ellipsis}
+.success-btn{width:100%;padding:14px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:14px;border-radius:12px;transition:background .15s;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.success-btn:hover{background:var(--brand-hover)}
+.success-note{font-size:11px;color:#9ca3af;margin-top:14px;line-height:1.4}
 
 /* toast */
 .toast{position:fixed;bottom:80px;left:16px;right:16px;background:#065f46;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:300;font-size:12px;font-weight:700}
@@ -319,12 +339,27 @@ main{padding-top:8px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
   </div>
 </main>
 
+<!-- INPUT MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
     </button>
     <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="success-backdrop" id="successBackdrop">
+  <div class="success-modal">
+    <div class="success-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2 class="success-title" id="successTitle">Deposit Submitted</h2>
+    <p class="success-desc" id="successDesc">Your deposit is being verified. Amount will reflect in your wallet shortly.</p>
+    <div class="success-info" id="successInfo"></div>
+    <button class="success-btn" id="successBtn" onclick="closeSuccess()">Got it</button>
+    <p class="success-note" id="successNote">Deposits are usually processed within 10-30 minutes.</p>
   </div>
 </div>
 
@@ -365,7 +400,6 @@ const COINS = [
   {sym:"BNB",  name:"BNB",       svg:'<svg width="40" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 7.5l3.2 3.2-3.2 3.2-3.2-3.2L16 7.5zm5.5 5.5l3.2 3.2-3.2 3.2-3.2-3.2 3.2-3.2zM7.3 16.2l3.2-3.2 3.2 3.2-3.2 3.2-3.2-3.2zm8.7 8.7l3.2-3.2-3.2-3.2-3.2 3.2 3.2 3.2zm0-5.8l2.9-2.9-2.9-2.9-2.9 2.9 2.9 2.9z" fill="#fff"/></svg>'},
 ];
 
-/* ============ YOUR REAL DEPOSIT ADDRESSES ============ */
 const DEPOSIT_ADDRESSES = {
   BTC:  '1EBtTssZpAiQThPb4jDmkhqQru5BmcpM2N',
   USDT: 'TDe4JVUhdWbQ8BgbDvN5WorDbuiGmj3guP',
@@ -404,7 +438,6 @@ async function setAvatar(user){
   el.textContent = initial.toUpperCase();
 }
 
-/* ============ BALANCES ============ */
 async function loadBalances(){
   const { data, error } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
   userBalances = {};
@@ -425,7 +458,6 @@ function updateBalanceDisplay(){
   document.getElementById('headerBalance').textContent = balanceHidden ? '****' : v;
 }
 
-/* ============ RENDER ============ */
 function renderAssets(){
   if(currentView !== 'wallet'){ renderActivity(); return; }
   const list = document.getElementById('assetList');
@@ -557,7 +589,7 @@ document.getElementById('modalBackdrop').addEventListener('click', e => {
   if(e.target.id === 'modalBackdrop') closeModal();
 });
 
-/* ============ SUBMIT DEPOSIT (silent — no popup) ============ */
+/* ============ SUBMIT DEPOSIT (with success popup) ============ */
 async function submitDeposit(coin){
   const amount = parseFloat(document.getElementById('depAmount').value);
   const txHash = document.getElementById('depTxHash').value.trim();
@@ -566,6 +598,7 @@ async function submitDeposit(coin){
 
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
   const { error } = await sb.from('deposit_requests').insert({
     user_id: currentUser.id,
     user_email: currentUser.email,
@@ -575,15 +608,23 @@ async function submitDeposit(coin){
     tx_hash: txHash || null,
     status: 'pending'
   });
+
   btn.disabled = false;
   btn.textContent = "I've Sent The Crypto";
+
   if(error){ toast(error.message, true); return; }
+
+  // close input modal, then show success popup
   closeModal();
-  if(currentView !== 'wallet'){ currentView = 'wallet'; document.querySelectorAll('.asset-tab').forEach((t,i)=>{t.classList.toggle('active', i===0);}); }
-  renderAssets();
+  if(currentView !== 'wallet'){
+    currentView = 'wallet';
+    document.querySelectorAll('.asset-tab').forEach((t,i)=>{t.classList.toggle('active', i===0);});
+    renderAssets();
+  }
+  showSuccessPopup('deposit', coin, amount);
 }
 
-/* ============ SUBMIT WITHDRAW (silent — no popup) ============ */
+/* ============ SUBMIT WITHDRAW (with success popup) ============ */
 async function submitWithdraw(coin){
   const addr = document.getElementById('wdAddr').value.trim();
   const amount = parseFloat(document.getElementById('wdAmount').value);
@@ -596,6 +637,7 @@ async function submitWithdraw(coin){
 
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
   const { error } = await sb.from('withdraw_requests').insert({
     user_id: currentUser.id,
     user_email: currentUser.email,
@@ -605,10 +647,49 @@ async function submitWithdraw(coin){
     network: DEPOSIT_NETWORKS[coin],
     status: 'pending'
   });
+
   btn.disabled = false;
   btn.textContent = 'Request Withdrawal';
+
   if(error){ toast(error.message, true); return; }
+
   closeModal();
+  showSuccessPopup('withdraw', coin, amount);
+}
+
+/* ============ SUCCESS POPUP ============ */
+function showSuccessPopup(type, coin, amount){
+  const isDeposit = type === 'deposit';
+  const titleEl = document.getElementById('successTitle');
+  const descEl = document.getElementById('successDesc');
+  const infoEl = document.getElementById('successInfo');
+  const noteEl = document.getElementById('successNote');
+
+  if(isDeposit){
+    titleEl.textContent = 'Deposit Submitted';
+    descEl.textContent = 'Your deposit is being verified. Amount will reflect in your wallet shortly.';
+    noteEl.textContent = 'Deposits are usually processed within 10–30 minutes after network confirmation.';
+  } else {
+    titleEl.textContent = 'Withdrawal Submitted';
+    descEl.textContent = 'Your withdrawal request is being reviewed. Amount will be sent after admin approval.';
+    noteEl.textContent = 'Withdrawals are typically processed within 30 minutes to 2 hours.';
+  }
+
+  infoEl.innerHTML = `
+    <div class="success-info-row"><span>Coin</span><span>${coin}</span></div>
+    <div class="success-info-row"><span>Amount</span><span>${amount} ${coin}</span></div>
+    <div class="success-info-row"><span>Status</span><span style="color:#ea580c">Pending</span></div>
+  `;
+
+  document.getElementById('successBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSuccess(){
+  document.getElementById('successBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+  // refresh balances in case admin already approved (unlikely but safe)
+  loadBalances().then(() => renderAssets());
 }
 
 /* ============ TOGGLES / REFRESH / TOAST ============ */
