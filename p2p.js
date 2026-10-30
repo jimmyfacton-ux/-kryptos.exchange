@@ -1,324 +1,408 @@
-:root{
-  --brand-primary:#FCD535; --brand-hover:#F0B90B; --brand-dark:#181A20;
-  --success:#0ECB81; --success-hover:#0BA86C; --danger:#F6465D;
-  --muted:#707A8A; --fill:#F5F5F5; --border:#EAECEF; --page:#FAFAFA;
-  --font-sans:"Inter","Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+/* ============ SUPABASE ============ */
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentSide = 'buy';
+let allMerchants = [];
+let currentBalance = 0;
+let balanceHidden = false;
+let currentChatOrder = null;
+let chatPollTimer = null;
+
+const USD_PRICE = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
+
+const PAY_LABELS = {
+  mpesa:{label:"M-PESA Safaricom", cls:"mpesa"},
+  bank:{label:"Bank Transfer", cls:"bank"},
+  equity:{label:"Equity Bank", cls:"bank"},
+  kcb:{label:"KCB Bank", cls:"bank"},
+  airtel:{label:"Airtel Money", cls:"airtel"},
+};
+const STATUS = {
+  online:{cls:"status-online", label:"Online"},
+  recent:{cls:"status-recent", label:"4 mins ago"},
+  late:{cls:"status-late", label:"1 hour ago"},
+};
+const VERIFIED_SVG = `<svg class="verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>`;
+
+/* ============ INIT ============ */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ location.href = 'login.html'; return; }
+  currentUser = session.user;
+  await setAvatar(currentUser);
+  /* Run in parallel so slow balances doesn't block merchants */
+  await Promise.all([loadHeaderBalance(), loadMerchants()]);
+})();
+
+async function setAvatar(user){
+  const meta = user.user_metadata || {};
+  let initial = '';
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
+  if(!initial){
+    const { data: prof } = await sb.from('profiles').select('first_name, last_name').eq('id', user.id).maybeSingle();
+    if(prof){
+      if(prof.first_name) initial = prof.first_name[0];
+      else if(prof.last_name) initial = prof.last_name[0];
+    }
+  }
+  if(!initial && user.email) initial = user.email[0];
+  if(!initial) initial = '?';
+  return initial.toUpperCase();
 }
-*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
-html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
-body{font-family:var(--font-sans);background:#fff;color:var(--brand-dark);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::selection{background:var(--brand-primary);color:var(--brand-dark)}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px}
-button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
-input,select,textarea{font-family:inherit;outline:none}
-img,svg{display:block;max-width:100%}
-select{appearance:none;-webkit-appearance:none;background:transparent;border:none;cursor:pointer}
-.container{max-width:1280px;margin:0 auto;padding:0 16px}
-@media(min-width:768px){.container{padding:0 24px}}
-.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
-.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}.shrink-0{flex-shrink:0}
-.text-xs{font-size:12px}.text-sm{font-size:14px}
-.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-black{font-weight:900}
-.tracking-tight{letter-spacing:-.02em}
-.text-muted{color:var(--muted)}
-.uppercase{text-transform:uppercase}
 
-/* header */
-.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.header-inner{height:56px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-@media(min-width:640px){.header-inner{height:64px}}
-.brand{display:flex;align-items:center;gap:4px;flex-shrink:0}
-.menu-btn{display:flex;align-items:center;gap:6px;padding:6px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px}
-.menu-btn:hover{background:var(--fill)}
-.menu-btn svg{width:22px;height:22px;stroke-width:2.4}
-.logo-text{font-weight:800;font-size:17px;letter-spacing:-.03em;color:var(--brand-dark);display:flex;align-items:baseline;gap:1px}
-@media(min-width:640px){.logo-text{font-size:20px}}
-.logo-text .accent{color:var(--brand-hover)}
-.logo-sub{font-size:9px;font-weight:700;color:var(--muted);margin-left:1px}
-@media(min-width:640px){.logo-sub{font-size:10px}}
-.nav-links{display:flex;align-items:center;gap:4px;margin-left:16px}
-.nav-link{padding:7px 10px;font-size:13px;font-weight:600;color:var(--muted);border-radius:12px;transition:all .15s}
-.nav-link:hover{color:var(--brand-dark);background:#f4f4f5}
-.nav-link.active{background:var(--brand-dark);color:#fff;font-weight:700}
-.nav-badge{margin-left:4px;padding:1px 6px;font-size:9px;font-weight:900;background:var(--success);color:#fff;border-radius:9999px}
-.header-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.balance{display:flex;align-items:center;gap:4px}
-.balance-val{font-size:13px;font-weight:700;color:var(--brand-dark);font-family:ui-monospace,monospace}
-@media(min-width:640px){.balance-val{font-size:14px}}
-.balance-eye{color:var(--muted);padding:2px}
-.balance-eye svg{width:14px;height:14px}
-.avatar{width:30px;height:30px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;box-shadow:0 0 0 2px rgba(249,115,22,.2)}
-@media(min-width:640px){.avatar{width:32px;height:32px}}
-.notif-btn{position:relative;padding:6px;color:var(--brand-dark);border-radius:8px;flex-shrink:0}
-.notif-btn:hover{background:var(--fill)}
-.notif-btn svg{width:18px;height:18px;stroke-width:2.2}
-.notif-badge{position:absolute;top:0;right:0;min-width:16px;height:16px;padding:0 4px;background:#dc2626;color:#fff;font-size:9px;font-weight:900;border-radius:9999px;display:none;align-items:center;justify-content:center;border:2px solid #fff}
+async function loadHeaderBalance(){
+  if(!currentUser) return;
+  const { data } = await sb.from('balances').select('coin, amount').eq('user_id', currentUser.id);
+  currentBalance = 0;
+  if(data) data.forEach(b => currentBalance += Number(b.amount) * (USD_PRICE[b.coin] || 0));
 
-/* sub header */
-.sub-header{position:sticky;top:56px;z-index:30;background:#fff;border-bottom:1px solid var(--border);padding:8px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-@media(min-width:640px){.sub-header{top:64px;padding:10px 0}}
-.sub-inner{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 16px}
-@media(min-width:768px){.sub-inner{padding:0 24px}}
-.sub-left{display:flex;align-items:center;gap:12px}
-.sub-tabs{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:700}
-@media(min-width:640px){.sub-tabs{font-size:16px}}
-.sub-tab{position:relative;padding:4px 0;color:#9ca3af;transition:color .15s}
-.sub-tab.active{color:#000;font-weight:800}
-.sub-tab.active::after{content:"";position:absolute;bottom:-6px;left:0;right:0;height:3px;background:#000;border-radius:9999px}
-.sub-btn{padding:6px;border-radius:8px;color:#374151;transition:background .15s}
-.sub-btn:hover{background:var(--fill)}
-.sub-btn svg{width:18px;height:18px;stroke-width:2.2}
-.mob-back{padding:6px;border-radius:8px;color:#374151;display:none}
-@media(max-width:767px){.mob-back{display:block}}
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
 
-/* content */
-.p2p-wrap{max-width:1280px;margin:0 auto;padding:12px 16px calc(100px + env(safe-area-inset-bottom))}
-@media(min-width:768px){.p2p-wrap{padding:16px 24px 40px}}
-@media(max-width:767px){.p2p-wrap{max-width:680px}}
+  const wrap = document.getElementById('headerAuth');
+  const v = '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  wrap.innerHTML = `
+    <div class="balance">
+      <span class="balance-val" id="hdrBal">${balanceHidden ? '****' : v}</span>
+      <button class="balance-eye" id="hdrEye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <a href="wallet.html" class="avatar">${initial}</a>
+    <button class="notif-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+      <span class="notif-badge" id="notifBadge">0</span>
+    </button>
+  `;
+  document.getElementById('hdrEye').addEventListener('click', () => {
+    balanceHidden = !balanceHidden;
+    document.getElementById('hdrBal').textContent = balanceHidden ? '****' : v;
+  });
+}
 
-/* promo */
-.promo{background:linear-gradient(to right,#f9fafb,#f3f4f6);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;cursor:pointer;overflow:hidden}
-.promo-inner{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.promo-text h3{font-size:13px;font-weight:700;color:#111827;line-height:1.3}
-@media(min-width:640px){.promo-text h3{font-size:16px}}
-.promo-text p{font-size:11px;color:#6b7280;margin-top:2px}
-.promo-icon{width:40px;height:40px;background:#000;color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-@media(min-width:640px){.promo-icon{width:48px;height:48px}}
-.promo-icon svg{width:20px;height:20px;color:#fbbf24}
-@media(min-width:640px){.promo-icon svg{width:24px;height:24px}}
-.promo-dots{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px}
-.promo-dot{width:6px;height:6px;border-radius:9999px;background:#d1d5db}
-.promo-dot.active{background:#000}
+/* ============ LOAD MERCHANTS ============ */
+async function loadMerchants(){
+  const list = document.getElementById('merchantList');
+  list.innerHTML = `<div class="empty-state">Loading merchants...</div>`;
+  const { data, error } = await sb.from('merchants').select('*').order('price_kes', {ascending:true});
+  if(error){ list.innerHTML = `<div class="empty-state">Error: ${error.message}</div>`; return; }
+  allMerchants = data || [];
+  renderMerchants();
+}
 
-/* toggle */
-.row-toggle{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
-.buy-sell{display:flex;align-items:center;background:var(--fill);padding:4px;border-radius:9999px;border:1px solid var(--border)}
-.buy-sell button{padding:6px 16px;font-size:12px;font-weight:700;border-radius:9999px;transition:all .15s;color:var(--muted)}
-@media(min-width:640px){.buy-sell button{padding:6px 20px}}
-.buy-sell button.active{background:var(--brand-dark);color:#fff}
-.currency-btn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--brand-dark);background:#fff;border:1px solid var(--border);padding:6px 12px;border-radius:9999px;white-space:nowrap}
-@media(min-width:640px){.currency-btn{padding:6px 14px}}
-.currency-btn svg{width:14px;height:14px;color:var(--muted)}
+function renderMerchants(){
+  const list = document.getElementById('merchantList');
+  if(allMerchants.length === 0){
+    list.innerHTML = `<div class="empty-state">No merchants available right now.</div>`;
+    return;
+  }
+  const actionLabel = currentSide === 'buy' ? 'Buy' : 'Sell';
+  const actionClass = currentSide === 'buy' ? 'buy-btn' : 'buy-btn sell';
 
-/* filters */
-.filters{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.filters-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.filter-pill{display:flex;align-items:center;gap:4px;background:var(--fill);border:1px solid var(--border);padding:5px 10px;border-radius:9999px;font-size:11px;font-weight:700;color:var(--brand-dark);white-space:nowrap}
-@media(min-width:640px){.filter-pill{padding:6px 12px;font-size:12px}}
-.filter-pill svg{width:12px;height:12px;color:var(--muted)}
-.filter-pill .coin-svg{width:16px;height:16px}
-.filter-icon{padding:6px;border-radius:9999px;background:var(--fill);color:#374151}
-.filter-icon svg{width:14px;height:14px}
+  list.innerHTML = allMerchants.map(m => {
+    const st = STATUS[m.status] || STATUS.online;
+    const chips = (m.payments || []).map(p => {
+      const pl = PAY_LABELS[p] || {label: p, cls: 'bank'};
+      return `<span class="pay-chip"><span class="bar ${pl.cls}"></span>${pl.label}</span>`;
+    }).join('');
+    return `<div class="merchant">
+      <div class="merchant-head">
+        <div class="merchant-name-wrap">
+          <button class="merchant-name">${m.name}</button>
+          ${VERIFIED_SVG}
+          <span class="status ${st.cls}"><span class="dot"></span>${st.label}</span>
+        </div>
+        <button class="view-profile">View Profile &gt;</button>
+      </div>
+      <div class="merchant-stats">
+        <span>Trades ${Number(m.trades).toLocaleString()} (${m.rating}%)</span><span class="sep">·</span>
+        <span>👍 99%</span><span class="sep">·</span>
+        <span>30 min</span>
+      </div>
+      <div class="merchant-price">
+        <span class="cur">K.Sh</span>
+        <span class="val">${Number(m.price_kes).toFixed(2)}</span>
+        <span class="unit">/USDT</span>
+      </div>
+      <div class="merchant-foot">
+        <div class="merchant-meta">
+          <div class="row">Limit ${Number(m.limit_min).toLocaleString()}-${Number(m.limit_max).toLocaleString()} KES</div>
+          <div class="row">Available ${Number(m.available_usdt).toLocaleString()} USDT</div>
+          <div class="pay-chips">${chips}</div>
+        </div>
+        <button class="${actionClass}" onclick="openP2PModal('${m.id}')">${actionLabel}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-/* live rate */
-.live-strip{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f9fafb;border:1px solid #f3f4f6;border-radius:10px;margin-bottom:12px;font-size:11px;flex-wrap:wrap;gap:6px}
-@media(min-width:640px){.live-strip{font-size:12px;padding:6px 12px}}
-.live-left{display:flex;align-items:center;gap:6px;color:#6b7280;flex-wrap:wrap}
-.live-dot{width:8px;height:8px;border-radius:9999px;background:var(--success);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,203,129,.6)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(14,203,129,0)}}
-.live-rate strong{color:#111827;font-weight:800}
-.live-refresh{color:#9ca3af;flex-shrink:0}
-.live-refresh svg{width:12px;height:12px}
+document.querySelectorAll('#buySell button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#buySell button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    currentSide = b.dataset.side;
+    renderMerchants();
+  });
+});
 
-/* merchant */
-.merchant-list{display:flex;flex-direction:column;gap:10px}
-@media(min-width:640px){.merchant-list{gap:12px}}
-.merchant{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;transition:border-color .15s}
-@media(min-width:640px){.merchant{border-radius:16px;padding:16px}}
-.merchant:hover{border-color:#d1d5db}
-.merchant-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;gap:8px}
-.merchant-name-wrap{display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex:1;min-width:0}
-.merchant-name{font-size:13px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em;text-align:left}
-@media(min-width:640px){.merchant-name{font-size:14px}}
-.merchant-name:hover{color:var(--brand-hover);text-decoration:underline}
-.verified{color:#f59e0b;fill:#fef3c7;width:14px;height:14px;flex-shrink:0}
-@media(min-width:640px){.verified{width:16px;height:16px}}
-.status{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;margin-left:2px}
-@media(min-width:640px){.status{font-size:10.5px}}
-.status-online{color:#10b981}
-.status-online .dot{background:#10b981}
-.status-recent{color:#d97706}
-.status-recent .dot{background:#f59e0b}
-.status-late{color:#3f3f46}
-.status-late .dot{background:#18181b}
-.status .dot{width:6px;height:6px;border-radius:9999px;flex-shrink:0}
-.view-profile{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0}
-@media(min-width:640px){.view-profile{font-size:11px}}
-.view-profile:hover{color:var(--brand-dark);text-decoration:underline}
-.merchant-stats{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-weight:500;margin-bottom:10px;flex-wrap:wrap}
-@media(min-width:640px){.merchant-stats{font-size:11px;gap:8px}}
-.merchant-stats .sep{color:#d1d5db}
-.merchant-price{display:flex;align-items:baseline;gap:4px;margin-bottom:10px;flex-wrap:wrap}
-.merchant-price .cur{font-size:11px;font-weight:700;color:var(--muted)}
-@media(min-width:640px){.merchant-price .cur{font-size:12px}}
-.merchant-price .val{font-size:22px;font-weight:700;color:var(--brand-dark);letter-spacing:-.02em}
-@media(min-width:640px){.merchant-price .val{font-size:24px}}
-.merchant-price .unit{font-size:11px;color:var(--muted);font-weight:500}
-@media(min-width:640px){.merchant-price .unit{font-size:12px}}
-.merchant-foot{display:flex;align-items:flex-end;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);gap:8px}
-.merchant-meta{font-size:11px;color:var(--muted);font-weight:500;min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}
-@media(min-width:640px){.merchant-meta{font-size:12px}}
-.merchant-meta .row{word-break:break-word}
-.pay-chips{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding-top:4px}
-.pay-chip{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;color:var(--brand-dark);background:var(--fill);border:1px solid var(--border);padding:2px 6px;border-radius:5px}
-@media(min-width:640px){.pay-chip{font-size:11px;padding:2px 8px;border-radius:6px}}
-.pay-chip .bar{width:3px;height:8px;border-radius:9999px}
-@media(min-width:640px){.pay-chip .bar{height:10px}}
-.pay-chip .bar.mpesa{background:#10b981}
-.pay-chip .bar.bank{background:#2563eb}
-.pay-chip .bar.airtel{background:#9ca3af}
-.buy-btn{padding:8px 18px;border-radius:8px;font-weight:700;font-size:11px;color:#fff;background:var(--success);flex-shrink:0;white-space:nowrap}
-@media(min-width:640px){.buy-btn{padding:10px 24px;font-size:12px}}
-.buy-btn:hover{background:var(--success-hover)}
-.buy-btn:active{transform:scale(.98)}
-.buy-btn.sell{background:var(--danger)}
-.buy-btn.sell:hover{background:#dc2626}
-.empty-state{background:#fff;border:1px dashed var(--border);border-radius:14px;padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:500}
+document.querySelectorAll('.sub-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});/* ============ P2P MODAL ============ */
+function openP2PModal(merchantId, startTab){
+  const m = allMerchants.find(x => x.id === merchantId);
+  if(!m) return;
+  const isBuy = currentSide === 'buy';
+  const actionVerb = isBuy ? 'Buy' : 'Sell';
+  const minAmt = (Number(m.limit_min) / Number(m.price_kes)).toFixed(2);
+  const maxAmt = (Number(m.limit_max) / Number(m.price_kes)).toFixed(2);
 
-/* escrow */
-.escrow{background:#f9fafb;border:1px solid #f3f4f6;border-radius:14px;padding:14px;margin-top:20px;margin-bottom:24px;font-size:11px;color:#6b7280}
-@media(min-width:640px){.escrow{border-radius:16px;padding:16px;font-size:12px;margin-bottom:32px}}
-.escrow-head{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.escrow-head svg{width:14px;height:14px;color:#059669;flex-shrink:0}
-@media(min-width:640px){.escrow-head svg{width:16px;height:16px}}
-.escrow-head span{font-size:13px;font-weight:800;color:#030712}
-@media(min-width:640px){.escrow-head span{font-size:14px}}
-.escrow p{line-height:1.5}
-@media(min-width:640px){.escrow p{line-height:1.6}}
+  document.getElementById('modalContent').innerHTML = `
+    <div class="p2p-tabs">
+      <button class="p2p-tab active" data-ptab="order" onclick="switchP2PTab('order')">Order</button>
+      <button class="p2p-tab" data-ptab="chat" onclick="switchP2PTab('chat')">
+        <span>Messages</span>
+        <span class="p2p-tab-badge" id="p2pTabBadge" style="display:none">0</span>
+      </button>
+    </div>
 
-/* desk cards */
-.desk-nav{display:none;grid-template-columns:repeat(5,1fr);gap:14px;padding-top:16px;border-top:1px solid var(--border);margin-bottom:48px}
-@media(min-width:768px){.desk-nav{display:grid}}
-.desk-card{padding:16px;border-radius:16px;border:1px solid var(--border);text-align:left;background:#fff;transition:all .15s}
-.desk-card:hover{background:#f9fafb;border-color:var(--brand-primary)}
-.desk-card.active{background:var(--brand-dark);color:#fff;border-color:var(--brand-dark)}
-.desk-card .dc-title{font-size:12px;font-weight:700;margin-bottom:4px;color:var(--brand-dark)}
-.desk-card.active .dc-title{color:#fff}
-.desk-card .dc-desc{font-size:11px;color:var(--muted)}
-.desk-card.active .dc-desc{color:#d1d5db}
+    <div id="p2pTabOrder">
+      <div class="modal-title">${actionVerb} USDT from ${m.name}</div>
+      <div class="modal-sub">You will ${isBuy ? 'send KES via' : 'receive KES via'} your chosen payment method</div>
+      <div class="modal-info">
+        <div class="modal-info-row"><span>Price</span><span>K.Sh ${Number(m.price_kes).toFixed(2)} / USDT</span></div>
+        <div class="modal-info-row"><span>Available</span><span>${Number(m.available_usdt).toLocaleString()} USDT</span></div>
+        <div class="modal-info-row"><span>Limits</span><span>K.Sh ${Number(m.limit_min).toLocaleString()} – ${Number(m.limit_max).toLocaleString()}</span></div>
+      </div>
+      <label class="modal-label">Amount (USDT) — ${minAmt} to ${maxAmt}</label>
+      <input class="modal-input" type="number" step="any" id="p2pAmount" placeholder="0.00" />
+      <label class="modal-label">Payment Method</label>
+      <select class="modal-input" id="p2pPayment">
+        ${(m.payments||[]).map(p => `<option value="${p}">${(PAY_LABELS[p]||{label:p}).label}</option>`).join('')}
+      </select>
+      <div class="modal-info" style="margin-top:6px">
+        <div class="modal-info-row"><span>You will ${isBuy?'pay':'receive'}</span><strong id="p2pFiat">K.Sh 0.00</strong></div>
+      </div>
+      <button class="modal-confirm ${isBuy?'':'sell'}" id="p2pSubmit" onclick="submitP2POrder('${m.id}')">${actionVerb} USDT</button>
+      <div class="msg" id="p2pMsg"></div>
+    </div>
 
-/* modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
-.modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:18px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;margin:auto;max-height:90vh;overflow-y:auto}
-@media(min-width:640px){.modal{border-radius:24px;padding:24px}}
-.modal-title{font-size:16px;font-weight:900;color:var(--brand-dark);margin-bottom:4px;padding-right:28px;line-height:1.3}
-@media(min-width:640px){.modal-title{font-size:18px}}
-.modal-sub{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.4}
-@media(min-width:640px){.modal-sub{font-size:12px}}
-.modal-close{position:absolute;top:12px;right:12px;padding:6px;color:var(--muted);border-radius:8px;z-index:5;background:#fff}
-.modal-close:hover{background:var(--fill)}
-.modal-close svg{width:18px;height:18px}
-.modal-label{font-size:11px;font-weight:700;color:#4b5563;margin-bottom:6px;display:block}
-@media(min-width:640px){.modal-label{font-size:12px}}
-.modal-input{width:100%;padding:10px;background:var(--fill);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:700;color:var(--brand-dark);margin-bottom:12px}
-@media(min-width:640px){.modal-input{padding:12px;font-size:14px;border-radius:12px;margin-bottom:14px}}
-.modal-input:focus{background:#fff;border-color:var(--brand-primary)}
-.modal-confirm{width:100%;padding:12px;background:var(--success);color:#fff;font-weight:800;font-size:13px;border-radius:10px;margin-top:4px}
-@media(min-width:640px){.modal-confirm{padding:14px;font-size:14px;border-radius:12px;margin-top:6px}}
-.modal-confirm.sell{background:var(--danger)}
-.modal-confirm:disabled{opacity:.6;cursor:not-allowed}
-.modal-info{background:var(--fill);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px}
-@media(min-width:640px){.modal-info{border-radius:12px;padding:12px;font-size:12px}}
-.modal-info-row{display:flex;justify-content:space-between;padding:3px 0;gap:8px}
-.modal-info-row span:first-child{color:#6b7280;font-weight:600;flex-shrink:0}
-.modal-info-row span:last-child{color:#111827;font-weight:800;text-align:right}
-.msg{margin-top:10px;padding:10px;border-radius:10px;font-size:12px;font-weight:600;display:none;text-align:center}
-.msg.show{display:block}
-.msg.success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
-.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:9999px;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes spin{to{transform:rotate(360deg)}}
+    <div id="p2pTabChat" style="display:none">
+      <div class="chat-thread" id="chatThread">
+        <div class="chat-empty">No order yet. Type a message to start chatting — support will reply shortly.</div>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chatInput" placeholder="Type a message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"></textarea>
+        <button class="chat-send" id="chatSend" onclick="sendChatMessage()">Send</button>
+      </div>
+      <div class="chat-actions" id="chatActions" style="display:none">
+        <button class="btn-paid" id="btnPaid" onclick="markAsPaid()">I Have Paid</button>
+      </div>
+    </div>
+  `;
 
-/* toast */
-.toast{position:fixed;bottom:80px;left:16px;right:16px;background:#065f46;color:#fff;padding:12px 16px;border-radius:12px;display:none;align-items:center;gap:10px;z-index:300;font-size:12px;font-weight:700}
-@media(min-width:768px){.toast{bottom:24px;left:auto;right:24px;max-width:340px;padding:14px 20px;font-size:13px}}
-.toast.show{display:flex;animation:slideIn .3s}
-.toast.error{background:#991b1b}
-.toast svg{width:16px;height:16px;flex-shrink:0}
-@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  window._currentMerchant = m;
+  window._currentOrderId = null;
 
-/* drawer */
-.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:200;display:none}
-.drawer-backdrop.show{display:block}
-.drawer{position:absolute;top:0;left:0;bottom:0;width:320px;max-width:88vw;background:#fff;display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .25s ease}
-.drawer-backdrop.show .drawer{transform:translateX(0)}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.drawer-logo{font-size:18px;font-weight:900;color:var(--brand-dark);letter-spacing:-.03em}
-.drawer-logo span{color:var(--brand-hover)}
-.drawer-close{padding:8px;border-radius:10px;color:#6b7280}
-.drawer-close svg{width:20px;height:20px}
-.drawer-body{flex:1;overflow-y:auto;padding:12px 12px 24px;overscroll-behavior:contain}
-.drawer-row{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:var(--brand-dark);transition:background .15s;cursor:pointer}
-.drawer-row:hover{background:var(--fill)}
-.drawer-row > svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:#6b7280;stroke-width:2}
-.drawer-row-content{flex:1;min-width:0}
-.drawer-row-title{font-size:14px;font-weight:800;color:#111827}
-.drawer-row-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.drawer-row-desc{font-size:11px;color:#6b7280;margin-top:2px}
-.drawer-badge{font-size:9px;font-weight:800;padding:1px 6px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-.drawer-badge.yellow{background:var(--brand-primary);color:var(--brand-dark)}
-.drawer-badge.gray{background:#f3f4f6;color:#111827}
-.drawer-badge.green{background:rgba(14,203,129,.15);color:var(--success)}
-.drawer-badge.green-light{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:700}
-.drawer-group{border-top:1px solid #f3f4f6;padding-top:4px;margin-top:4px}
-.drawer-section{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px;border-radius:12px;font-size:14px;font-weight:800;color:var(--brand-dark);transition:background .15s}
-.drawer-section-left{display:flex;align-items:center;gap:12px}
-.drawer-section-left svg{width:18px;height:18px;color:#6b7280;flex-shrink:0}
-.drawer-section .chev{width:16px;height:16px;color:#9ca3af;transition:transform .2s}
-.drawer-section.open .chev{transform:rotate(180deg)}
-.drawer-sub{padding-left:42px;padding-right:8px;padding-top:4px;padding-bottom:4px;display:none}
-.drawer-sub.open{display:block}
-.drawer-sub-item{display:block;padding:8px;border-radius:8px;transition:background .15s;text-decoration:none;cursor:pointer}
-.drawer-sub-item:hover{background:var(--fill)}
-.drawer-sub-title{font-size:13px;font-weight:700;color:var(--brand-dark)}
-.drawer-sub-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.drawer-sub-desc{font-size:11px;color:#6b7280;margin-top:2px;line-height:1.4}
-.drawer-auth{margin-top:16px;padding:0 4px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:16px}
-.drawer-auth-btn{padding:11px;border-radius:12px;font-weight:800;font-size:13px;text-align:center;text-decoration:none;display:block}
-.drawer-auth-btn.login{background:var(--fill);color:var(--brand-dark);border:1px solid var(--border)}
-.drawer-auth-btn.signup{background:var(--brand-primary);color:var(--brand-dark)}
-.drawer-auth-btn.logout{background:#fee2e2;color:#991b1b}
-.drawer-user{padding:12px;background:var(--fill);border-radius:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.drawer-user-avatar{width:36px;height:36px;border-radius:9999px;background:linear-gradient(135deg,#FF6700,#E04800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
-.drawer-user-email{font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.drawer-user-bal{font-size:11px;color:#6b7280;margin-top:1px}
+  setTimeout(() => {
+    const inp = document.getElementById('p2pAmount');
+    const out = document.getElementById('p2pFiat');
+    if(inp && out){
+      inp.addEventListener('input', () => {
+        const amt = parseFloat(inp.value) || 0;
+        const fiat = amt * Number(m.price_kes);
+        out.textContent = 'K.Sh ' + fiat.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+      });
+      inp.focus();
+    }
+    const ci = document.getElementById('chatInput');
+    if(ci){
+      ci.addEventListener('input', () => {
+        ci.style.height = 'auto';
+        ci.style.height = Math.min(ci.scrollHeight, 90) + 'px';
+      });
+    }
+  }, 50);
 
-/* mobile nav */
-.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,255,.98);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
-@media(min-width:768px){.mobile-nav{display:none}}
-.mobile-nav-inner{max-width:500px;margin:0 auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between}
-.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;border-radius:12px;transition:all .15s;color:var(--muted);font-weight:500;min-width:0}
-.mnav-item.active{color:var(--brand-dark);font-weight:700}
-.mnav-item svg{width:20px;height:20px;margin-bottom:2px;transition:transform .15s}
-.mnav-item.active svg{transform:scale(1.1);stroke-width:2.4}
-.mnav-item .mnav-label{font-size:10px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media(max-width:767px){.md-only{display:none}}
+  document.getElementById('modalBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
 
-/* ===== P2P TABS (inside modal) ===== */
-.p2p-tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border)}
-.p2p-tab{padding:10px 14px;font-size:13px;font-weight:700;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;position:relative}
-.p2p-tab:hover{color:var(--brand-dark)}
-.p2p-tab.active{color:var(--brand-dark);border-bottom-color:var(--brand-dark);font-weight:800}
-.p2p-tab-badge{display:inline-block;margin-left:6px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:1px 6px;border-radius:9999px;vertical-align:middle}
+  if(startTab === 'chat') switchP2PTab('chat');
+}
 
-/* ===== CHAT ENGINE (inside modal) ===== */
-.chat-thread{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding:8px;border:1px solid var(--border);border-radius:12px;background:#fafafa;margin-bottom:10px}
-.chat-empty{text-align:center;color:#9ca3af;font-size:12px;padding:20px 8px}
-.bubble{max-width:85%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.4;word-wrap:break-word;white-space:pre-wrap}
-.bubble .b-meta{display:block;font-size:9px;opacity:.7;margin-top:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
-.bubble.system{background:#e5e7eb;color:#374151;align-self:center;text-align:center;font-size:11px;max-width:95%;font-style:italic}
-.bubble.buyer{background:#181A20;color:#fff;align-self:flex-end}
-.bubble.admin{background:#dbeafe;color:#1e40af;align-self:flex-start}
-.bubble.bot{background:#fef3c7;color:#92400e;align-self:flex-start}
-.chat-input-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:10px}
-.chat-input{flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:13px;background:#fff;resize:none;max-height:90px;min-height:42px;font-family:inherit}
-.chat-input:focus{border-color:var(--brand-primary)}
-.chat-send{padding:0 14px;height:42px;background:var(--brand-dark);color:#fff;border-radius:10px;font-weight:800;font-size:12px;flex-shrink:0}
-.chat-send:hover{background:#000}
-.chat-send:disabled{opacity:.5;cursor:not-allowed}
-.chat-actions{display:flex;gap:8px;margin-top:10px}
-.btn-paid{flex:1;padding:12px;background:var(--success);color:#fff;border-radius:10px;font-weight:800;font-size:13px}
-.btn-paid:hover{background:var(--success-hover)}
-.btn-paid:disabled{opacity:.6;cursor:not-allowed}
+function switchP2PTab(tab){
+  document.querySelectorAll('.p2p-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.ptab === tab);
+  });
+  const order = document.getElementById('p2pTabOrder');
+  const chat  = document.getElementById('p2pTabChat');
+  if(order) order.style.display = tab === 'order' ? 'block' : 'none';
+  if(chat)  chat.style.display  = tab === 'chat'  ? 'block' : 'none';
+
+  if(tab === 'chat'){
+    const badge = document.getElementById('p2pTabBadge');
+    if(badge){ badge.style.display = 'none'; badge.textContent = '0'; }
+    clearHeaderChatBadge();
+    if(window._currentOrderId) startChatPolling();
+    else loadPreOrderMessages();
+  } else {
+    stopChatPolling();
+  }
+}
+
+function closeModal(){
+  stopChatPolling();
+  currentChatOrder = null;
+  document.getElementById('modalBackdrop').classList.remove('show');
+  document.getElementById('modalContent').innerHTML = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('modalBackdrop').addEventListener('click', e => {
+  if(e.target.id === 'modalBackdrop') closeModal();
+});
+
+async function submitP2POrder(merchantId){
+  const m = allMerchants.find(x => x.id === merchantId);
+  if(!m) return;
+  const amt = parseFloat(document.getElementById('p2pAmount').value);
+  const pay = document.getElementById('p2pPayment').value;
+  const btn = document.getElementById('p2pSubmit');
+
+  if(!amt || amt <= 0){ showP2PMsg('error','Enter a valid amount.'); return; }
+  if(amt > Number(m.available_usdt)){ showP2PMsg('error','Amount exceeds merchant availability.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+
+  try {
+    const { data, error } = await sb.rpc('create_p2p_order', {
+      p_merchant_id: merchantId,
+      p_amount: amt,
+      p_payment: pay,
+      p_side: currentSide
+    });
+    if(error || data?.error) throw new Error(data?.error || error?.message || 'Order failed');
+    if(!data.order_id) throw new Error('Order created but no ID returned.');
+
+    window._currentOrderId = data.order_id;
+    window._currentOrderData = {
+      id: data.order_id,
+      amount: amt,
+      fiat: Number(data.fiat),
+      payment: pay,
+      side: currentSide,
+      merchantName: m.name,
+      currency: 'K.Sh'
+    };
+
+    try {
+      const greeting = await buildGreeting(window._currentOrderData);
+      await sb.rpc('post_p2p_message', {
+        p_order_id: data.order_id,
+        p_body: greeting,
+        p_role: 'system'
+      });
+    } catch(e){ console.warn('Greeting insert:', e); }
+
+    const actions = document.getElementById('chatActions');
+    if(actions) actions.style.display = 'flex';
+
+    const tabBadge = document.getElementById('p2pTabBadge');
+    if(tabBadge){ tabBadge.style.display = 'inline-block'; tabBadge.textContent = '1'; }
+
+    toast('Order created — tap Messages to chat');
+    loadMerchants();
+    loadHeaderBalance();
+
+    switchP2PTab('chat');
+    await loadChatMessages(true);
+    startChatPolling();
+  } catch(err){
+    showP2PMsg('error', err.message);
+    btn.disabled = false;
+    btn.textContent = (currentSide === 'buy' ? 'Buy' : 'Sell') + ' USDT';
+  }
+}
+
+function showP2PMsg(type, txt){
+  const el = document.getElementById('p2pMsg');
+  if(!el) return;
+  el.className = 'msg show ' + type;
+  el.textContent = txt;
+}
+
+/* ============ DRAWER ============ */
+function openDrawer(){
+  document.getElementById('drawerBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderDrawerAuth();
+}
+function closeDrawer(){
+  document.getElementById('drawerBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function toggleGroup(name){
+  const group = document.getElementById('group-' + name);
+  if(!group) return;
+  const isOpen = group.classList.contains('open');
+  group.classList.toggle('open', !isOpen);
+  const section = group.previousElementSibling;
+  if(section) section.classList.toggle('open', !isOpen);
+}
+document.getElementById('drawerBackdrop').addEventListener('click', e => {
+  if(e.target.id === 'drawerBackdrop') closeDrawer();
+});
+
+async function renderDrawerAuth(){
+  const wrap = document.getElementById('drawerAuth');
+  if(!wrap) return;
+  if(!currentUser){
+    wrap.innerHTML = `<a href="login.html" class="drawer-auth-btn login">Log in</a><a href="signup.html" class="drawer-auth-btn signup">Create account</a>`;
+    return;
+  }
+  const meta = currentUser.user_metadata || {};
+  let initial = '?';
+  if(meta.first_name) initial = meta.first_name[0];
+  else if(meta.last_name) initial = meta.last_name[0];
+  else if(currentUser.email) initial = currentUser.email[0];
+  initial = initial.toUpperCase();
+  const bal = '$' + currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  wrap.innerHTML = `
+    <div class="drawer-user">
+      <div class="drawer-user-avatar">${initial}</div>
+      <div style="min-width:0;flex:1"><div class="drawer-user-email">${currentUser.email || ''}</div><div class="drawer-user-bal">${bal}</div></div>
+    </div>
+    <a href="wallet.html" class="drawer-auth-btn login">My wallet</a>
+    <button onclick="doLogout()" class="drawer-auth-btn logout">Log out</button>
+  `;
+}
+async function doLogout(){
+  if(confirm('Log out of KRYPTOS?')){
+    await sb.auth.signOut();
+    location.href = 'login.html';
+  }
+}
+
+/* ============ LIVE RATE ============ */
+let rate = 129.90;
+setInterval(() => {
+  rate += (Math.random() - 0.5) * 0.3;
+  const el = document.querySelector('.live-rate strong');
+  if(el) el.textContent = '1 USDT ≈ K.Sh' + rate.toFixed(2);
+}, 4000);
+
+/* ============ TOAST ============ */
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (isError ? ' error' : '');
+  document.getElementById('toastMsg').textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
