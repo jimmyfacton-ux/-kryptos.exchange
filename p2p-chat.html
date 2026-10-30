@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P2P Chat | KRYPTOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--brand-primary:#FCD535;--brand-hover:#F0B90B;--brand-dark:#181A20;--success:#0ECB81;--success-hover:#0BA86C;--danger:#F6465D;--muted:#707A8A;--fill:#F5F5F5;--border:#EAECEF;--page:#FAFAFA;--font-sans:"Inter",-apple-system,sans-serif;}
+*,*::before,*::after{box-sizing:border-box;border:0 solid;margin:0;padding:0}
+html{line-height:1.5;-webkit-text-size-adjust:100%;letter-spacing:-.012em}
+body{font-family:var(--font-sans);background:var(--page);color:var(--brand-dark);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+::selection{background:var(--brand-primary);color:var(--brand-dark)}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+input,textarea{font-family:inherit;outline:none}
+svg{display:block;max-width:100%}
+.container{max-width:900px;margin:0 auto;padding:0 16px}
+@media(min-width:768px){.container{padding:0 24px}}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.header-inner{height:56px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+@media(min-width:640px){.header-inner{height:64px}}
+.brand{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.back-btn{display:flex;align-items:center;gap:6px;padding:6px;border-radius:12px;color:var(--brand-dark);font-weight:600;font-size:14px;text-decoration:none}
+.back-btn:hover{background:var(--fill)}
+.back-btn svg{width:20px;height:20px;stroke-width:2.4}
+.logo-text{font-weight:800;font-size:16px;letter-spacing:-.03em;color:var(--brand-dark)}
+@media(min-width:640px){.logo-text{font-size:20px}}
+.logo-text .accent{color:var(--brand-hover)}
+.header-status{font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em}
+.header-status.pending{background:#fef3c7;color:#92400e}
+.header-status.paid{background:#dbeafe;color:#1e40af}
+.header-status.released,.header-status.completed{background:#d1fae5;color:#065f46}
+.header-status.cancelled{background:#fee2e2;color:#991b1b}
+.header-status.disputed{background:#fed7aa;color:#9a3412}
+
+/* order summary */
+.order-summary{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:640px){.order-summary{border-radius:16px;padding:16px}}
+.summary-title{font-size:13px;font-weight:900;color:#030712;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.summary-id{font-family:ui-monospace,monospace;font-size:10px;color:#6b7280;font-weight:700;background:#f9fafb;padding:2px 8px;border-radius:6px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px}
+@media(min-width:640px){.summary-grid{grid-template-columns:repeat(4,1fr);gap:12px;font-size:12px}}
+.summary-field{min-width:0}
+.summary-label{font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+@media(min-width:640px){.summary-label{font-size:10px}}
+.summary-value{font-size:12px;font-weight:800;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(min-width:640px){.summary-value{font-size:13px}}
+.summary-value.amount{font-family:ui-monospace,monospace}
+
+/* chat area */
+.chat-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;display:flex;flex-direction:column;height:calc(100vh - 300px);min-height:400px}
+@media(min-width:640px){.chat-wrap{border-radius:16px;height:calc(100vh - 340px);min-height:450px}}
+.chat-head{padding:12px 14px;border-bottom:1px solid var(--border);background:#f9fafb;display:flex;align-items:center;gap:8px}
+.chat-head-title{font-size:12px;font-weight:800;color:#111827}
+.chat-head-dot{width:8px;height:8px;border-radius:9999px;background:var(--success);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,203,129,.6)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(14,203,129,0)}}
+.chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#fafafa}
+.chat-empty{text-align:center;padding:40px 20px;color:#9ca3af;font-size:12px;line-height:1.6}
+.chat-empty svg{width:40px;height:40px;margin:0 auto 10px;opacity:.4}
+.msg-row{display:flex;gap:8px;max-width:85%}
+.msg-row.mine{margin-left:auto;flex-direction:row-reverse}
+.msg-bubble{background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px 12px;font-size:12px;line-height:1.5;color:#111827;word-break:break-word;white-space:pre-wrap}
+.msg-row.mine .msg-bubble{background:var(--brand-primary);border-color:var(--brand-hover);color:#030712}
+.msg-row.admin .msg-bubble{background:#eff6ff;border-color:#bfdbfe}
+.msg-meta{font-size:9px;color:#9ca3af;margin-top:3px;font-weight:600}
+.msg-row.mine .msg-meta{text-align:right}
+.msg-avatar{width:28px;height:28px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;flex-shrink:0;color:#fff;background:linear-gradient(135deg,#FF6700,#E04800)}
+.msg-row.admin .msg-avatar{background:linear-gradient(135deg,#3b82f6,#1e40af)}
+.chat-input-wrap{padding:10px 12px;border-top:1px solid var(--border);background:#fff}
+.chat-input-row{display:flex;gap:6px;align-items:flex-end}
+.chat-input{flex:1;min-height:40px;max-height:100px;padding:10px 12px;background:var(--fill);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:500;color:#111827;resize:none;line-height:1.4}
+.chat-input:focus{background:#fff;border-color:var(--brand-primary)}
+.chat-send{padding:10px 16px;background:var(--brand-primary);color:var(--brand-dark);font-weight:800;font-size:12px;border-radius:12px;white-space:nowrap;flex-shrink:0;transition:background .15s}
+.chat-send:hover{background:var(--brand-hover)}
+.chat-send:disabled{opacity:.5;cursor:not-allowed}
+.chat-send svg{width:16px;height:16px;stroke-width:2.4}
+
+/* action buttons */
+.actions-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.actions-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#6b7280;margin-bottom:8px}
+.action-btn{width:100%;padding:12px;font-size:13px;font-weight:800;border-radius:12px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.action-btn svg{width:16px;height:16px}
+.action-btn.paid{background:var(--success);color:#fff}
+.action-btn.paid:hover{background:var(--success-hover)}
+.action-btn.release{background:var(--brand-primary);color:var(--brand-dark)}
+.action-btn.release:hover{background:var(--brand-hover)}
+.action-btn.dispute{background:#fed7aa;color:#9a3412}
+.action-btn.dispute:hover{background:#fdba74}
+.action-btn.cancel{background:#fee2e2;color:#991b1b}
+.action-btn.cancel:hover{background:#fecaca}
+.action-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* status message */
+.status-banner{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:12px;font-size:12px;font-weight:600;color:#374151;text-align:center;line-height:1.5;margin-bottom:12px}
+.status-banner.pending{background:#fef3c7;border-color:#fde68a;color:#78350f}
+.status-banner.paid{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
+.status-banner.released,.status-banner.completed{background:#d1fae5;border-color:#a7f3d0;color:#065f46}
+.status-banner.cancelled,.status-banner.disputed{background:#fee2e2;border-color:#fecaca;color:#991b1b}
+
+/* toast */
+.toast{position:fixed;bottom:20px;left:16px;right:16px;background:#065f46;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px;z-index:300;font-size:12px;font-weight:700}
+@media(min-width:768px){.toast{bottom:24px;left:auto;right:24px;max-width:340px;padding:14px 20px;font-size:13px}}
+.toast.show{display:flex;animation:slideIn .3s}
+.toast.error{background:#991b1b}
+.toast svg{width:16px;height:16px;flex-shrink:0}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.loading{text-align:center;padding:40px;color:#9ca3af;font-size:12px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--brand-primary);border-radius:9999px;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <a href="p2p-orders.html" class="back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      </a>
+      <span class="logo-text">KRYPTO<span class="accent">S</span></span>
+    </div>
+    <span class="header-status" id="orderStatus">Loading</span>
+  </div>
+</header>
+
+<main class="container" style="padding-top:12px;padding-bottom:24px">
+
+  <div id="loadingWrap" class="loading"><span class="spinner"></span>Loading order...</div>
+
+  <div id="chatArea" style="display:none">
+
+    <div class="order-summary">
+      <div class="summary-title">
+        <span>Order Details</span>
+        <span class="summary-id" id="orderIdLabel">–</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-field"><div class="summary-label">Coin</div><div class="summary-value" id="sumCoin">–</div></div>
+        <div class="summary-field"><div class="summary-label">Amount</div><div class="summary-value amount" id="sumAmount">–</div></div>
+        <div class="summary-field"><div class="summary-label">Fiat</div><div class="summary-value" id="sumFiat">–</div></div>
+        <div class="summary-field"><div class="summary-label">Payment</div><div class="summary-value" id="sumPayment">–</div></div>
+      </div>
+    </div>
+
+    <div class="status-banner" id="statusBanner"></div>
+
+    <div class="chat-wrap">
+      <div class="chat-head">
+        <span class="chat-head-dot"></span>
+        <span class="chat-head-title">Order Chat · Talk to Merchant</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-empty" id="chatEmpty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div>Send a message to ask for payment details.</div>
+          <div>Example: "Hi, what is your M-PESA number?"</div>
+        </div>
+      </div>
+      <div class="chat-input-wrap">
+        <div class="chat-input-row">
+          <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+          <button class="chat-send" id="sendBtn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-card" id="actionsCard">
+      <div class="actions-title">Order Actions</div>
+      <div id="actionsContent"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">Done</span>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://pzqwmrqdqtozvwfpdmpm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ZeJhMI2y2yWGyQ7Aqx_T6A_vyEuVkxJ';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentOrder = null;
+let isAdmin = false;
+let messageChannel = null;
+
+const params = new URLSearchParams(location.search);
+const orderId = params.get('order_id');
+
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (isError ? ' error' : '');
+  document.getElementById('toastMsg').textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function statusLabel(s){
+  return s === 'released' ? 'completed' : s;
+}
+
+/* ============ INIT ============ */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ location.href = 'login.html'; return; }
+  currentUser = session.user;
+
+  // check admin
+  const { data: prof } = await sb.from('profiles').select('is_admin').eq('id', currentUser.id).maybeSingle();
+  isAdmin = prof?.is_admin || false;
+
+  if(!orderId){
+    document.getElementById('loadingWrap').innerHTML = '<div style="color:#991b1b">Missing order_id in URL.</div>';
+    return;
+  }
+
+  await loadOrder();
+  await loadMessages();
+  subscribeToMessages();
+  setupChatInput();
+})();
+
+/* ============ LOAD ORDER ============ */
+async function loadOrder(){
+  const { data, error } = await sb.from('p2p_orders')
+    .select(`*, merchants (name, price_kes, payments)`)
+    .eq('id', orderId)
+    .single();
+
+  if(error || !data){
+    document.getElementById('loadingWrap').innerHTML = '<div style="color:#991b1b">Order not found.</div>';
+    return;
+  }
+
+  // auth check: only buyer or admin
+  if(data.buyer_id !== currentUser.id && !isAdmin){
+    document.getElementById('loadingWrap').innerHTML = '<div style="color:#991b1b">You do not have access to this order.</div>';
+    return;
+  }
+
+  currentOrder = data;
+
+  document.getElementById('loadingWrap').style.display = 'none';
+  document.getElementById('chatArea').style.display = 'block';
+
+  document.getElementById('orderIdLabel').textContent = '#' + data.id.substring(0, 8).toUpperCase();
+  document.getElementById('sumCoin').textContent = data.coin;
+  document.getElementById('sumAmount').textContent = Number(data.amount).toFixed(4) + ' ' + data.coin;
+  document.getElementById('sumFiat').textContent = 'K.Sh ' + Number(data.fiat_amount).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('sumPayment').textContent = (data.payment_method||'').replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase());
+
+  const st = statusLabel(data.status);
+  const badge = document.getElementById('orderStatus');
+  badge.className = 'header-status ' + st;
+  badge.textContent = st;
+
+  renderStatusBanner();
+  renderActions();
+}
+
+function renderStatusBanner(){
+  const b = document.getElementById('statusBanner');
+  const s = statusLabel(currentOrder.status);
+  b.className = 'status-banner ' + s;
+  const msgs = {
+    pending: '⏳ Waiting for payment. Chat with merchant to get payment details.',
+    paid: '💸 You marked as paid. Waiting for merchant/admin to release crypto.',
+    completed: '✅ Completed. Crypto released to your wallet.',
+    released: '✅ Completed. Crypto released to your wallet.',
+    cancelled: '❌ Order cancelled.',
+    disputed: '⚠️ Dispute opened. Admin will review the chat and resolve.',
+  };
+  b.textContent = msgs[s] || 'Order status: ' + s;
+}
+
+/* ============ RENDER ACTIONS ============ */
+function renderActions(){
+  const wrap = document.getElementById('actionsContent');
+  const s = currentOrder.status;
+  const buyer = currentOrder.buyer_id === currentUser.id;
+  let html = '';
+
+  if(buyer){
+    // Buyer actions
+    if(s === 'pending'){
+      html += `
+        <button class="action-btn paid" onclick="markPaid()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          I Have Paid — Notify Merchant
+        </button>
+        <button class="action-btn cancel" onclick="cancelOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Cancel Order
+        </button>
+      `;
+    } else if(s === 'paid'){
+      html += `
+        <button class="action-btn dispute" onclick="disputeOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          Open Dispute
+        </button>
+      `;
+    } else {
+      html += `<div style="text-align:center;font-size:11px;color:#9ca3af;padding:8px">No actions available.</div>`;
+    }
+  } else {
+    // Admin actions
+    if(s === 'pending' || s === 'paid'){
+      html += `
+        <button class="action-btn release" onclick="releaseCrypto()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Release Crypto to Buyer
+        </button>
+        <button class="action-btn cancel" onclick="cancelOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Cancel & Refund
+        </button>
+      `;
+    } else {
+      html += `<div style="text-align:center;font-size:11px;color:#9ca3af;padding:8px">No actions available.</div>`;
+    }
+  }
+
+  wrap.innerHTML = html;
+}
+
+/* ============ LOAD MESSAGES ============ */
+async function loadMessages(){
+  const { data, error } = await sb.from('p2p_messages')
+    .select('*')
+    .eq('order_id', orderId)
+    .order('created_at', {ascending:true});
+
+  if(error) return;
+
+  const wrap = document.getElementById('chatMessages');
+  if(!data || data.length === 0){
+    wrap.innerHTML = `
+      <div class="chat-empty" id="chatEmpty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div>Send a message to ask for payment details.</div>
+        <div>Example: "Hi, what is your M-PESA number?"</div>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = data.map(m => renderMessage(m)).join('');
+  scrollToBottom();
+}
+
+function renderMessage(m){
+  const mine = m.sender_id === currentUser.id;
+  const isAdminMsg = m.sender_role === 'admin';
+  const initial = isAdminMsg ? 'A' : (m.sender_role === 'buyer' ? 'B' : '?');
+  const time = new Date(m.created_at).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  return `
+    <div class="msg-row ${mine?'mine':''} ${isAdminMsg?'admin':''}">
+      <div class="msg-avatar">${initial}</div>
+      <div>
+        <div class="msg-bubble">${escapeHtml(m.message)}</div>
+        <div class="msg-meta">${isAdminMsg ? 'Admin' : 'You'} · ${time}</div>
+      </div>
+    </div>`;
+}
+
+function escapeHtml(t){
+  return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function scrollToBottom(){
+  const el = document.getElementById('chatMessages');
+  setTimeout(()=>{ el.scrollTop = el.scrollHeight; }, 50);
+}
+
+/* ============ SEND MESSAGE ============ */
+async function sendMessage(){
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+
+  const { error } = await sb.from('p2p_messages').insert({
+    order_id: orderId,
+    sender_id: currentUser.id,
+    sender_role: isAdmin ? 'admin' : 'buyer',
+    message: msg
+  });
+
+  btn.disabled = false;
+
+  if(error){ toast(error.message, true); return; }
+
+  input.value = '';
+  input.style.height = '40px';
+  // message will arrive via realtime subscription
+}
+
+function setupChatInput(){
+  const input = document.getElementById('chatInput');
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  });
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+}
+
+/* ============ REALTIME ============ */
+function subscribeToMessages(){
+  messageChannel = sb.channel('p2p_messages_' + orderId)
+    .on('postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'p2p_messages', filter: `order_id=eq.${orderId}` },
+      payload => {
+        const wrap = document.getElementById('chatMessages');
+        const empty = document.getElementById('chatEmpty');
+        if(empty) empty.remove();
+        wrap.insertAdjacentHTML('beforeend', renderMessage(payload.new));
+        scrollToBottom();
+      }
+    )
+    .subscribe();
+}
+
+/* ============ ACTIONS ============ */
+async function markPaid(){
+  const { error } = await sb.from('p2p_orders').update({ status: 'paid' }).eq('id', orderId).eq('buyer_id', currentUser.id);
+  if(error){ toast(error.message, true); return; }
+  toast('Marked as paid — merchant notified');
+  await loadOrder();
+}
+
+async function cancelOrder(){
+  if(!confirm('Cancel this order?')) return;
+  const { error } = await sb.from('p2p_orders').update({ status: 'cancelled' }).eq('id', orderId);
+  if(error){ toast(error.message, true); return; }
+  toast('Order cancelled');
+  await loadOrder();
+}
+
+async function disputeOrder(){
+  if(!confirm('Open a dispute? Admin will review the chat history.')) return;
+  const { error } = await sb.from('p2p_orders').update({ status: 'disputed' }).eq('id', orderId).eq('buyer_id', currentUser.id);
+  if(error){ toast(error.message, true); return; }
+  toast('Dispute opened');
+  await loadOrder();
+}
+
+async function releaseCrypto(){
+  if(!confirm('Release crypto to buyer? This will credit their wallet balance.')) return;
+
+  const buyerId = currentOrder.buyer_id;
+  const coin = currentOrder.coin;
+  const amount = Number(currentOrder.amount);
+
+  // 1. credit buyer balance
+  const { error: e1 } = await sb.from('balances')
+    .update({ amount: sb.rpc ? undefined : undefined }) // will use RPC below
+    .eq('user_id', buyerId);
+
+  // Use RPC — safer
+  const { error: balErr } = await sb.rpc('admin_credit_user_balance', {
+    p_user_id: buyerId,
+    p_coin: coin,
+    p_amount: amount
+  });
+
+  if(balErr){ toast('Balance credit failed: ' + balErr.message, true); return; }
+
+  // 2. mark order released
+  const { error: orderErr } = await sb.from('p2p_orders')
+    .update({ status: 'released' })
+    .eq('id', orderId);
+
+  if(orderErr){ toast('Order update failed: ' + orderErr.message, true); return; }
+
+  // 3. log transaction
+  await sb.from('transactions').insert({
+    user_id: buyerId,
+    type: 'p2p_buy',
+    coin: coin,
+    amount: amount,
+    status: 'completed',
+    metadata: { p2p_order_id: orderId, released_by: 'admin' }
+  });
+
+  toast('✓ Crypto released to buyer');
+  await loadOrder();
+}
+
+/* ============ REFRESH ON VISIBILITY ============ */
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden && currentOrder){ loadMessages(); }
+});
+</script>
+</body>
+</html>
