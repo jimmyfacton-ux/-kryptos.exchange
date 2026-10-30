@@ -8,6 +8,8 @@ let currentSide = 'buy';
 let allMerchants = [];
 let currentBalance = 0;
 let balanceHidden = false;
+let currentChatOrder = null;
+let chatPollTimer = null;
 
 const USD_PRICE = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
@@ -157,7 +159,7 @@ document.querySelectorAll('.sub-tab').forEach(t => {
 });
 
 /* ============ P2P MODAL ============ */
-function openP2PModal(merchantId){
+function openP2PModal(merchantId, startTab){
   const m = allMerchants.find(x => x.id === merchantId);
   if(!m) return;
   const isBuy = currentSide === 'buy';
@@ -166,39 +168,96 @@ function openP2PModal(merchantId){
   const maxAmt = (Number(m.limit_max) / Number(m.price_kes)).toFixed(2);
 
   document.getElementById('modalContent').innerHTML = `
-    <div class="modal-title">${actionVerb} USDT from ${m.name}</div>
-    <div class="modal-sub">You will ${isBuy ? 'send KES via' : 'receive KES via'} your chosen payment method</div>
-    <div class="modal-info">
-      <div class="modal-info-row"><span>Price</span><span>K.Sh ${Number(m.price_kes).toFixed(2)} / USDT</span></div>
-      <div class="modal-info-row"><span>Available</span><span>${Number(m.available_usdt).toLocaleString()} USDT</span></div>
-      <div class="modal-info-row"><span>Limits</span><span>K.Sh ${Number(m.limit_min).toLocaleString()} – ${Number(m.limit_max).toLocaleString()}</span></div>
+    <div class="p2p-tabs">
+      <button class="p2p-tab active" data-ptab="order" onclick="switchP2PTab('order')">Order</button>
+      <button class="p2p-tab" data-ptab="chat" onclick="switchP2PTab('chat')">
+        <span>Messages</span>
+        <span class="p2p-tab-badge" id="p2pTabBadge" style="display:none">0</span>
+      </button>
     </div>
-    <label class="modal-label">Amount (USDT) — ${minAmt} to ${maxAmt}</label>
-    <input class="modal-input" type="number" step="any" id="p2pAmount" placeholder="0.00" />
-    <label class="modal-label">Payment Method</label>
-    <select class="modal-input" id="p2pPayment">
-      ${(m.payments||[]).map(p => `<option value="${p}">${(PAY_LABELS[p]||{label:p}).label}</option>`).join('')}
-    </select>
-    <div class="modal-info" style="margin-top:6px">
-      <div class="modal-info-row"><span>You will ${isBuy?'pay':'receive'}</span><strong id="p2pFiat">K.Sh 0.00</strong></div>
+
+    <div id="p2pTabOrder">
+      <div class="modal-title">${actionVerb} USDT from ${m.name}</div>
+      <div class="modal-sub">You will ${isBuy ? 'send KES via' : 'receive KES via'} your chosen payment method</div>
+      <div class="modal-info">
+        <div class="modal-info-row"><span>Price</span><span>K.Sh ${Number(m.price_kes).toFixed(2)} / USDT</span></div>
+        <div class="modal-info-row"><span>Available</span><span>${Number(m.available_usdt).toLocaleString()} USDT</span></div>
+        <div class="modal-info-row"><span>Limits</span><span>K.Sh ${Number(m.limit_min).toLocaleString()} – ${Number(m.limit_max).toLocaleString()}</span></div>
+      </div>
+      <label class="modal-label">Amount (USDT) — ${minAmt} to ${maxAmt}</label>
+      <input class="modal-input" type="number" step="any" id="p2pAmount" placeholder="0.00" />
+      <label class="modal-label">Payment Method</label>
+      <select class="modal-input" id="p2pPayment">
+        ${(m.payments||[]).map(p => `<option value="${p}">${(PAY_LABELS[p]||{label:p}).label}</option>`).join('')}
+      </select>
+      <div class="modal-info" style="margin-top:6px">
+        <div class="modal-info-row"><span>You will ${isBuy?'pay':'receive'}</span><strong id="p2pFiat">K.Sh 0.00</strong></div>
+      </div>
+      <button class="modal-confirm ${isBuy?'':'sell'}" id="p2pSubmit" onclick="submitP2POrder('${m.id}')">${actionVerb} USDT</button>
+      <div class="msg" id="p2pMsg"></div>
     </div>
-    <button class="modal-confirm ${isBuy?'':'sell'}" id="p2pSubmit" onclick="submitP2POrder('${m.id}')">${actionVerb} USDT</button>
-    <div class="msg" id="p2pMsg"></div>
+
+    <div id="p2pTabChat" style="display:none">
+      <div class="chat-thread" id="chatThread">
+        <div class="chat-empty">No order yet. Type a message to start chatting — support will reply shortly.</div>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chatInput" placeholder="Type a message…" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"></textarea>
+        <button class="chat-send" id="chatSend" onclick="sendChatMessage()">Send</button>
+      </div>
+      <div class="chat-actions" id="chatActions" style="display:none">
+        <button class="btn-paid" id="btnPaid" onclick="markAsPaid()">I Have Paid</button>
+      </div>
+    </div>
   `;
+
+  window._currentMerchant = m;
+  window._currentOrderId = null;
 
   setTimeout(() => {
     const inp = document.getElementById('p2pAmount');
     const out = document.getElementById('p2pFiat');
-    inp.addEventListener('input', () => {
-      const amt = parseFloat(inp.value) || 0;
-      const fiat = amt * Number(m.price_kes);
-      out.textContent = 'K.Sh ' + fiat.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
-    });
-    inp.focus();
+    if(inp && out){
+      inp.addEventListener('input', () => {
+        const amt = parseFloat(inp.value) || 0;
+        const fiat = amt * Number(m.price_kes);
+        out.textContent = 'K.Sh ' + fiat.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+      });
+      inp.focus();
+    }
+    const ci = document.getElementById('chatInput');
+    if(ci){
+      ci.addEventListener('input', () => {
+        ci.style.height = 'auto';
+        ci.style.height = Math.min(ci.scrollHeight, 90) + 'px';
+      });
+    }
   }, 50);
 
   document.getElementById('modalBackdrop').classList.add('show');
   document.body.style.overflow = 'hidden';
+
+  if(startTab === 'chat') switchP2PTab('chat');
+}
+
+function switchP2PTab(tab){
+  document.querySelectorAll('.p2p-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.ptab === tab);
+  });
+  const order = document.getElementById('p2pTabOrder');
+  const chat  = document.getElementById('p2pTabChat');
+  if(order) order.style.display = tab === 'order' ? 'block' : 'none';
+  if(chat)  chat.style.display  = tab === 'chat'  ? 'block' : 'none';
+
+  if(tab === 'chat'){
+    const badge = document.getElementById('p2pTabBadge');
+    if(badge){ badge.style.display = 'none'; badge.textContent = '0'; }
+    clearHeaderChatBadge();
+    if(window._currentOrderId) startChatPolling();
+    else loadPreOrderMessages();
+  } else {
+    stopChatPolling();
+  }
 }
 
 function closeModal(){
@@ -235,19 +294,39 @@ async function submitP2POrder(merchantId){
     if(error || data?.error) throw new Error(data?.error || error?.message || 'Order failed');
     if(!data.order_id) throw new Error('Order created but no ID returned.');
 
-    const fiat = Number(data.fiat);
-    const orderData = {
+    window._currentOrderId = data.order_id;
+    window._currentOrderData = {
       id: data.order_id,
       amount: amt,
-      fiat: fiat,
+      fiat: Number(data.fiat),
       payment: pay,
       side: currentSide,
-      merchant: m
+      merchantName: m.name,
+      currency: 'K.Sh'
     };
-    toast('Order created');
+
+    try {
+      const greeting = await buildGreeting(window._currentOrderData);
+      await sb.rpc('post_p2p_message', {
+        p_order_id: data.order_id,
+        p_body: greeting,
+        p_role: 'system'
+      });
+    } catch(e){ console.warn('Greeting insert:', e); }
+
+    const actions = document.getElementById('chatActions');
+    if(actions) actions.style.display = 'flex';
+
+    const tabBadge = document.getElementById('p2pTabBadge');
+    if(tabBadge){ tabBadge.style.display = 'inline-block'; tabBadge.textContent = '1'; }
+
+    toast('Order created — tap Messages to chat');
     loadMerchants();
     loadHeaderBalance();
-    await showChatView(orderData);
+
+    switchP2PTab('chat');
+    await loadChatMessages(true);
+    startChatPolling();
   } catch(err){
     showP2PMsg('error', err.message);
     btn.disabled = false;
