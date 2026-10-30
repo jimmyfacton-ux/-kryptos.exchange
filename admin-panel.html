@@ -48,8 +48,6 @@ table{border-collapse:collapse;width:100%}
 .nav-item.active{background:var(--brand-primary);color:var(--brand-dark);font-weight:800}
 .nav-item svg{width:16px;height:16px;flex-shrink:0}
 @media(min-width:768px){.nav-item svg{width:18px;height:18px}}
-.nav-item .nav-label{display:inline}
-@media(min-width:768px){.nav-item .nav-label{display:inline}}
 .nav-badge{margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:1px 6px;border-radius:9999px;display:none}
 .nav-badge.show{display:inline-block}
 .nav-item.active .nav-badge{background:rgba(0,0,0,.15);color:var(--brand-dark)}
@@ -71,9 +69,8 @@ table{border-collapse:collapse;width:100%}
 @media(min-width:768px){.refresh-btn{padding:8px 14px;font-size:12px;align-self:auto}}
 .refresh-btn:hover{background:#f9fafb}
 .refresh-btn svg{width:13px;height:13px}
-@media(min-width:768px){.refresh-btn svg{width:14px;height:14px}}
 
-/* STATS — 2x2 on mobile, 4-across on desktop */
+/* stats */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 @media(min-width:768px){.stats-grid{grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}}
 .stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
@@ -99,7 +96,6 @@ table{border-collapse:collapse;width:100%}
 .filter-btn:hover{background:#e5e7eb}
 .filter-btn.active{background:var(--brand-dark);color:#fff}
 
-/* table — scrollable on mobile */
 .tbl-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;font-size:12px;min-width:600px}
 @media(min-width:768px){table{font-size:13px;min-width:0}}
@@ -128,17 +124,26 @@ tbody tr:last-child td{border-bottom:none}
 .status-pending{background:#fef3c7;color:#92400e}
 .status-approved{background:#d1fae5;color:#065f46}
 .status-rejected{background:#fee2e2;color:#991b1b}
+.status-paid{background:#dbeafe;color:#1e40af}
+.status-released{background:#d1fae5;color:#065f46}
+.status-cancelled{background:#fee2e2;color:#991b1b}
+.status-disputed{background:#fed7aa;color:#9a3412}
 
-.actions{display:flex;gap:4px}
+.actions{display:flex;gap:4px;flex-wrap:wrap}
 @media(min-width:768px){.actions{gap:6px}}
-.act-btn{padding:4px 8px;font-size:10px;font-weight:700;border-radius:6px;transition:all .15s;white-space:nowrap}
+.act-btn{padding:4px 8px;font-size:10px;font-weight:700;border-radius:6px;transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
 @media(min-width:768px){.act-btn{padding:5px 10px;font-size:11px;border-radius:8px}}
+.act-btn svg{width:11px;height:11px;flex-shrink:0}
 .act-approve{background:#d1fae5;color:#065f46}
 .act-approve:hover{background:#a7f3d0}
 .act-reject{background:#fee2e2;color:#991b1b}
 .act-reject:hover{background:#fecaca}
 .act-view{background:#f3f4f6;color:#374151}
 .act-view:hover{background:#e5e7eb}
+.act-chat{background:var(--brand-primary);color:var(--brand-dark)}
+.act-chat:hover{background:var(--brand-hover)}
+.act-release{background:var(--success);color:#fff}
+.act-release:hover{background:#0ba86c}
 
 .empty{text-align:center;padding:36px 16px;color:#9ca3af}
 @media(min-width:768px){.empty{padding:48px 20px}}
@@ -170,7 +175,7 @@ tbody tr:last-child td{border-bottom:none}
 /* modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:100;display:none;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:14px;max-width:440px;width:100%;padding:20px;box-shadow:0 25px 60px rgba(0,0,0,.3);margin:auto}
+.modal{background:#fff;border-radius:14px;max-width:440px;width:100%;padding:20px;box-shadow:0 25px 60px rgba(0,0,0,.3);margin:auto;max-height:90vh;overflow-y:auto}
 @media(min-width:768px){.modal{border-radius:16px;padding:24px}}
 .modal-title{font-size:16px;font-weight:900;color:#030712;margin-bottom:4px}
 @media(min-width:768px){.modal-title{font-size:18px}}
@@ -204,7 +209,6 @@ tbody tr:last-child td{border-bottom:none}
 .toast.show{display:flex;animation:slideIn .3s}
 .toast.error{background:#991b1b}
 .toast svg{width:16px;height:16px;flex-shrink:0}
-@media(min-width:768px){.toast svg{width:18px;height:18px}}
 @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 /* loading */
@@ -235,30 +239,36 @@ tbody tr:last-child td{border-bottom:none}
   <aside class="sidebar">
     <button class="nav-item active" data-tab="overview">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-      <span class="nav-label">Overview</span>
+      <span>Overview</span>
     </button>
     <button class="nav-item" data-tab="deposits">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-      <span class="nav-label">Deposits</span>
+      <span>Deposits</span>
       <span class="nav-badge" id="depBadge">0</span>
     </button>
     <button class="nav-item" data-tab="withdraws">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
-      <span class="nav-label">Withdraws</span>
+      <span>Withdraws</span>
       <span class="nav-badge" id="wdBadge">0</span>
+    </button>
+    <button class="nav-item" data-tab="p2p">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      <span>P2P Orders</span>
+      <span class="nav-badge" id="p2pBadge">0</span>
     </button>
     <button class="nav-item" data-tab="users">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span class="nav-label">Users</span>
+      <span>Users</span>
     </button>
     <button class="nav-item" data-tab="transactions">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-      <span class="nav-label">Txs</span>
+      <span>Transactions</span>
     </button>
   </aside>
 
   <main class="content">
 
+    <!-- OVERVIEW -->
     <div class="tab-panel active" id="tab-overview">
       <div class="page-head">
         <div>
@@ -273,15 +283,16 @@ tbody tr:last-child td{border-bottom:none}
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Pending Deposits</div><div class="stat-val warn" id="statDeposits">–</div></div>
         <div class="stat-card"><div class="stat-label">Pending Withdraws</div><div class="stat-val warn" id="statWithdraws">–</div></div>
+        <div class="stat-card"><div class="stat-label">Pending P2P</div><div class="stat-val warn" id="statP2P">–</div></div>
         <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-val" id="statUsers">–</div></div>
-        <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-val ok" id="statCompleted">–</div></div>
       </div>
       <div class="tbl-wrap">
-        <div class="tbl-head"><div class="tbl-title">Recent Activity</div></div>
+        <div class="tbl-head"><div class="tbl-title">Recent Deposits</div></div>
         <div class="tbl-scroll" id="recentList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
       </div>
     </div>
 
+    <!-- DEPOSITS -->
     <div class="tab-panel" id="tab-deposits">
       <div class="page-head">
         <div>
@@ -300,6 +311,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- WITHDRAWS -->
     <div class="tab-panel" id="tab-withdraws">
       <div class="page-head">
         <div>
@@ -318,6 +330,27 @@ tbody tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- P2P -->
+    <div class="tab-panel" id="tab-p2p">
+      <div class="page-head">
+        <div>
+          <div class="page-title">P2P Orders</div>
+          <div class="page-sub">Chat with buyers, release crypto when payment received</div>
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="filterP2P('pending',this)">Pending</button>
+          <button class="filter-btn" onclick="filterP2P('paid',this)">Paid</button>
+          <button class="filter-btn" onclick="filterP2P('released',this)">Released</button>
+          <button class="filter-btn" onclick="filterP2P('disputed',this)">Disputed</button>
+          <button class="filter-btn" onclick="filterP2P('all',this)">All</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-scroll" id="p2pList"><div class="loading"><span class="spinner"></span>Loading P2P orders...</div></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
     <div class="tab-panel" id="tab-users">
       <div class="page-head">
         <div>
@@ -328,6 +361,7 @@ tbody tr:last-child td{border-bottom:none}
       <div id="usersGrid" class="users-grid"><div class="loading"><span class="spinner"></span>Loading...</div></div>
     </div>
 
+    <!-- TRANSACTIONS -->
     <div class="tab-panel" id="tab-transactions">
       <div class="page-head">
         <div>
@@ -371,6 +405,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
 let depositFilter = 'pending';
 let withdrawFilter = 'pending';
+let p2pFilter = 'pending';
 let activeRequest = null;
 let activeType = null;
 
@@ -413,42 +448,45 @@ const COIN_SHORT = { BTC:'B', USDT:'T', ETH:'E', SOL:'S', BNB:'B' };
 function coinIcon(coin){ return `<div class="coin-icon" style="background:${COIN_COLORS[coin]||'#666'}">${COIN_SHORT[coin]||coin[0]}</div>`; }
 function fmtTime(iso){ if(!iso) return '–'; const d = new Date(iso); return d.toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
 
-async function loadAll(){ await Promise.all([loadStats(), loadDeposits(), loadWithdraws(), loadUsers(), loadTx()]); }
+async function loadAll(){ await Promise.all([loadStats(), loadDeposits(), loadWithdraws(), loadP2P(), loadUsers(), loadTx()]); }
 
 async function loadStats(){
   try {
-    const [dep, wd, users, completed] = await Promise.all([
+    const [dep, wd, p2p, users] = await Promise.all([
       sb.from('deposit_requests').select('id',{count:'exact',head:true}).eq('status','pending'),
       sb.from('withdraw_requests').select('id',{count:'exact',head:true}).eq('status','pending'),
+      sb.from('p2p_orders').select('id',{count:'exact',head:true}).in('status',['pending','paid']),
       sb.from('profiles').select('id',{count:'exact',head:true}),
-      sb.from('transactions').select('id',{count:'exact',head:true}).eq('status','completed'),
     ]);
     document.getElementById('statDeposits').textContent = dep.count ?? 0;
     document.getElementById('statWithdraws').textContent = wd.count ?? 0;
+    document.getElementById('statP2P').textContent = p2p.count ?? 0;
     document.getElementById('statUsers').textContent = users.count ?? 0;
-    document.getElementById('statCompleted').textContent = completed.count ?? 0;
 
     const depBadge = document.getElementById('depBadge');
-    if(dep.count > 0){ depBadge.textContent = dep.count; depBadge.classList.add('show'); }
-    else depBadge.classList.remove('show');
+    if(dep.count > 0){ depBadge.textContent = dep.count; depBadge.classList.add('show'); } else depBadge.classList.remove('show');
 
     const wdBadge = document.getElementById('wdBadge');
-    if(wd.count > 0){ wdBadge.textContent = wd.count; wdBadge.classList.add('show'); }
-    else wdBadge.classList.remove('show');
+    if(wd.count > 0){ wdBadge.textContent = wd.count; wdBadge.classList.add('show'); } else wdBadge.classList.remove('show');
+
+    const p2pBadge = document.getElementById('p2pBadge');
+    if(p2p.count > 0){ p2pBadge.textContent = p2p.count; p2pBadge.classList.add('show'); } else p2pBadge.classList.remove('show');
 
     const { data: rec } = await sb.from('deposit_requests').select('*').order('created_at',{ascending:false}).limit(5);
     const el = document.getElementById('recentList');
     if(!rec || rec.length === 0){ el.innerHTML = emptyH('No activity yet','Deposit requests will show up here'); return; }
-    el.innerHTML = `<table><thead><tr><th>Type</th><th>User</th><th>Coin</th><th>Amount</th><th>Status</th><th>When</th></tr></thead><tbody>${rec.map(r=>`
-      <tr><td><span class="status-pill status-pending">Deposit</span></td>
-      <td class="user-email">${r.user_email || '–'}</td>
-      <td>${coinIcon(r.coin)} ${r.coin}</td>
-      <td class="amount-cell">${r.amount}</td>
-      <td><span class="status-pill status-${r.status}">${r.status}</span></td>
-      <td class="time-cell">${fmtTime(r.created_at)}</td></tr>`).join('')}</tbody></table>`;
+    el.innerHTML = `<table><thead><tr><th>User</th><th>Coin</th><th>Amount</th><th>Status</th><th>When</th></tr></thead><tbody>${rec.map(r=>`
+      <tr>
+        <td class="user-email">${r.user_email || '–'}</td>
+        <td>${coinIcon(r.coin)} ${r.coin}</td>
+        <td class="amount-cell">${r.amount}</td>
+        <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+        <td class="time-cell">${fmtTime(r.created_at)}</td>
+      </tr>`).join('')}</tbody></table>`;
   } catch(e){ console.error(e); }
 }
 
+/* ============ DEPOSITS ============ */
 async function loadDeposits(){
   const el = document.getElementById('depositsList');
   el.innerHTML = loadH('Loading deposits...');
@@ -478,6 +516,7 @@ function filterDeposits(status, btn){
   loadDeposits();
 }
 
+/* ============ WITHDRAWS ============ */
 async function loadWithdraws(){
   const el = document.getElementById('withdrawsList');
   el.innerHTML = loadH('Loading withdraws...');
@@ -506,6 +545,84 @@ function filterWithdraws(status, btn){
   loadWithdraws();
 }
 
+/* ============ P2P ORDERS ============ */
+async function loadP2P(){
+  const el = document.getElementById('p2pList');
+  el.innerHTML = loadH('Loading P2P orders...');
+  try {
+    let q = sb.from('p2p_orders').select(`*, merchants (name)`).order('created_at',{ascending:false});
+    if(p2pFilter !== 'all') q = q.eq('status', p2pFilter);
+    const { data, error } = await q;
+    if(error) throw error;
+    if(!data || data.length === 0){ el.innerHTML = emptyH('No ' + p2pFilter + ' P2P orders','Orders will appear here'); return; }
+    el.innerHTML = `<table><thead><tr><th>Order</th><th>Buyer</th><th>Merchant</th><th>Amount</th><th>Fiat</th><th>Payment</th><th>Status</th><th>When</th><th>Actions</th></tr></thead><tbody>${data.map(r=>`
+      <tr>
+        <td style="font-size:10px;font-family:monospace;color:#6b7280">#${r.id.substring(0,8)}</td>
+        <td class="user-email">${r.buyer_email || '–'}</td>
+        <td style="font-size:11px;color:#374151">${r.merchants?.name || '–'}</td>
+        <td class="amount-cell">${Number(r.amount).toFixed(4)} ${r.coin}</td>
+        <td class="amount-cell">K.Sh ${Number(r.fiat_amount).toLocaleString()}</td>
+        <td style="font-size:11px;text-transform:capitalize">${(r.payment_method||'').replace(/_/g,' ')}</td>
+        <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+        <td class="time-cell">${fmtTime(r.created_at)}</td>
+        <td><div class="actions">
+          <button class="act-btn act-chat" onclick="openChat('${r.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chat
+          </button>
+          ${(r.status === 'pending' || r.status === 'paid') ? `<button class="act-btn act-release" onclick="releaseFromAdmin('${r.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Release
+          </button>` : ''}
+        </div></td>
+      </tr>`).join('')}</tbody></table>`;
+  } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
+}
+function filterP2P(status, btn){
+  p2pFilter = status;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadP2P();
+}
+
+function openChat(orderId){
+  window.location.href = `p2p-chat.html?order_id=${orderId}`;
+}
+
+async function releaseFromAdmin(orderId){
+  if(!confirm('Release crypto to buyer? This credits their wallet instantly.')) return;
+
+  const { data: order } = await sb.from('p2p_orders').select('*').eq('id', orderId).single();
+  if(!order){ toast('Order not found', true); return; }
+
+  try {
+    const { error: balErr } = await sb.rpc('admin_credit_user_balance', {
+      p_user_id: order.buyer_id,
+      p_coin: order.coin,
+      p_amount: Number(order.amount)
+    });
+    if(balErr) throw balErr;
+
+    const { error: orderErr } = await sb.from('p2p_orders').update({ status: 'released' }).eq('id', orderId);
+    if(orderErr) throw orderErr;
+
+    await sb.from('transactions').insert({
+      user_id: order.buyer_id,
+      type: 'p2p_buy',
+      coin: order.coin,
+      amount: order.amount,
+      status: 'completed',
+      metadata: { p2p_order_id: orderId, released_by: 'admin' }
+    });
+
+    toast('✓ Crypto released to buyer');
+    loadP2P(); loadStats();
+  } catch(err){
+    toast('Release failed: ' + err.message, true);
+  }
+}
+
+/* ============ USERS ============ */
 async function loadUsers(){
   const el = document.getElementById('usersGrid');
   el.innerHTML = loadH('Loading users...');
@@ -535,6 +652,7 @@ async function loadUsers(){
   } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
 }
 
+/* ============ TRANSACTIONS ============ */
 async function loadTx(){
   const el = document.getElementById('txList');
   el.innerHTML = loadH('Loading transactions...');
@@ -553,6 +671,7 @@ async function loadTx(){
   } catch(e){ el.innerHTML = emptyH('Error loading', e.message); }
 }
 
+/* ============ REVIEW MODAL (deposits/withdraws) ============ */
 async function reviewDeposit(id){
   const { data } = await sb.from('deposit_requests').select('*').eq('id', id).single();
   if(!data) return;
