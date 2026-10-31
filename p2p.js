@@ -10,6 +10,7 @@ let currentBalance = 0;
 let balanceHidden = false;
 let currentChatOrder = null;
 let chatPollTimer = null;
+let chatPanelOpen = false;
 
 const USD_PRICE = { BTC: 81223.18, USDT: 1.00, ETH: 2358.02, SOL: 102.36, BNB: 612.45 };
 
@@ -33,7 +34,6 @@ const VERIFIED_SVG = `<svg class="verified" viewBox="0 0 24 24" fill="none" stro
   if(!session){ location.href = 'login.html'; return; }
   currentUser = session.user;
   await setAvatar(currentUser);
-  /* Run in parallel so slow balances doesn't block merchants */
   await Promise.all([loadHeaderBalance(), loadMerchants()]);
 })();
 
@@ -156,7 +156,8 @@ document.querySelectorAll('.sub-tab').forEach(t => {
     document.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
   });
-});/* ============ P2P MODAL ============ */
+});
+/* ============ P2P MODAL ============ */
 function openP2PModal(merchantId, startTab){
   const m = allMerchants.find(x => x.id === merchantId);
   if(!m) return;
@@ -166,13 +167,10 @@ function openP2PModal(merchantId, startTab){
   const maxAmt = (Number(m.limit_max) / Number(m.price_kes)).toFixed(2);
 
   document.getElementById('modalContent').innerHTML = `
-    <div class="p2p-tabs">
-      <button class="p2p-tab active" data-ptab="order" onclick="switchP2PTab('order')">Order</button>
-      <button class="p2p-tab" data-ptab="chat" onclick="switchP2PTab('chat')">
-        <span>Messages</span>
-        <span class="p2p-tab-badge" id="p2pTabBadge" style="display:none">0</span>
-      </button>
-    </div>
+    <button class="modal-msg-icon" id="p2pMsgIcon" onclick="toggleChatPanel()" aria-label="Messages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="modal-msg-badge" id="p2pMsgBadge" style="display:none">0</span>
+    </button>
 
     <div id="p2pTabOrder">
       <div class="modal-title">${actionVerb} USDT from ${m.name}</div>
@@ -196,6 +194,10 @@ function openP2PModal(merchantId, startTab){
     </div>
 
     <div id="p2pTabChat" style="display:none">
+      <button class="chat-back" onclick="toggleChatPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Back to order
+      </button>
       <div class="chat-thread" id="chatThread">
         <div class="chat-empty">No order yet. Type a message to start chatting — support will reply shortly.</div>
       </div>
@@ -235,20 +237,20 @@ function openP2PModal(merchantId, startTab){
   document.getElementById('modalBackdrop').classList.add('show');
   document.body.style.overflow = 'hidden';
 
-  if(startTab === 'chat') switchP2PTab('chat');
+  if(startTab === 'chat') toggleChatPanel(true);
 }
 
-function switchP2PTab(tab){
-  document.querySelectorAll('.p2p-tab').forEach(b => {
-    b.classList.toggle('active', b.dataset.ptab === tab);
-  });
+function toggleChatPanel(force){
+  chatPanelOpen = (force === true) ? true : !chatPanelOpen;
   const order = document.getElementById('p2pTabOrder');
   const chat  = document.getElementById('p2pTabChat');
-  if(order) order.style.display = tab === 'order' ? 'block' : 'none';
-  if(chat)  chat.style.display  = tab === 'chat'  ? 'block' : 'none';
+  const icon  = document.getElementById('p2pMsgIcon');
+  if(order) order.style.display = chatPanelOpen ? 'none' : 'block';
+  if(chat)  chat.style.display  = chatPanelOpen ? 'block' : 'none';
+  if(icon)  icon.classList.toggle('active', chatPanelOpen);
 
-  if(tab === 'chat'){
-    const badge = document.getElementById('p2pTabBadge');
+  if(chatPanelOpen){
+    const badge = document.getElementById('p2pMsgBadge');
     if(badge){ badge.style.display = 'none'; badge.textContent = '0'; }
     clearHeaderChatBadge();
     if(window._currentOrderId) startChatPolling();
@@ -261,6 +263,7 @@ function switchP2PTab(tab){
 function closeModal(){
   stopChatPolling();
   currentChatOrder = null;
+  chatPanelOpen = false;
   document.getElementById('modalBackdrop').classList.remove('show');
   document.getElementById('modalContent').innerHTML = '';
   document.body.style.overflow = '';
@@ -315,14 +318,14 @@ async function submitP2POrder(merchantId){
     const actions = document.getElementById('chatActions');
     if(actions) actions.style.display = 'flex';
 
-    const tabBadge = document.getElementById('p2pTabBadge');
-    if(tabBadge){ tabBadge.style.display = 'inline-block'; tabBadge.textContent = '1'; }
+    const msgBadge = document.getElementById('p2pMsgBadge');
+    if(msgBadge){ msgBadge.style.display = 'flex'; msgBadge.textContent = '1'; }
 
-    toast('Order created — tap Messages to chat');
+    toast('Order created — tap the message icon to chat');
     loadMerchants();
     loadHeaderBalance();
 
-    switchP2PTab('chat');
+    toggleChatPanel(true);
     await loadChatMessages(true);
     startChatPolling();
   } catch(err){
